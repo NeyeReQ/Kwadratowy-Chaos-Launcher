@@ -7,7 +7,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { spawnSync, type ChildProcess } from "node:child_process";
 import { existsSync } from "node:fs";
 import { lstat, mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
-import { delimiter, dirname, isAbsolute, join, relative, sep } from "node:path";
+import { delimiter, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { AccountProfile, BootstrapState, LauncherManifest, LauncherProgress, LauncherSettings, ManifestFile } from "../shared/types";
 
