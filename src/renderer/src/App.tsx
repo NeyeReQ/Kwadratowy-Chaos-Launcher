@@ -76,11 +76,7 @@ export default function App() {
       }
 
       const totalGb = Math.max(1, Math.round(result.totalBytes / (1024 ** 3)));
-      let recommendedGb = 2;
-      if (totalGb > 8 && totalGb <= 12) recommendedGb = 6;
-      else if (totalGb > 12 && totalGb <= 16) recommendedGb = 8;
-      else if (totalGb > 16) recommendedGb = 10;
-      recommendedGb = Math.min(10, recommendedGb);
+      const recommendedGb = Math.min(10, Math.max(2, Math.floor(totalGb / 4) * 2));
 
       const saved = await window.launcher.saveSettings({ memoryMb: recommendedGb * 1024 });
       setState((current) => ({ ...current, settings: saved }));
