@@ -25,9 +25,11 @@
 .onboarding-progress{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:25px 0 22px}
 .onboarding-progress-step{min-width:0;min-height:62px;position:relative;display:flex;align-items:center;gap:9px;padding:10px 11px;border:1px solid #ffffff13;border-radius:11px;background:#ffffff05;overflow:hidden;transition:background .25s,border-color .25s,transform .25s}
 .onboarding-progress-step:after{content:"";position:absolute;left:0;bottom:0;height:3px;width:100%;background:linear-gradient(90deg,#a36cff,#df69cf);transform:scaleX(0);transform-origin:left;transition:transform .35s ease}
-.onboarding-progress-step.active,.onboarding-progress-step.done{background:linear-gradient(120deg,#a36cff1c,#df69cf0d);border-color:#b88aff55}
-.onboarding-progress-step.active{box-shadow:0 0 22px #a36cff12}
+.onboarding-progress-step.active{background:linear-gradient(120deg,#a36cff2b,#df69cf16);border-color:#b88aff80;box-shadow:0 0 22px #a36cff18}
+.onboarding-progress-step.done{background:linear-gradient(115deg,#8756cb55,#bd58a844);border-color:#c18bff9c;box-shadow:inset 0 0 18px #d5b1ff12}
 .onboarding-progress-step.active:after,.onboarding-progress-step.done:after{transform:scaleX(1)}
+.onboarding-progress-step.done .onboarding-step-icon{background:#ffffff20;color:#fff}
+.onboarding-progress-step.done .onboarding-step-label,.onboarding-progress-step.done .onboarding-step-check{color:#fff}
 .onboarding-step-icon{width:34px;height:34px;flex:0 0 34px;display:grid;place-items:center;border-radius:9px;background:#ffffff0a;color:#89869c;transition:background .25s,color .25s}
 .onboarding-progress-step.active .onboarding-step-icon,.onboarding-progress-step.done .onboarding-step-icon{background:#a779ff25;color:#d7bdff}
 .onboarding-step-label{min-width:0;font-size:9px;font-weight:700;color:#89869c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
