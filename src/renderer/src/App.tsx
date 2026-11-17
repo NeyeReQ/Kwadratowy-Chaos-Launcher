@@ -4,7 +4,7 @@ import { Activity, Blocks, Check, ChevronRight, Cpu, Download, ExternalLink, Gam
 import type { BootstrapState, LauncherProgress, LauncherSettings } from "../../shared/types";
 
 type Page = "home" | "mods" | "settings";
-const ONBOARDING_VERSION = 3;
+const ONBOARDING_VERSION = 4;
 const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "", onboardingCompleted: false, onboardingVersion: 0 }, manifest: null, manifestError: null, appVersion: "0.1.5" };
 
 export default function App() {
@@ -115,7 +115,7 @@ export default function App() {
           <p>Dziękujemy za zaufanie i pobranie naszego oprogramowania!</p>
           <div className="onboarding-info">
             <strong>Jak działa launcher?</strong>
-            <p>W zakładce <b>Start</b> przycisk <b>„Przygotuj grę”</b> konfiguruje profil Minecraft za pomocą naszego oprogramowania i otwiera klienta Minecraft. Możesz traktować go jak przycisk <b>„Graj”</b>.</p>
+            <p>W zakładce <span className="onboarding-inline-icon" role="img" aria-label="Start"><Gamepad2 size={14}/></span> przycisk <span className="onboarding-inline-icon" role="img" aria-label="Przygotuj grę"><Play size={14}/></span> konfiguruje profil Minecraft za pomocą naszego oprogramowania i otwiera klienta Minecraft. Możesz traktować go jak przycisk <span className="onboarding-inline-icon" role="img" aria-label="Graj"><Play size={14}/></span>.</p>
           </div>
         </div>}
         {onboardingStep === 1 && <div className="onboarding-content">
@@ -124,7 +124,7 @@ export default function App() {
           <p>Nie musisz samodzielnie szukać ani instalować nowych wersji modów.</p>
           <div className="onboarding-info">
             <strong>Jak pobierać aktualizacje?</strong>
-            <p>W zakładce <b>„Paczka modów”</b> znajdziesz aktualizacje. Gdy na serwerze pojawi się zmiana, kliknij <b>„Sprawdź aktualizacje”</b>, a launcher automatycznie pobierze nowe lub zmienione mody.</p>
+            <p>W zakładce <span className="onboarding-inline-icon" role="img" aria-label="Paczka modów"><Blocks size={14}/></span> znajdziesz aktualizacje. Gdy na serwerze pojawi się zmiana, kliknij <span className="onboarding-inline-icon" role="img" aria-label="Sprawdź aktualizacje"><RefreshCw size={14}/></span>, a launcher automatycznie pobierze nowe lub zmienione mody.</p>
           </div>
         </div>}
         {onboardingStep === 2 && <div className={`onboarding-content ${ramCheckBusy ? "onboarding-loading" : ""}`}>
@@ -139,11 +139,11 @@ export default function App() {
               <div><span>WYKRYTA PAMIĘĆ</span><strong>{ramAnalysis.detectedGb} GB</strong></div>
               <div><span>PRZYDZIELAMY MINECRAFTOWI</span><strong>{ramAnalysis.allocatedGb} GB</strong></div>
             </div>
-            <p className="ram-result-note">Ustawienie zostało zapisane. Możesz je w dowolnym momencie zmienić w zakładce „Ustawienia”.</p>
+            <p className="ram-result-note">Ustawienie zostało zapisane. Możesz je w dowolnym momencie zmienić w zakładce <span className="onboarding-inline-icon" role="img" aria-label="Ustawienia"><Settings2 size={14}/></span>.</p>
           </> : <>
             <div className="onboarding-icon"><Settings2 size={25}/></div>
             <h1 id="onboarding-title">Ustawienia i pamięć RAM</h1>
-            <p>W zakładce <b>„Ustawienia”</b> możesz zmienić ilość RAM-u przydzielonego Minecraftowi i zobaczyć aktualny katalog danych paczki.</p>
+            <p>W zakładce <span className="onboarding-inline-icon" role="img" aria-label="Ustawienia"><Settings2 size={14}/></span> możesz zmienić ilość RAM-u przydzielonego Minecraftowi i zobaczyć aktualny katalog danych paczki.</p>
             <div className="onboarding-info">
               <strong>Dobór pamięci dla Minecrafta</strong>
               <p>Możesz pozwolić nam sprawdzić ilość pamięci RAM w komputerze i automatycznie dobrać odpowiednią wartość dla gry. To opcjonalne — ustawienie możesz później zmienić w dowolnym momencie.</p>
