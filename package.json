@@ -36,10 +36,29 @@
   "build": {
     "appId": "pl.kwadratowychaos.launcher",
     "productName": "Kwadratowy Chaos",
-    "directories": { "output": "release" },
-    "files": ["out/**/*", "package.json"],
-    "extraResources": [{ "from": "config/launcher.json", "to": "launcher.json" }],
-    "win": { "target": [{ "target": "nsis", "arch": ["x64"] }] },
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "config/launcher.json",
+        "to": "launcher.json"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
@@ -47,6 +66,15 @@
       "createStartMenuShortcut": true,
       "shortcutName": "Kwadratowy Chaos"
     },
-    "publish": [{ "provider": "github", "owner": "NeyeReQ", "repo": "Kwadratowy-Chaos-Launcher" }]
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "NeyeReQ",
+        "repo": "Kwadratowy-Chaos-Launcher"
+      }
+    ]
+  },
+  "engines": {
+    "node": ">=22 <26"
   }
 }
