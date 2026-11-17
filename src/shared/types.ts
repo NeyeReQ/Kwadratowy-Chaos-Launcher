@@ -8,7 +8,7 @@ export interface LauncherManifest {
   files: ManifestFile[];
   news?: Array<{ title: string; date?: string; body: string; tag?: string }>;
 }
-export interface LauncherSettings { memoryMb: number; gamePath: string; onboardingCompleted: boolean; }
+export interface LauncherSettings { memoryMb: number; gamePath: string; onboardingCompleted: boolean; onboardingVersion: number; }
 export interface BootstrapState {
   settings: LauncherSettings; manifest: LauncherManifest | null;
   manifestError: string | null; appVersion: string;
