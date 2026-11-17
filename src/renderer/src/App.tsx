@@ -18,6 +18,7 @@ export default function App() {
   const [onboardingStep, setOnboardingStep] = useState(0);
   const [ramCheckBusy, setRamCheckBusy] = useState(false);
   const [ramCheckError, setRamCheckError] = useState("");
+  const [ramAnalysis, setRamAnalysis] = useState<{ detectedGb: number; allocatedGb: number } | null>(null);
   const manifest = state.manifest;
   const mods = useMemo(() => manifest?.files.filter((f) => f.path.startsWith("mods/")).length || 0, [manifest]);
   const managed = manifest?.files.length || 0;
@@ -65,14 +66,26 @@ export default function App() {
   async function checkAndSetRam() {
     setRamCheckBusy(true);
     setRamCheckError("");
+    setRamAnalysis(null);
     try {
+      // Keep the analysis screen visible long enough to make the action clear.
+      await new Promise((resolve) => setTimeout(resolve, 1100));
       const result = await window.launcher.getSystemMemory();
       if (!Number.isFinite(result.totalBytes) || result.totalBytes <= 0) {
         throw new Error("Nie udało się odczytać ilości pamięci RAM.");
       }
+
       const totalGb = Math.max(1, Math.round(result.totalBytes / (1024 ** 3)));
-      const recommendedGb = Math.min(10, Math.max(2, Math.floor(totalGb / 4) * 2));
-      await completeOnboarding(recommendedGb * 1024, totalGb);
+      let recommendedGb = 2;
+      if (totalGb > 8 && totalGb <= 12) recommendedGb = 6;
+      else if (totalGb > 12 && totalGb <= 16) recommendedGb = 8;
+      else if (totalGb > 16) recommendedGb = 10;
+      recommendedGb = Math.min(10, recommendedGb);
+
+      const saved = await window.launcher.saveSettings({ memoryMb: recommendedGb * 1024 });
+      setState((current) => ({ ...current, settings: saved }));
+      setDraft(saved);
+      setRamAnalysis({ detectedGb: totalGb, allocatedGb: recommendedGb });
     } catch (error) {
       setRamCheckError(error instanceof Error ? error.message : "Nie udało się sprawdzić pamięci RAM.");
     } finally {
@@ -91,11 +104,21 @@ export default function App() {
           <div><strong>KWADRATOWY CHAOS</strong><small>KRÓTKI PRZEWODNIK</small></div>
         </div>
         <div className="onboarding-progress">
-          {[0, 1, 2].map((step) => <div key={step} className={step <= onboardingStep ? "onboarding-progress-step active" : "onboarding-progress-step"}><span>0{step + 1}</span><i/></div>)}
+          {[
+            { label: "Start", icon: Gamepad2 },
+            { label: "Paczka modów", icon: Blocks },
+            { label: "Ustawienia", icon: Settings2 }
+          ].map(({ label, icon: StepIcon }, step) => (
+            <div key={label} className={`onboarding-progress-step ${step < onboardingStep ? "done" : ""} ${step === onboardingStep ? "active" : ""}`}>
+              <span className="onboarding-step-icon"><StepIcon size={17}/></span>
+              <span className="onboarding-step-label">{label}</span>
+              <span className="onboarding-step-check">{step < onboardingStep ? <Check size={13}/> : `0${step + 1}`}</span>
+            </div>
+          ))}
         </div>
         <div className="onboarding-kicker">PIERWSZE URUCHOMIENIE · KROK 0{onboardingStep + 1} / 03</div>
         {onboardingStep === 0 && <div className="onboarding-content">
-          <div className="onboarding-icon"><Sparkles size={25}/></div>
+          <div className="onboarding-icon"><Gamepad2 size={25}/></div>
           <h1 id="onboarding-title">Witaj, drogi Streamerze!</h1>
           <p>Dziękujemy za zaufanie i pobranie naszego oprogramowania!</p>
           <div className="onboarding-info">
@@ -112,24 +135,42 @@ export default function App() {
             <p>W zakładce <b>„Paczka modów”</b> znajdziesz aktualizacje. Gdy na serwerze pojawi się zmiana, kliknij <b>„Sprawdź aktualizacje”</b>, a launcher automatycznie pobierze nowe lub zmienione mody.</p>
           </div>
         </div>}
-        {onboardingStep === 2 && <div className="onboarding-content">
-          <div className="onboarding-icon"><Cpu size={25}/></div>
-          <h1 id="onboarding-title">Ustawienia i pamięć RAM</h1>
-          <p>W zakładce <b>„Ustawienia”</b> możesz zmienić ilość RAM-u przydzielonego Minecraftowi i zobaczyć aktualny katalog danych paczki.</p>
-          <div className="onboarding-info">
-            <strong>Automatyczna rekomendacja RAM (opcjonalnie)</strong>
-            <p>Możemy sprawdzić ilość pamięci RAM w komputerze i na tej podstawie dobrać ustawienie dla Minecrafta. Przykładowo: 4 GB RAM → 2 GB dla gry, 8 GB → 4 GB, 12 GB → 6 GB, 16 GB → 8 GB, a 32 GB → maksymalnie 10 GB. Wartość możesz w dowolnym momencie zmienić na taką, jaka będzie Ci odpowiadać.</p>
-          </div>
-          {ramCheckError && <div className="onboarding-error">{ramCheckError}</div>}
+        {onboardingStep === 2 && <div className={`onboarding-content ${ramCheckBusy ? "onboarding-loading" : ""}`}>
+          {ramCheckBusy ? <>
+            <div className="ram-analysis-spinner"><span/></div>
+            <h1 id="onboarding-title">Analizowanie RAMu</h1>
+            <p>Sprawdzamy pamięć komputera i dobieramy odpowiednią wartość dla Minecrafta.</p>
+          </> : ramAnalysis ? <>
+            <div className="onboarding-icon onboarding-success-icon"><Check size={25}/></div>
+            <h1 id="onboarding-title">Gotowe! RAM został sprawdzony.</h1>
+            <div className="ram-result-grid">
+              <div><span>WYKRYTA PAMIĘĆ</span><strong>{ramAnalysis.detectedGb} GB</strong></div>
+              <div><span>PRZYDZIELAMY MINECRAFTOWI</span><strong>{ramAnalysis.allocatedGb} GB</strong></div>
+            </div>
+            <p className="ram-result-note">Ustawienie zostało zapisane. Możesz je w dowolnym momencie zmienić w zakładce „Ustawienia”.</p>
+          </> : <>
+            <div className="onboarding-icon"><Settings2 size={25}/></div>
+            <h1 id="onboarding-title">Ustawienia i pamięć RAM</h1>
+            <p>W zakładce <b>„Ustawienia”</b> możesz zmienić ilość RAM-u przydzielonego Minecraftowi i zobaczyć aktualny katalog danych paczki.</p>
+            <div className="onboarding-info">
+              <strong>Dobór pamięci dla Minecrafta</strong>
+              <p>Możesz pozwolić nam sprawdzić ilość pamięci RAM w komputerze i automatycznie dobrać odpowiednią wartość dla gry. To opcjonalne — ustawienie możesz później zmienić w dowolnym momencie.</p>
+            </div>
+            {ramCheckError && <div className="onboarding-error">{ramCheckError}</div>}
+          </>}
         </div>}
         <div className="onboarding-footer">
           <div className="onboarding-dots"><span className={onboardingStep === 0 ? "active" : ""}/><span className={onboardingStep === 1 ? "active" : ""}/><span className={onboardingStep === 2 ? "active" : ""}/></div>
           {onboardingStep === 0 && <button className="play-button onboarding-next" onClick={() => setOnboardingStep(1)}>DALEJ <ChevronRight size={16}/></button>}
           {onboardingStep === 1 && <div className="onboarding-actions"><button className="secondary-button" onClick={() => setOnboardingStep(0)}>WSTECZ</button><button className="play-button onboarding-next" onClick={() => setOnboardingStep(2)}>DALEJ <ChevronRight size={16}/></button></div>}
           {onboardingStep === 2 && <div className="onboarding-actions">
-            <button className="secondary-button" disabled={busy || ramCheckBusy} onClick={() => setOnboardingStep(1)}>WSTECZ</button>
-            <button className="secondary-button onboarding-skip" disabled={busy || ramCheckBusy} onClick={() => void completeOnboarding()}>NIE DZIĘKUJĘ</button>
-            <button className="play-button onboarding-next" disabled={busy || ramCheckBusy} onClick={() => void checkAndSetRam()}>{ramCheckBusy ? <><span className="spinner"/> SPRAWDZANIE…</> : <>SPRAWDŹ MÓJ RAM <ChevronRight size={16}/></>}</button>
+            {!ramAnalysis && <button className="secondary-button" disabled={busy || ramCheckBusy} onClick={() => setOnboardingStep(1)}>WSTECZ</button>}
+            {ramAnalysis ? (
+              <button className="play-button onboarding-next" disabled={busy} onClick={() => void completeOnboarding()}>ZAKOŃCZ <Check size={16}/></button>
+            ) : <>
+              <button className="secondary-button onboarding-skip" disabled={busy || ramCheckBusy} onClick={() => void completeOnboarding()}>NIE DZIĘKUJĘ</button>
+              <button className="play-button onboarding-next" disabled={busy || ramCheckBusy} onClick={() => void checkAndSetRam()}>SPRAWDŹ MÓJ RAM <ChevronRight size={16}/></button>
+            </>}
           </div>}
         </div>
         <div className="onboarding-footnote">Twoje ustawienia możesz zmienić później w dowolnym momencie.</div>
