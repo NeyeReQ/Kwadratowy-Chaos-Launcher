@@ -53,7 +53,7 @@ try {
         }
 
         $relativePath = $file.FullName.Substring($rootPrefix.Length).Replace('\', '/')
-        $assetName = $relativePath.Replace('/', '__')
+        $assetName = $relativePath.Replace('/', '__') -replace '[^A-Za-z0-9._-]', '_'
         if ($assetNames.ContainsKey($assetName.ToLowerInvariant())) {
             throw "Kolizja nazw assetow po splaszczeniu sciezek: $assetName"
         }
@@ -62,26 +62,37 @@ try {
         Copy-Item -LiteralPath $file.FullName -Destination $destination
     }
 
-    # Check existing releases through a successful list request.
-    # Calling "gh release view" for a missing tag writes an error to stderr;
-    # PowerShell can promote that native stderr output to a terminating error.
-    $existingTags = @(& gh release list --repo $Repository --limit 1000 --json tagName --jq '.[].tagName')
+    # A failed "release view" prints to stderr when the tag is missing.
+    # List releases once, then resume an existing draft safely.
+    $releaseRows = @(& gh release list --repo $Repository --limit 1000 --json tagName,isDraft)
     if ($LASTEXITCODE -ne 0) {
         throw "Nie udalo sie pobrac listy GitHub Releases."
     }
-    if ($existingTags -contains $Tag) {
-        throw "Release $Tag juz istnieje. Zmien packVersion w launcher/manifest.json (np. 0.2.1) i wygeneruj manifest ponownie."
+    $existingRelease = $null
+    if ($releaseRows.Count -gt 0) {
+        $releaseJson = $releaseRows -join "`n"
+        if (-not [string]::IsNullOrWhiteSpace($releaseJson)) {
+            $existingRelease = @($releaseJson | ConvertFrom-Json) | Where-Object { $_.tagName -eq $Tag } | Select-Object -First 1
+        }
     }
+    if ($existingRelease -and -not $existingRelease.isDraft) {
+        throw "Release $Tag jest juz opublikowany. Zmien packVersion (np. 0.2.1), wygeneruj manifest i opublikuj nowa wersje."
+    }
+    $resumeDraft = [bool]$existingRelease
 
-    Write-Host "Tworzenie roboczego GitHub Release: $Tag"
-    & gh release create $Tag --repo $Repository --title "Kwadratowy Chaos modpack $packVersion" --notes "Pliki paczki modow Kwadratowego Chaosu. Zarzadzane przez launcher." --draft --target main
-    if ($LASTEXITCODE -ne 0) {
-        throw "Nie udalo sie utworzyc GitHub Release."
+    if (-not $resumeDraft) {
+        Write-Host "Tworzenie roboczego GitHub Release: $Tag"
+        & gh release create $Tag --repo $Repository --title "Kwadratowy Chaos modpack $packVersion" --notes "Pliki paczki modow Kwadratowego Chaosu. Zarzadzane przez launcher." --draft --target main
+        if ($LASTEXITCODE -ne 0) {
+            throw "Nie udalo sie utworzyc GitHub Release."
+        }
+    } else {
+        Write-Host "Wznawianie roboczego Release: $Tag"
     }
 
     foreach ($asset in Get-ChildItem -LiteralPath $staging -File) {
         Write-Host "Wysylanie: $($asset.Name) ($([math]::Round($asset.Length / 1MB, 2)) MB)"
-        & gh release upload $Tag $asset.FullName --repo $Repository
+        & gh release upload $Tag $asset.FullName --repo $Repository --clobber
         if ($LASTEXITCODE -ne 0) {
             throw "Nie udalo sie wyslac assetu: $($asset.Name). Roboczy release pozostawiono jako draft."
         }
