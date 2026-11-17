@@ -120,7 +120,7 @@ export default function App() {
 
         {(notice || state.manifestError) && <div className={state.manifestError && !notice ? "notice warning" : "notice"}><span>{notice || state.manifestError}</span><button onClick={() => setNotice("")}><X size={15}/></button></div>}
       </div>
-      <footer className="bottom-bar"><span><i className="status-dot"/>"Gotowy do przygotowania gry"</span><span>{manifest?.name || "Kwadratowy Chaos"} <i/> {manifest?.minecraftVersion ? "Minecraft "+manifest.minecraftVersion : "Konfiguracja oczekuje na manifest"}</span></footer>
+      <footer className="bottom-bar"><span><i className="status-dot"/>Gotowy do przygotowania gry</span><span>{manifest?.name || "Kwadratowy Chaos"} <i/> {manifest?.minecraftVersion ? "Minecraft "+manifest.minecraftVersion : "Konfiguracja oczekuje na manifest"}</span></footer>
     </main>
 
     {busy && <div className="busy-indicator"><span className="spinner"/><span>{progress?.message || "Przetwarzanie…"}</span></div>}
