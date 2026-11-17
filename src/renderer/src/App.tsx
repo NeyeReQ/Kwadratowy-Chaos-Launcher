@@ -4,7 +4,7 @@ import { Activity, Blocks, Check, ChevronRight, Cpu, Download, ExternalLink, Gam
 import type { BootstrapState, LauncherProgress, LauncherSettings } from "../../shared/types";
 
 type Page = "home" | "mods" | "settings";
-const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "" }, manifest: null, manifestError: null, appVersion: "0.1.1" };
+const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "", onboardingCompleted: false }, manifest: null, manifestError: null, appVersion: "0.1.1" };
 
 export default function App() {
   const [state, setState] = useState(initial);
@@ -14,16 +14,20 @@ export default function App() {
   const [notice, setNotice] = useState("");
   const [updateMessage, setUpdateMessage] = useState("");
   const [draft, setDraft] = useState<LauncherSettings>(initial.settings);
+  const [onboardingReady, setOnboardingReady] = useState(false);
+  const [onboardingStep, setOnboardingStep] = useState(0);
+  const [ramCheckBusy, setRamCheckBusy] = useState(false);
+  const [ramCheckError, setRamCheckError] = useState("");
   const manifest = state.manifest;
   const mods = useMemo(() => manifest?.files.filter((f) => f.path.startsWith("mods/")).length || 0, [manifest]);
   const managed = manifest?.files.length || 0;
 
   async function refresh() {
     const next = await window.launcher.getBootstrapState();
-    setState(next); setDraft(next.settings);
+    setState(next); setDraft(next.settings); setOnboardingReady(true);
   }
   useEffect(() => {
-    void refresh().catch((e) => setNotice(e instanceof Error ? e.message : "Nie udało się wczytać launchera."));
+    void refresh().catch((e) => { setNotice(e instanceof Error ? e.message : "Nie udało się wczytać launchera."); setOnboardingReady(true); });
     const a = window.launcher.onProgress(setProgress);
     const b = window.launcher.onUpdateStatus(setUpdateMessage);
     return () => { a(); b(); };
@@ -35,9 +39,100 @@ export default function App() {
     catch (error) { setNotice(error instanceof Error ? error.message : "Operacja nie powiodła się."); setProgress({ phase: "error", current: 0, total: 0, message: "Błąd operacji" }); }
     finally { setBusy(false); }
   }
+  async function completeOnboarding(memoryMb?: number, detectedRamGb?: number) {
+    setBusy(true);
+    setNotice("");
+    try {
+      const patch: Partial<LauncherSettings> = { onboardingCompleted: true };
+      if (memoryMb !== undefined) patch.memoryMb = memoryMb;
+      const saved = await window.launcher.saveSettings(patch);
+      setState((current) => ({ ...current, settings: saved }));
+      setDraft(saved);
+      if (memoryMb !== undefined && detectedRamGb !== undefined) {
+        setNotice(`Wykryto ${detectedRamGb} GB RAM. Przydzielono Minecraftowi ${memoryMb / 1024} GB. Wartość możesz zmienić w Ustawieniach.`);
+      }
+      return true;
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Nie udało się zapisać ustawień powitalnych.");
+      return false;
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function checkAndSetRam() {
+    setRamCheckBusy(true);
+    setRamCheckError("");
+    try {
+      const result = await window.launcher.getSystemMemory();
+      if (!Number.isFinite(result.totalBytes) || result.totalBytes <= 0) {
+        throw new Error("Nie udało się odczytać ilości pamięci RAM.");
+      }
+      const totalGb = Math.max(1, Math.round(result.totalBytes / (1024 ** 3)));
+      const recommendedGb = Math.min(10, Math.max(2, Math.floor(totalGb / 4) * 2));
+      await completeOnboarding(recommendedGb * 1024, totalGb);
+    } catch (error) {
+      setRamCheckError(error instanceof Error ? error.message : "Nie udało się sprawdzić pamięci RAM.");
+    } finally {
+      setRamCheckBusy(false);
+    }
+  }
+
+  const onboardingOpen = onboardingReady && state.settings.onboardingCompleted !== true;
   const title = page === "home" ? "Witaj w Kwadratowym Chaosie" : page === "mods" ? "Twoja paczka" : "Ustawienia";
 
   return <div className="app-shell">
+    {onboardingOpen && <div className="onboarding-overlay">
+      <section className="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
+        <div className="onboarding-brand">
+          <div className="brand-mark"><span>K</span><i/></div>
+          <div><strong>KWADRATOWY CHAOS</strong><small>KRÓTKI PRZEWODNIK</small></div>
+        </div>
+        <div className="onboarding-progress">
+          {[0, 1, 2].map((step) => <div key={step} className={step <= onboardingStep ? "onboarding-progress-step active" : "onboarding-progress-step"}><span>0{step + 1}</span><i/></div>)}
+        </div>
+        <div className="onboarding-kicker">PIERWSZE URUCHOMIENIE · KROK 0{onboardingStep + 1} / 03</div>
+        {onboardingStep === 0 && <div className="onboarding-content">
+          <div className="onboarding-icon"><Sparkles size={25}/></div>
+          <h1 id="onboarding-title">Witaj, drogi Streamerze!</h1>
+          <p>Dziękujemy za zaufanie i pobranie naszego oprogramowania!</p>
+          <div className="onboarding-info">
+            <strong>Jak działa launcher?</strong>
+            <p>W zakładce <b>Start</b> przycisk <b>„Przygotuj grę”</b> konfiguruje profil Minecraft za pomocą naszego oprogramowania i otwiera klienta Minecraft. Możesz traktować go jak przycisk <b>„Graj”</b>.</p>
+          </div>
+        </div>}
+        {onboardingStep === 1 && <div className="onboarding-content">
+          <div className="onboarding-icon"><Blocks size={25}/></div>
+          <h1 id="onboarding-title">Paczka modów zawsze aktualna</h1>
+          <p>Nie musisz samodzielnie szukać ani instalować nowych wersji modów.</p>
+          <div className="onboarding-info">
+            <strong>Jak pobierać aktualizacje?</strong>
+            <p>W zakładce <b>„Paczka modów”</b> znajdziesz aktualizacje. Gdy na serwerze pojawi się zmiana, kliknij <b>„Sprawdź aktualizacje”</b>, a launcher automatycznie pobierze nowe lub zmienione mody.</p>
+          </div>
+        </div>}
+        {onboardingStep === 2 && <div className="onboarding-content">
+          <div className="onboarding-icon"><Cpu size={25}/></div>
+          <h1 id="onboarding-title">Ustawienia i pamięć RAM</h1>
+          <p>W zakładce <b>„Ustawienia”</b> możesz zmienić ilość RAM-u przydzielonego Minecraftowi i zobaczyć aktualny katalog danych paczki.</p>
+          <div className="onboarding-info">
+            <strong>Automatyczna rekomendacja RAM (opcjonalnie)</strong>
+            <p>Możemy sprawdzić ilość pamięci RAM w komputerze i na tej podstawie dobrać ustawienie dla Minecrafta. Rekomendacja nie przekroczy <b>10 GB</b>. Wartość możesz w dowolnym momencie zmienić na taką, jaka będzie Ci odpowiadać.</p>
+          </div>
+          {ramCheckError && <div className="onboarding-error">{ramCheckError}</div>}
+        </div>}
+        <div className="onboarding-footer">
+          <div className="onboarding-dots"><span className={onboardingStep === 0 ? "active" : ""}/><span className={onboardingStep === 1 ? "active" : ""}/><span className={onboardingStep === 2 ? "active" : ""}/></div>
+          {onboardingStep === 0 && <button className="play-button onboarding-next" onClick={() => setOnboardingStep(1)}>DALEJ <ChevronRight size={16}/></button>}
+          {onboardingStep === 1 && <div className="onboarding-actions"><button className="secondary-button" onClick={() => setOnboardingStep(0)}>WSTECZ</button><button className="play-button onboarding-next" onClick={() => setOnboardingStep(2)}>DALEJ <ChevronRight size={16}/></button></div>}
+          {onboardingStep === 2 && <div className="onboarding-actions">
+            <button className="secondary-button" disabled={busy || ramCheckBusy} onClick={() => setOnboardingStep(1)}>WSTECZ</button>
+            <button className="secondary-button onboarding-skip" disabled={busy || ramCheckBusy} onClick={() => void completeOnboarding()}>NIE, DZIĘKUJĘ</button>
+            <button className="play-button onboarding-next" disabled={busy || ramCheckBusy} onClick={() => void checkAndSetRam()}>{ramCheckBusy ? <><span className="spinner"/> SPRAWDZANIE…</> : <>SPRAWDŹ MÓJ RAM <ChevronRight size={16}/></>}</button>
+          </div>}
+        </div>
+        <div className="onboarding-footnote">Twoje ustawienia możesz zmienić później w dowolnym momencie.</div>
+      </section>
+    </div>}
     <aside className="sidebar">
       <div className="brand"><div className="brand-mark"><span>K</span><i/></div><div><strong>KWADRATOWY</strong><small>CHAOS / LAUNCHER</small></div></div>
       <div className="sidebar-caption">MENU GŁÓWNE</div>
