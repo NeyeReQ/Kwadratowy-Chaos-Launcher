@@ -4,6 +4,7 @@ import type { LauncherApi } from "../shared/types";
 
 const api: LauncherApi = {
   getBootstrapState: () => ipcRenderer.invoke("launcher:bootstrap"),
+  getSystemMemory: () => ipcRenderer.invoke("system:memory"),
   syncPack: () => ipcRenderer.invoke("pack:sync"),
   prepareGame: () => ipcRenderer.invoke("game:prepare"),
   openOfficialLauncher: () => ipcRenderer.invoke("launcher:open-official"),
