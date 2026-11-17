@@ -1,10 +1,10 @@
 /// <reference path="../../preload/index.d.ts" />
 import { useEffect, useMemo, useState } from "react";
-import { Activity, Blocks, Check, ChevronRight, Cpu, Download, ExternalLink, Gamepad2, HardDrive, LogIn, LogOut, MessageCircle, Monitor, Play, RefreshCw, Settings2, ShieldCheck, Sparkles, Users, X } from "lucide-react";
-import type { AccountProfile, BootstrapState, LauncherProgress, LauncherSettings } from "../../shared/types";
+import { Activity, Blocks, Check, ChevronRight, Cpu, Download, ExternalLink, Gamepad2, HardDrive, MessageCircle, Monitor, Play, RefreshCw, Settings2, ShieldCheck, Sparkles, Users, X } from "lucide-react";
+import type { BootstrapState, LauncherProgress, LauncherSettings } from "../../shared/types";
 
 type Page = "home" | "mods" | "settings";
-const initial: BootstrapState = { account: null, settings: { memoryMb: 6144, javaPath: "", gamePath: "" }, manifest: null, manifestError: null, running: false, appVersion: "0.1.0" };
+const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "" }, manifest: null, manifestError: null, appVersion: "0.1.0" };
 
 export default function App() {
   const [state, setState] = useState(initial);
@@ -12,8 +12,6 @@ export default function App() {
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState<LauncherProgress | null>(null);
   const [notice, setNotice] = useState("");
-  const [authMessage, setAuthMessage] = useState("");
-  const [challenge, setChallenge] = useState<{ userCode: string; verificationUri: string } | null>(null);
   const [updateMessage, setUpdateMessage] = useState("");
   const [draft, setDraft] = useState<LauncherSettings>(initial.settings);
   const manifest = state.manifest;
@@ -27,27 +25,14 @@ export default function App() {
   useEffect(() => {
     void refresh().catch((e) => setNotice(e instanceof Error ? e.message : "Nie udało się wczytać launchera."));
     const a = window.launcher.onProgress(setProgress);
-    const b = window.launcher.onAuthStatus(setAuthMessage);
-    const c = window.launcher.onAccountChanged((account: AccountProfile | null) => { setState((s) => ({ ...s, account })); if (account) setChallenge(null); });
-    const d = window.launcher.onGameStatus((running) => setState((s) => ({ ...s, running })));
-    const e = window.launcher.onUpdateStatus(setUpdateMessage);
-    return () => { a(); b(); c(); d(); e(); };
+    const b = window.launcher.onUpdateStatus(setUpdateMessage);
+    return () => { a(); b(); };
   }, []);
 
   async function run(action: () => Promise<unknown>, success?: string) {
     setBusy(true); setNotice("");
     try { await action(); if (success) setNotice(success); await refresh(); }
     catch (error) { setNotice(error instanceof Error ? error.message : "Operacja nie powiodła się."); setProgress({ phase: "error", current: 0, total: 0, message: "Błąd operacji" }); }
-    finally { setBusy(false); }
-  }
-  async function login() {
-    setBusy(true); setNotice("");
-    try {
-      const result = await window.launcher.beginLogin();
-      setChallenge({ userCode: result.userCode, verificationUri: result.verificationUri });
-      setAuthMessage("Oczekiwanie na potwierdzenie logowania Microsoft…");
-      await window.launcher.openExternal(result.verificationUri);
-    } catch (error) { setNotice(error instanceof Error ? error.message : "Nie udało się rozpocząć logowania."); }
     finally { setBusy(false); }
   }
   const title = page === "home" ? "Witaj w Kwadratowym Chaosie" : page === "mods" ? "Twoja paczka" : "Ustawienia";
@@ -71,8 +56,7 @@ export default function App() {
         <div className="breadcrumb"><span>KWADRATOWY CHAOS</span><ChevronRight size={13}/><b>{page === "home" ? "CENTRUM GRY" : page === "mods" ? "PACZKA MODÓW" : "KONFIGURACJA"}</b></div>
         <div className="top-actions">
           {updateMessage && <button className="update-pill" onClick={() => void window.launcher.installUpdate()}><Download size={14}/>{updateMessage}</button>}
-          {state.account ? <div className="user-chip"><img src={`https://minotar.net/avatar/${state.account.name}/40.png`}/><div><strong>{state.account.name}</strong><small>KONTO MICROSOFT</small></div><button title="Wyloguj" onClick={() => void run(() => window.launcher.logout())}><LogOut size={15}/></button></div>
-            : <button className="login-button" onClick={() => void login()} disabled={busy}><LogIn size={16}/> Zaloguj przez Microsoft</button>}
+          <button className="login-button" onClick={() => void run(() => window.launcher.openOfficialLauncher())} disabled={busy}><ExternalLink size={16}/> Otwórz Minecraft Launcher</button>
         </div>
       </header>
 
@@ -86,10 +70,10 @@ export default function App() {
               <h2>Wskakuj do<br/><em>kwadratowego</em> świata.</h2>
               <p>Jedna paczka. Jedno kliknięcie. Wszystkie mody zawsze aktualne.</p>
               <div className="hero-buttons">
-                <button className="play-button" disabled={busy || state.running || !state.account} onClick={() => void run(() => window.launcher.launchGame())}>{state.running ? <Check size={18}/> : <Play size={18} fill="currentColor"/>}{busy ? "PRZYGOTOWYWANIE…" : state.running ? "GRA URUCHOMIONA" : "GRAJ TERAZ"}</button>
+                <button className="play-button" disabled={busy || !manifest} onClick={() => void run(() => window.launcher.prepareGame(), "Paczka przygotowana. Wybierz profil „Kwadratowy Chaos” w oficjalnym launcherze i kliknij Graj.")}>{busy ? <RefreshCw size={18}/> : <Play size={18} fill="currentColor"/>}{busy ? "PRZYGOTOWYWANIE…" : "PRZYGOTUJ GRĘ"}</button>
                 <button className="secondary-button" onClick={() => setPage("mods")}><Blocks size={16}/> Zobacz paczkę</button>
               </div>
-              {!state.account && <div className="hero-hint"><ShieldCheck size={14}/> Zaloguj się kontem Microsoft, aby uruchomić Minecraft Java Edition.</div>}
+              <div className="hero-hint"><ShieldCheck size={14}/> Logowanie i uruchomienie Minecrafta odbywają się w oficjalnym launcherze.</div>
             </div>
             <div className="hero-art" aria-hidden="true"><div className="cube cube-back"/><div className="cube cube-main"><span>K</span></div><div className="cube cube-small"/><div className="art-ring ring-one"/><div className="art-ring ring-two"/><div className="art-label"><span>KC</span><small>PLAY<br/>YOUR WAY</small></div></div>
             <div className="hero-bottom"><span><i/> AUTOMATYCZNE AKTUALIZACJE</span><span>01 / 03</span></div>
@@ -98,7 +82,7 @@ export default function App() {
           <section className="stats-grid">
             <div className="stat-card"><div className="stat-icon purple"><Blocks size={18}/></div><div><small>MODÓW W PACZCE</small><strong>{mods}</strong><span>{manifest ? "Pliki zarządzane przez launcher" : "Oczekiwanie na manifest"}</span></div></div>
             <div className="stat-card"><div className="stat-icon pink"><Activity size={18}/></div><div><small>WERSJA PACZKI</small><strong>{manifest?.packVersion || "—"}</strong><span>{manifest?.minecraftVersion ? "Minecraft " + manifest.minecraftVersion : "Nie skonfigurowano"}</span></div></div>
-            <div className="stat-card"><div className="stat-icon cyan"><Users size={18}/></div><div><small>PROFIL GRACZA</small><strong className="stat-name">{state.account?.name || "Gość"}</strong><span>{state.account ? "Konto Microsoft połączone" : "Brak zalogowanego konta"}</span></div></div>
+            <div className="stat-card"><div className="stat-icon cyan"><Users size={18}/></div><div><small>LOGOWANIE</small><strong className="stat-name">Microsoft</strong><span>Obsługiwane przez oficjalny launcher</span></div></div>
           </section>
           <section className="lower-grid">
             <div className="panel news-panel"><div className="panel-heading"><div><span className="panel-label">AKTUALNOŚCI</span><h3>Co nowego?</h3></div><span className="new-tag">NA BIEŻĄCO</span></div>
@@ -130,17 +114,15 @@ export default function App() {
         {page === "settings" && <section className="panel page-panel settings-panel">
           <div className="panel-heading"><div><span className="panel-label">KONFIGURACJA GRY</span><h3>Dostosuj launcher</h3><p className="panel-subtitle">Ustawienia są zapisywane lokalnie na tym komputerze.</p></div><Settings2 size={22}/></div>
           <div className="setting-block"><div className="setting-title"><div className="setting-icon"><Cpu size={18}/></div><div><strong>Pamięć RAM</strong><small>Ilość pamięci przeznaczonej dla Minecrafta</small></div><b>{(draft.memoryMb/1024).toFixed(1)} GB</b></div><input className="ram-slider" type="range" min="2048" max="16384" step="512" value={draft.memoryMb} onChange={(e) => setDraft({...draft,memoryMb:Number(e.target.value)})}/><div className="slider-labels"><span>2 GB</span><span>16 GB</span></div></div>
-          <div className="setting-block"><div className="setting-title"><div className="setting-icon"><HardDrive size={18}/></div><div><strong>Ścieżka Java</strong><small>Pozostaw puste, aby użyć Java z systemu</small></div></div><input className="text-input" placeholder="C:\\Program Files\\Java\\jdk-21\\bin\\java.exe" value={draft.javaPath} onChange={(e) => setDraft({...draft,javaPath:e.target.value})}/></div>
-          <div className="setting-block"><div className="setting-title"><div className="setting-icon"><HardDrive size={18}/></div><div><strong>Katalog Minecraft</strong><small>Oddzielna instalacja nie miesza się z oficjalnym launcherem</small></div></div><input className="text-input" placeholder="Domyślny katalog launchera" value={draft.gamePath} onChange={(e) => setDraft({...draft,gamePath:e.target.value})}/></div>
+          <div className="setting-block"><div className="setting-title"><div className="setting-icon"><HardDrive size={18}/></div><div><strong>Katalog danych paczki</strong><small>Osobny folder na mody, konfiguracje, światy i screenshoty</small></div></div><input className="text-input" placeholder="Domyślny katalog launchera" value={draft.gamePath} onChange={(e) => setDraft({...draft,gamePath:e.target.value})}/></div>
           <div className="settings-footer"><span>Zmiany zaczną obowiązywać przy następnym uruchomieniu gry.</span><button className="play-button save-button" disabled={busy} onClick={() => void run(async () => {const value=await window.launcher.saveSettings(draft);setState(s=>({...s,settings:value}));},"Ustawienia zapisane.")}><Check size={17}/> ZAPISZ USTAWIENIA</button></div>
         </section>}
 
         {(notice || state.manifestError) && <div className={state.manifestError && !notice ? "notice warning" : "notice"}><span>{notice || state.manifestError}</span><button onClick={() => setNotice("")}><X size={15}/></button></div>}
       </div>
-      <footer className="bottom-bar"><span><i className="status-dot"/>{state.running ? "Minecraft działa" : "Launcher gotowy"}</span><span>{manifest?.name || "Kwadratowy Chaos"} <i/> {manifest?.minecraftVersion ? "Minecraft "+manifest.minecraftVersion : "Konfiguracja oczekuje na manifest"}</span></footer>
+      <footer className="bottom-bar"><span><i className="status-dot"/>"Gotowy do przygotowania gry"</span><span>{manifest?.name || "Kwadratowy Chaos"} <i/> {manifest?.minecraftVersion ? "Minecraft "+manifest.minecraftVersion : "Konfiguracja oczekuje na manifest"}</span></footer>
     </main>
 
-    {challenge && <div className="modal-backdrop"><div className="login-modal"><button className="modal-close" onClick={() => setChallenge(null)}><X size={18}/></button><div className="login-modal-icon"><LogIn size={23}/></div><span className="panel-label">BEZPIECZNE LOGOWANIE</span><h2>Połącz konto Microsoft</h2><p>Otworzyliśmy stronę Microsoft. Wpisz poniższy kod i zaakceptuj dostęp do usług Xbox.</p><div className="device-code">{challenge.userCode}<button onClick={() => void navigator.clipboard.writeText(challenge.userCode)}>KOPIUJ</button></div><button className="play-button modal-action" onClick={() => void window.launcher.openExternal(challenge.verificationUri)}><ExternalLink size={16}/> OTWÓRZ MICROSOFT</button><div className="auth-status"><span className="status-dot"/>{authMessage || "Oczekiwanie na potwierdzenie…"}</div><small className="privacy-note">Launcher nie prosi o hasło Microsoft. Token sesji jest szyfrowany przez Windows.</small></div></div>}
     {busy && <div className="busy-indicator"><span className="spinner"/><span>{progress?.message || "Przetwarzanie…"}</span></div>}
   </div>;
 }
