@@ -2,7 +2,7 @@
 
 ## Wymagania
 - Windows 10/11 x64
-- Node.js 22 LTS lub nowszy do developmentu
+- Node.js 22 lub 24 LTS do developmentu (obecny stos Electron 39 nie jest testowany na Node.js 26)
 - GitHub CLI (darmowe narzedzie do publikowania assetow Release)
 - Konto Microsoft z licencja Minecraft: Java Edition
 - Java 25 dla Minecraft Java Edition 26.3
