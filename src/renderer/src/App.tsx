@@ -4,7 +4,7 @@ import { Activity, Blocks, Check, ChevronRight, Cpu, Download, ExternalLink, Gam
 import type { BootstrapState, LauncherProgress, LauncherSettings } from "../../shared/types";
 
 type Page = "home" | "mods" | "settings";
-const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "", onboardingCompleted: false }, manifest: null, manifestError: null, appVersion: "0.1.3" };
+const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "", onboardingCompleted: false, onboardingVersion: 0 }, manifest: null, manifestError: null, appVersion: "0.1.3" };
 
 export default function App() {
   const [state, setState] = useState(initial);
@@ -44,7 +44,7 @@ export default function App() {
     setBusy(true);
     setNotice("");
     try {
-      const patch: Partial<LauncherSettings> = { onboardingCompleted: true };
+      const patch: Partial<LauncherSettings> = { onboardingCompleted: true, onboardingVersion: 2 };
       if (memoryMb !== undefined) patch.memoryMb = memoryMb;
       const saved = await window.launcher.saveSettings(patch);
       setState((current) => ({ ...current, settings: saved }));
@@ -89,7 +89,7 @@ export default function App() {
     }
   }
 
-  const onboardingOpen = onboardingReady && state.settings.onboardingCompleted !== true;
+  const onboardingOpen = onboardingReady && state.settings.onboardingVersion !== 2;
   const title = page === "home" ? "Witaj w Kwadratowym Chaosie" : page === "mods" ? "Twoja paczka" : "Ustawienia";
 
   return <div className="app-shell">
