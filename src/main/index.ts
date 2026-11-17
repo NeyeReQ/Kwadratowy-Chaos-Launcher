@@ -175,6 +175,7 @@ async function registerOfficialLauncherProfile(versionId: string) {
     ...previous,
     created: typeof previous.created === "string" ? previous.created : now,
     gameDir: gamePath(),
+    icon: typeof previous.icon === "string" ? previous.icon : "Grass",
     javaArgs: `-Xms2048M -Xmx${cachedSettings.memoryMb}M`,
     lastUsed: now,
     lastVersionId: versionId,
@@ -182,6 +183,9 @@ async function registerOfficialLauncherProfile(versionId: string) {
     type: "custom"
   };
   launcherData.profiles = profiles;
+  if (!launcherData.settings || typeof launcherData.settings !== "object" || Array.isArray(launcherData.settings)) {
+    launcherData.settings = {};
+  }
   if (typeof launcherData.version !== "number") launcherData.version = 3;
 
   const temporary = launcherProfilesFile() + ".kwadratowy-chaos.tmp";
