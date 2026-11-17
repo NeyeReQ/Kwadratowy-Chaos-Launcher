@@ -5,7 +5,7 @@ import type { BootstrapState, LauncherProgress, LauncherSettings } from "../../s
 
 type Page = "home" | "mods" | "settings";
 const ONBOARDING_VERSION = 3;
-const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "", onboardingCompleted: false, onboardingVersion: 0 }, manifest: null, manifestError: null, appVersion: "0.1.4" };
+const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "", onboardingCompleted: false, onboardingVersion: 0 }, manifest: null, manifestError: null, appVersion: "0.1.5" };
 
 export default function App() {
   const [state, setState] = useState(initial);
