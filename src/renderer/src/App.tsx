@@ -1,10 +1,11 @@
 /// <reference path="../../preload/index.d.ts" />
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type PointerEvent as ReactPointerEvent } from "react";
 import { Activity, Blocks, Check, ChevronRight, Cpu, Download, ExternalLink, Gamepad2, HardDrive, MessageCircle, Monitor, Play, RefreshCw, Settings2, ShieldCheck, Sparkles, Users, X } from "lucide-react";
 import type { BootstrapState, LauncherProgress, LauncherSettings } from "../../shared/types";
+import { playUiSound, startActivitySound, type ActivitySound } from "./sounds";
 
 type Page = "home" | "mods" | "settings";
-const ONBOARDING_VERSION = 4;
+const ONBOARDING_VERSION = 5;
 const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "", onboardingCompleted: false, onboardingVersion: 0 }, manifest: null, manifestError: null, appVersion: "0.1.6" };
 
 export default function App() {
@@ -23,6 +24,38 @@ export default function App() {
   const manifest = state.manifest;
   const mods = useMemo(() => manifest?.files.filter((f) => f.path.startsWith("mods/")).length || 0, [manifest]);
   const managed = manifest?.files.length || 0;
+
+  function handleButtonPointerOver(event: ReactPointerEvent<HTMLDivElement>) {
+    if (!(event.target instanceof Element)) return;
+    const button = event.target.closest("button");
+    if (!button || button.disabled) return;
+    if (event.relatedTarget instanceof Node && button.contains(event.relatedTarget)) return;
+    playUiSound("hover");
+  }
+
+  function handleAppClick(event: React.MouseEvent<HTMLDivElement>) {
+    if (!(event.target instanceof Element)) return;
+    const button = event.target.closest("button");
+    if (button && !button.disabled) playUiSound("click");
+  }
+
+  useEffect(() => {
+    let activity: ActivitySound | null = null;
+    if (ramCheckBusy) {
+      activity = "ram";
+    } else if (updateMessage.startsWith("Sprawdzanie aktualizacji")) {
+      activity = "checking";
+    } else if (updateMessage.startsWith("Nowa wersja")) {
+      activity = "updating";
+    } else if (progress?.phase === "checking") {
+      activity = "checking";
+    } else if (progress?.phase === "downloading" || progress?.phase === "installing") {
+      activity = "updating";
+    }
+
+    if (!activity) return;
+    return startActivitySound(activity);
+  }, [ramCheckBusy, progress?.phase, updateMessage]);
 
   async function refresh() {
     const next = await window.launcher.getBootstrapState();
@@ -88,7 +121,7 @@ export default function App() {
   const onboardingOpen = onboardingReady && !(state.settings.onboardingCompleted === true && state.settings.onboardingVersion >= ONBOARDING_VERSION);
   const title = page === "home" ? "Witaj w Kwadratowym Chaosie" : page === "mods" ? "Twoja paczka" : "Ustawienia";
 
-  return <div className="app-shell">
+  return <div className="app-shell" onPointerOver={handleButtonPointerOver} onClick={handleAppClick}>
     {onboardingOpen && <div className="onboarding-overlay">
       <section className="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
         <div className="onboarding-brand">
@@ -115,7 +148,7 @@ export default function App() {
           <p>Dziękujemy za zaufanie i pobranie naszego oprogramowania!</p>
           <div className="onboarding-info">
             <strong>Jak działa launcher?</strong>
-            <p>W zakładce <span className="onboarding-inline-icon" role="img" aria-label="Start"><Gamepad2 size={14}/></span> przycisk <span className="onboarding-inline-icon" role="img" aria-label="Przygotuj grę"><Play size={14}/></span> konfiguruje profil Minecraft za pomocą naszego oprogramowania i otwiera klienta Minecraft. Możesz traktować go jak przycisk <span className="onboarding-inline-icon" role="img" aria-label="Graj"><Play size={14}/></span>.</p>
+            <p>W zakładce <span className="onboarding-inline-icon" role="img" aria-label="Start"><Gamepad2 size={14}/></span> przycisk <span className="onboarding-button-token" role="img" aria-label="Przygotuj grę"><Play size={13}/><span>PRZYGOTUJ GRĘ</span></span> konfiguruje profil Minecraft za pomocą naszego oprogramowania i otwiera klienta Minecraft. Możesz traktować go jak przycisk <span className="onboarding-button-token" role="img" aria-label="Graj"><Play size={13} fill="currentColor"/><span>GRAJ</span></span>.</p>
           </div>
         </div>}
         {onboardingStep === 1 && <div className="onboarding-content">
@@ -124,7 +157,7 @@ export default function App() {
           <p>Nie musisz samodzielnie szukać ani instalować nowych wersji modów.</p>
           <div className="onboarding-info">
             <strong>Jak pobierać aktualizacje?</strong>
-            <p>W zakładce <span className="onboarding-inline-icon" role="img" aria-label="Paczka modów"><Blocks size={14}/></span> znajdziesz aktualizacje. Gdy na serwerze pojawi się zmiana, kliknij <span className="onboarding-inline-icon" role="img" aria-label="Sprawdź aktualizacje"><RefreshCw size={14}/></span>, a launcher automatycznie pobierze nowe lub zmienione mody.</p>
+            <p>W zakładce <span className="onboarding-inline-icon" role="img" aria-label="Paczka modów"><Blocks size={14}/></span> znajdziesz aktualizacje. Gdy na serwerze pojawi się zmiana, kliknij <span className="onboarding-button-token" role="img" aria-label="Sprawdź aktualizacje"><RefreshCw size={13}/><span>SPRAWDŹ AKTUALIZACJE</span></span>, a launcher automatycznie pobierze nowe lub zmienione mody.</p>
           </div>
         </div>}
         {onboardingStep === 2 && <div className={`onboarding-content ${ramCheckBusy ? "onboarding-loading" : ""}`}>
