@@ -82,6 +82,20 @@ git push origin v0.1.1
 ```
 GitHub Actions zbuduje instalator Windows x64 i opublikuje go w GitHub Releases. Każdy push na `main` buduje też testowy instalator jako artefakt Actions. Zwiększ numer `version` w `package.json` i użyj odpowiedniego tagu `v...` dla kolejnej wersji aplikacji. Zainstalowane, spakowane wydania launchera sprawdzają aktualizacje przez Electron Updater; gracze nie muszą ręcznie pobierać nowego instalatora przy kolejnych aktualizacjach aplikacji.
 
+## Podpis cyfrowy i ostrzeżenia Windows (SmartScreen)
+
+Pierwszy instalator z GitHub Releases będzie niepodpisany, dopóki nie zostanie dodany zaufany certyfikat podpisywania kodu. W takiej sytuacji Windows może pokazać komunikat „Windows ochronił Twój komputer” albo „Nieznany wydawca”. To nie oznacza automatycznie, że plik jest złośliwy — oznacza, że Microsoft nie ma jeszcze podstaw, by ufać wydawcy lub reputacji tego pliku.
+
+Nie da się legalnie i rzetelnie wyłączyć tego ostrzeżenia samą zmianą nazwy, ikony, ustawień NSIS czy dodaniem własnoręcznie wygenerowanego certyfikatu. Certyfikat self-signed zachowuje się w SmartScreen podobnie jak brak podpisu. Nawet prawidłowy certyfikat OV/EV nie gwarantuje braku ostrzeżenia przy pierwszych pobraniach; reputacja może narastać z czasem. Nie należy obiecywać graczom, że SmartScreen na pewno zniknie. 
+
+Jeśli kiedyś kupisz zaufany certyfikat Code Signing w formacie PFX/P12, workflow obsługuje go opcjonalnie:
+1. W repozytorium otwórz **Settings → Secrets and variables → Actions**.
+2. Dodaj sekret `WIN_CSC_LINK` z certyfikatem PFX/P12 zakodowanym jako Base64 (bezpieczniej przechowywać go jako sekret niż dodawać do repozytorium).
+3. Dodaj sekret `WIN_CSC_KEY_PASSWORD` z hasłem do certyfikatu.
+4. Ponowne zbudowanie instalatora przez GitHub Actions automatycznie użyje certyfikatu do podpisu.
+
+Nigdy nie commituj pliku PFX/P12 ani hasła do GitHuba. Bez certyfikatu workflow nadal zbuduje normalny instalator NSIS, ale będzie on niepodpisany. Podpis może pokazać zweryfikowaną nazwę wydawcy i potwierdza, że plik nie został zmieniony po podpisaniu; nie jest gwarancją braku ostrzeżenia SmartScreen.
+
 ## Uruchomienie i build
 ```powershell
 npm install
