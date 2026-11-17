@@ -5,28 +5,42 @@ Desktopowy launcher Minecraft dla społeczności **Kwadratowy Chaos**. Aplikacja
 ## Co jest w projekcie
 
 - Nowoczesny, ciemny interfejs launchera.
-- Logowanie Microsoft przez Device Code Flow (bez wpisywania hasła w aplikacji).
-- Osobny katalog gry, niezależny od oficjalnego launchera.
-- Konfiguracja RAM i ścieżki Java.
-- Instalowanie Minecrafta i Fabric.
-- Automatyczna synchronizacja paczki przed uruchomieniem gry.
+- Logowanie i końcowe uruchamianie gry w **oficjalnym Minecraft Launcherze** — bez własnego OAuth, Azure, Client ID i przechowywania tokenów.
+- Przygotowanie instalacji Minecraft Java i Fabric w standardowym katalogu `.minecraft`.
+- Automatyczne tworzenie profilu **Kwadratowy Chaos** w oficjalnym launcherze.
+- Osobny katalog danych gry na mody, konfiguracje, światy i screenshoty.
+- Ustawienie pamięci RAM zapisywane w profilu oficjalnego launchera.
+- Automatyczna synchronizacja paczki przed przygotowaniem gry.
 - Sprawdzanie plików przez SHA-512 i pobieranie tylko brakujących lub zmienionych modów.
 - Usuwanie wyłącznie plików, które launcher wcześniej zarejestrował jako zarządzane.
+- Darmowe publikowanie plików paczki jako assetów GitHub Releases.
 - Aktualizacje samego launchera przez GitHub Releases.
 - Workflow GitHub Actions do budowania instalatora Windows.
 
+## Jak wygląda uruchamianie gry
+
+1. Gracz klika **Przygotuj grę** w Kwadratowym Chaosie.
+2. Launcher pobiera manifest i synchronizuje mody.
+3. Przygotowuje wersję Minecrafta i Fabric oraz rejestruje profil `Kwadratowy Chaos` w oficjalnym Minecraft Launcherze.
+4. Otwiera oficjalny launcher. Gracz loguje się tam na swoje konto Microsoft, wybiera profil **Kwadratowy Chaos** i klika **Graj**.
+
+Launcher Kwadratowego Chaosu nie prosi o hasło Microsoft i nie przechowuje sesji gracza.
+
 ## Automatyczne aktualizacje paczki
 
-Źródłem prawdy jest [launcher/manifest.json](launcher/manifest.json). Każdy plik paczki ma ścieżkę, adres HTTPS i sumę SHA-512. Przy każdym kliknięciu **Graj** launcher pobiera bieżący manifest, weryfikuje lokalne pliki, aktualizuje różnice i dopiero wtedy uruchamia Minecrafta.
+Źródłem prawdy jest [launcher/manifest.json](launcher/manifest.json). Każdy plik paczki ma ścieżkę, bezpośredni adres HTTPS, rozmiar i sumę SHA-512. Przy synchronizacji launcher pobiera bieżący manifest, weryfikuje lokalne pliki i aktualizuje tylko różnice.
 
-Nie trzeba ręcznie aktualizować modów na komputerze gracza. Administrator publikuje nową paczkę i manifest; klient synchronizuje ją automatycznie.
+Administrator publikuje nowy zestaw plików jako GitHub Release i commituję zaktualizowany manifest. Klient synchronizuje paczkę automatycznie.
 
-## Stan bieżący
+## Bieżąca konfiguracja
 
-To pierwsza wersja szkieletowa. Manifest startowy ma pustą listę plików (`files: []`), nie zawiera jeszcze właściwych modów ani adresu serwera. Manifest wskazuje teraz Minecraft Java 26.3, Java 25 i Fabric Loader 0.20.1; przed publicznym wydaniem trzeba jeszcze przetestować instalację gry. Microsoft Client ID również wymaga konfiguracji. Launcher nie jest jeszcze gotowym publicznym instalatorem.
+- Minecraft Java Edition: `26.3`
+- Fabric Loader: `0.20.1`
+- Wersja paczki: `0.2.0`
+- Pliki w manifeście: `79`
 
-Obecnie aktywna ścieżka instalacji gry obsługuje **Vanilla i Fabric**. Forge/NeoForge wymagają osobnego wdrożenia.
+Przepływ oficjalnego launchera został właśnie wdrożony w kodzie, ale trzeba jeszcze wykonać test end-to-end na komputerze z oficjalnym Minecraft Launcherem. Obsługiwane są Vanilla i Fabric; Forge/NeoForge nie są jeszcze wdrożone.
 
 ## Dokumentacja
 
-Instrukcja ustawienia OAuth, manifestu paczki, hostingu plików i budowania instalatora: [docs/SETUP.md](docs/SETUP.md).
+Instrukcja hostingu plików, publikowania manifestu i budowania instalatora: [docs/SETUP.md](docs/SETUP.md).
