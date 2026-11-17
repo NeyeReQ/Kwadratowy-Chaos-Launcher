@@ -45,6 +45,7 @@
 .onboarding-info strong{display:block;font-size:11px;color:#e5d5ff;margin-bottom:7px}
 .onboarding-info p{font-size:11px;line-height:1.8;color:#bcb6cb;margin:0}
 .onboarding-info b{color:#e4d4ff}
+.onboarding-inline-icon{display:inline-flex;vertical-align:-4px;align-items:center;justify-content:center;width:21px;height:21px;margin:0 3px;border:1px solid #a980ff40;border-radius:6px;background:#a071ff18;color:#d8c2ff;box-shadow:inset 0 0 10px #a071ff0c}.onboarding-inline-icon svg{display:block;flex:none}
 .onboarding-error{margin-top:12px;border:1px solid #e7ac6840;background:#dca04c12;color:#f0c48d;padding:10px 12px;border-radius:8px;font-size:10px}
 .onboarding-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #ffffff13;padding-top:19px}
 .onboarding-dots{display:flex;align-items:center;gap:7px}
