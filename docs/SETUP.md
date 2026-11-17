@@ -4,7 +4,7 @@
 - Windows 10/11 x64
 - Node.js 22 LTS lub nowszy do developmentu
 - Konto Microsoft z licencją Minecraft: Java Edition
-- Java w wersji wymaganej przez paczkę (startowy szablon wymaga Java 21)
+- Java 25 dla Minecraft Java Edition 26.3
 
 ## Microsoft OAuth
 1. W Microsoft Entra utwórz rejestrację aplikacji obsługującą osobiste konta Microsoft.
@@ -16,12 +16,12 @@
 Logowanie odbywa się przez Device Code Flow na stronie Microsoft. Hasło nie trafia do launchera, a refresh token jest szyfrowany przez Windows DPAPI przez Electron safeStorage.
 
 ## Wersja Minecrafta
-Edytuj `launcher/manifest.json`. Wartości `minecraftVersion`, `javaMajor` oraz `loader` muszą odpowiadać wersji serwera. Wersje wpisane w startowym manifeście są przykładową konfiguracją roboczą — potwierdź je przed wydaniem. Aktualnie aktywne są vanilla i Fabric; Forge/NeoForge mają zarezerwowane typy, ale ich instalator nie został jeszcze wdrożony.
+Bieżący manifest jest ustawiony na Minecraft Java Edition `26.3`, Java `25` i Fabric Loader `0.20.1`. Wartości te pochodzą z aktualnych informacji Fabric dla Minecrafta 26.3. Jeżeli zmienisz wersję serwera, zmień razem `minecraftVersion`, `javaMajor` i `loader.version`. Aktualnie aktywne są vanilla i Fabric; Forge/NeoForge mają zarezerwowane typy, ale ich instalator nie został jeszcze wdrożony.
 
 ## Automatyczne aktualizacje modów
 Manifest jest źródłem prawdy. Każdy wpis ma `path`, bezpośredni `url` HTTPS, `sha512` oraz opcjonalny `size`. Dozwolone katalogi: `mods/`, `config/`, `resourcepacks/`, `shaderpacks/`, `defaultconfigs/`, `kubejs/`, `scripts/`.
 
-1. Umieść pliki paczki w lokalnym folderze `pack/`.
+1. Umieść pliki paczki w lokalnym folderze `pack/`: pliki `.jar` bezpośrednio w `pack/mods/`, konfiguracje w `pack/config/`, paczki zasobów w `pack/resourcepacks/`, a shadery w `pack/shaderpacks/`.
 2. Opublikuj jego zawartość na publicznym hostingu HTTPS/CDN.
 3. Uruchom np. `$env:PACK_CDN_BASE_URL='https://cdn.example.com/kwadratowy-chaos/'; $env:PACK_VERSION='0.2.0'; npm run manifest:build`.
 4. Zacommituj wygenerowany `launcher/manifest.json` do gałęzi `main`.
