@@ -69,7 +69,8 @@
       {
         "provider": "github",
         "owner": "NeyeReQ",
-        "repo": "Kwadratowy-Chaos-Launcher"
+        "repo": "Kwadratowy-Chaos-Launcher",
+        "releaseType": "release"
       }
     ]
   },
