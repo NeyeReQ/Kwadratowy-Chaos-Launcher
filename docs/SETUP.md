@@ -42,7 +42,7 @@ Uzywamy assetow GitHub Releases w tym samym publicznym repozytorium. GitHub pozw
    ```powershell
    powershell -ExecutionPolicy Bypass -File .\tools\publish-pack-release.ps1
    ```
-   Skrypt utworzy roboczy release, wysle pliki i opublikuje go dopiero po zakonczeniu uploadu.
+   Skrypt utworzy roboczy release, wysle pliki i opublikuje go jako **pre-release** dopiero po zakonczeniu uploadu. To wazne: release `pack-v...` zawiera mody, a nie aktualizacje programu.
 7. Wyslij manifest do repozytorium:
    ```powershell
    git add launcher/manifest.json
@@ -71,6 +71,17 @@ To jest niezależne od aktualizacji samej aplikacji. Gracze **nie pobierają pon
 4. Gracz zamyka Minecrafta i przy następnym użyciu launchera klika **„Sprawdź mody i otwórz launcher”** albo **„Przygotuj grę”**.
 
 Launcher pobiera najnowszy manifest z GitHuba i porównuje SHA-512 każdego lokalnego pliku. Pobiera tylko nowe lub zmienione pliki, a niezmienione pomija. Pliki usunięte z manifestu usuwa z komputera gracza tylko wtedy, gdy wcześniej były zarządzane przez launcher. Światy, screenshoty, logi i inne pliki użytkownika pozostają nietknięte. Zmiana samych modów **nie wymaga nowej wersji instalatora ani aktualizacji launchera**.
+
+### Jednorazowa naprawa starszego release paczki
+
+Starsze wydanie `pack-v0.2.0` mogło zostać opublikowane jako zwykły release. Wtedy GitHub uznaje je za najnowsze wydanie i `electron-updater` próbuje znaleźć w nim plik `latest.yml`, którego paczka modów nie zawiera.
+
+W terminalu PowerShell wykonaj jednorazowo:
+```powershell
+gh release edit pack-v0.2.0 --prerelease --repo NeyeReQ/Kwadratowy-Chaos-Launcher
+```
+
+Po tej zmianie GitHub przestanie traktować paczkę modów jako stabilne wydanie programu. W przyszłości skrypt publikujący mody sam oznaczy każdy `pack-v...` jako pre-release. Wydania launchera `v...` pozostają zwykłymi, stabilnymi release'ami i zawierają `latest.yml`.
 
 ### Jak opublikować aktualizację samego launchera
 
