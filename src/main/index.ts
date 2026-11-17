@@ -37,9 +37,14 @@ async function loadConfig() {
 async function loadSettings() {
   try {
     const stored = JSON.parse(await readFile(settingsFile(), "utf8")) as Partial<LauncherSettings>;
+    const requestedMemory = Number(stored.memoryMb ?? DEFAULT_SETTINGS.memoryMb);
+    const memoryMb = Number.isFinite(requestedMemory)
+      ? Math.max(2048, Math.min(10240, Math.round(requestedMemory / 512) * 512))
+      : DEFAULT_SETTINGS.memoryMb;
     cachedSettings = {
       ...DEFAULT_SETTINGS,
       ...stored,
+      memoryMb,
       // Older installations have no onboarding flag yet, so show the new welcome once.
       onboardingCompleted: stored.onboardingCompleted === true
     };
@@ -284,7 +289,7 @@ function registerIpc() {
     await openOfficialLauncher();
   });
   ipcMain.handle("settings:save", async (_event, patch: Partial<LauncherSettings>) => {
-    const memoryMb = Math.max(2048, Math.min(32768, Math.round(Number(patch.memoryMb ?? cachedSettings.memoryMb) / 512) * 512));
+    const memoryMb = Math.max(2048, Math.min(10240, Math.round(Number(patch.memoryMb ?? cachedSettings.memoryMb) / 512) * 512));
     const next = { ...cachedSettings, ...patch, memoryMb };
     cachedSettings = next;
     await mkdir(userData(), { recursive: true });
