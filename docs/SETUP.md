@@ -40,7 +40,7 @@ Uzywamy assetow GitHub Releases w tym samym publicznym repozytorium. GitHub pozw
    $env:PACK_VERSION = "0.2.0"
    npm run manifest:build
    ```
-   Generator wyliczy SHA-512 i bezposrednie URL-e do assetow release `pack-v0.2.0`. Nazwy assetow beda splaszczone (np. `mods__Flashback.jar`), ale launcher zapisze pliki w oryginalnych katalogach.
+   Generator wyliczy SHA-512 i bezposrednie URL-e do assetow release `pack-v0.2.0`. Nazwy assetow beda splaszczone i oczyszczone z nawiasow, spacji i znakow specjalnych (np. `mods__Only_Jugs_1.8.1_.jar`), ale launcher zapisze pliki w oryginalnych katalogach. Jesli publikacja przerwie sie w trakcie, ten sam skrypt wznowi istniejący roboczy Release i nadpisze juz wyslane assety.
 6. Opublikuj pliki paczki:
    ```powershell
    powershell -ExecutionPolicy Bypass -File .\tools\publish-pack-release.ps1
