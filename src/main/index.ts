@@ -9,10 +9,11 @@ import { existsSync } from "node:fs";
 import { lstat, mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { totalmem } from "node:os";
 import type { BootstrapState, LauncherManifest, LauncherProgress, LauncherSettings, ManifestFile } from "../shared/types";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const DEFAULT_SETTINGS: LauncherSettings = { memoryMb: 6144, gamePath: "" };
+const DEFAULT_SETTINGS: LauncherSettings = { memoryMb: 6144, gamePath: "", onboardingCompleted: false };
 const MANAGED_ROOTS = new Set(["mods", "config", "resourcepacks", "shaderpacks", "defaultconfigs", "kubejs", "scripts"]);
 interface AppConfig { manifestUrl: string; defaultGamePath?: string; }
 
@@ -34,8 +35,17 @@ async function loadConfig() {
   catch { config = { manifestUrl: "" }; }
 }
 async function loadSettings() {
-  try { cachedSettings = { ...DEFAULT_SETTINGS, ...JSON.parse(await readFile(settingsFile(), "utf8")) }; }
-  catch { cachedSettings = { ...DEFAULT_SETTINGS }; }
+  try {
+    const stored = JSON.parse(await readFile(settingsFile(), "utf8")) as Partial<LauncherSettings>;
+    cachedSettings = {
+      ...DEFAULT_SETTINGS,
+      ...stored,
+      // Older installations have no onboarding flag yet, so show the new welcome once.
+      onboardingCompleted: stored.onboardingCompleted === true
+    };
+  } catch {
+    cachedSettings = { ...DEFAULT_SETTINGS };
+  }
 }
 function safePackPath(value: string): string {
   if (typeof value !== "string" || !value.trim() || value.includes("\\") || isAbsolute(value)) throw new Error("Niebezpieczna ścieżka w manifeście paczki.");
@@ -262,6 +272,7 @@ function registerIpc() {
     try { await fetchManifest(); } catch (error) { manifestError = error instanceof Error ? error.message : "Błąd manifestu."; }
     return { settings: { ...cachedSettings, gamePath: gamePath() }, manifest: cachedManifest, manifestError, appVersion: app.getVersion() };
   });
+  ipcMain.handle("system:memory", () => ({ totalBytes: totalmem() }));
   ipcMain.handle("pack:sync", (event) => syncPack(event.sender));
   ipcMain.handle("game:prepare", async (event) => {
     await syncPack(event.sender);
