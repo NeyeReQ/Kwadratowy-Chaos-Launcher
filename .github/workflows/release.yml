@@ -1,21 +1,49 @@
 name: Build Windows launcher
+
 on:
   push:
+    branches: [main]
     tags: ["v*"]
   workflow_dispatch:
+
 permissions:
   contents: write
+
 jobs:
   build-windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install
-      - run: npm run typecheck
-      - name: Build and publish NSIS installer
-        run: npx electron-builder --win nsis --x64 --publish always
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Build application
+        run: npm run build
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          if ("${{ github.ref }}".StartsWith("refs/tags/v")) {
+            npx electron-builder --win nsis --x64 --publish always
+          } else {
+            npx electron-builder --win nsis --x64 --publish never
+          }
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Kwadratowy-Chaos-Setup-${{ github.ref_name }}
+          path: release/*.exe
+          if-no-files-found: error
+          retention-days: 14
