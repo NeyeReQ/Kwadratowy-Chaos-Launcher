@@ -116,7 +116,7 @@ export default function App() {
           <p>W zakładce <b>„Ustawienia”</b> możesz zmienić ilość RAM-u przydzielonego Minecraftowi i zobaczyć aktualny katalog danych paczki.</p>
           <div className="onboarding-info">
             <strong>Automatyczna rekomendacja RAM (opcjonalnie)</strong>
-            <p>Możemy sprawdzić ilość pamięci RAM w komputerze i na tej podstawie dobrać ustawienie dla Minecrafta. Rekomendacja nie przekroczy <b>10 GB</b>. Wartość możesz w dowolnym momencie zmienić na taką, jaka będzie Ci odpowiadać.</p>
+            <p>Możemy sprawdzić ilość pamięci RAM w komputerze i na tej podstawie dobrać ustawienie dla Minecrafta. Przykładowo: 4 GB RAM → 2 GB dla gry, 8 GB → 4 GB, 12 GB → 6 GB, 16 GB → 8 GB, a 32 GB → maksymalnie 10 GB. Wartość możesz w dowolnym momencie zmienić na taką, jaka będzie Ci odpowiadać.</p>
           </div>
           {ramCheckError && <div className="onboarding-error">{ramCheckError}</div>}
         </div>}
@@ -126,7 +126,7 @@ export default function App() {
           {onboardingStep === 1 && <div className="onboarding-actions"><button className="secondary-button" onClick={() => setOnboardingStep(0)}>WSTECZ</button><button className="play-button onboarding-next" onClick={() => setOnboardingStep(2)}>DALEJ <ChevronRight size={16}/></button></div>}
           {onboardingStep === 2 && <div className="onboarding-actions">
             <button className="secondary-button" disabled={busy || ramCheckBusy} onClick={() => setOnboardingStep(1)}>WSTECZ</button>
-            <button className="secondary-button onboarding-skip" disabled={busy || ramCheckBusy} onClick={() => void completeOnboarding()}>NIE, DZIĘKUJĘ</button>
+            <button className="secondary-button onboarding-skip" disabled={busy || ramCheckBusy} onClick={() => void completeOnboarding()}>NIE DZIĘKUJĘ</button>
             <button className="play-button onboarding-next" disabled={busy || ramCheckBusy} onClick={() => void checkAndSetRam()}>{ramCheckBusy ? <><span className="spinner"/> SPRAWDZANIE…</> : <>SPRAWDŹ MÓJ RAM <ChevronRight size={16}/></>}</button>
           </div>}
         </div>
