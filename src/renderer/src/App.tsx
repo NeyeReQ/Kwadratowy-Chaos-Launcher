@@ -1,3 +1,4 @@
+/// <reference path="../../preload/index.d.ts" />
 import { useEffect, useMemo, useState } from "react";
 import { Activity, Blocks, Check, ChevronRight, Cpu, Download, ExternalLink, Gamepad2, HardDrive, LogIn, LogOut, MessageCircle, Monitor, Play, RefreshCw, Settings2, ShieldCheck, Sparkles, Users, X } from "lucide-react";
 import type { AccountProfile, BootstrapState, LauncherProgress, LauncherSettings } from "../../shared/types";
