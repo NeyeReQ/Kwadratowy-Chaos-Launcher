@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain, safeStorage, shell, type WebContents } from "electron";
-import { autoUpdater } from "electron-updater";
+import electronUpdater from "electron-updater";
+const { autoUpdater } = electronUpdater;
 import { MinecraftFolder, Version, launch as launchMinecraft } from "@xmcl/core";
 import { getVersionList, install, installDependencies, installFabric } from "@xmcl/installer";
 import { MicrosoftAuthenticator } from "@xmcl/user";
