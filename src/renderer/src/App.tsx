@@ -53,7 +53,9 @@ export default function App() {
       }
       return true;
     } catch (error) {
-      setNotice(error instanceof Error ? error.message : "Nie udało się zapisać ustawień powitalnych.");
+      const message = error instanceof Error ? error.message : "Nie udało się zapisać ustawień powitalnych.";
+      setRamCheckError(message);
+      setNotice(message);
       return false;
     } finally {
       setBusy(false);
