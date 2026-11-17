@@ -30,7 +30,7 @@ Launcher Kwadratowego Chaosu nie prosi o hasło Microsoft i nie przechowuje sesj
 
 Źródłem prawdy jest [launcher/manifest.json](launcher/manifest.json). Każdy plik paczki ma ścieżkę, bezpośredni adres HTTPS, rozmiar i sumę SHA-512. Przy synchronizacji launcher pobiera bieżący manifest, weryfikuje lokalne pliki i aktualizuje tylko różnice.
 
-Administrator publikuje nowy zestaw plików jako GitHub Release i commituję zaktualizowany manifest. Klient synchronizuje paczkę automatycznie.
+Administrator publikuje nowy zestaw plików jako GitHub Release i zapisuje zaktualizowany manifest w repozytorium. Klient synchronizuje paczkę automatycznie.
 
 ## Bieżąca konfiguracja
 
