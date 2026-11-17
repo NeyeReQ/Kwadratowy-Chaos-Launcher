@@ -33,19 +33,65 @@ jobs:
       - name: Build application
         run: npm run build
 
-      - name: Build installer
+      - name: Build and verify Windows installer
         shell: pwsh
-        run: |
-          if ("${{ github.ref }}".StartsWith("refs/tags/v")) {
-            npx electron-builder --win nsis --x64 --publish always
-          } else {
-            npx electron-builder --win nsis --x64 --publish never
-          }
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Optional Authenticode signing. Keep these values in GitHub Actions secrets.
           WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
           WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          $tag = "${{ github.ref_name }}"
+          $repository = "${{ github.repository }}"
+          $isVersionTag = "${{ github.ref }}".StartsWith("refs/tags/v")
+
+          if ($isVersionTag) {
+            & gh release view $tag --repo $repository *> $null
+            if ($LASTEXITCODE -ne 0) {
+              & gh release create $tag --repo $repository --title "Kwadratowy Chaos $($tag.TrimStart('v'))" --notes "Instalator Windows x64 Kwadratowy Chaos." --draft
+              if ($LASTEXITCODE -ne 0) { throw "Nie udało się utworzyć roboczego GitHub Release." }
+            }
+            & npx electron-builder --win nsis --x64 --publish always
+          } else {
+            & npx electron-builder --win nsis --x64 --publish never
+          }
+
+          $builderExitCode = $LASTEXITCODE
+          if ($builderExitCode -ne 0) {
+            Write-Warning "electron-builder zakończył publikację kodem $builderExitCode. Weryfikuję lokalne artefakty i spróbuję przesłać je osobno."
+          }
+
+          $installers = @(Get-ChildItem -Path "release" -Filter "*.exe" -File | Where-Object { $_.Name -notlike "*.blockmap" })
+          if ($installers.Count -ne 1) {
+            throw "Oczekiwano jednego instalatora .exe, znaleziono: $($installers.Count)."
+          }
+
+          $installer = $installers[0]
+          $blockmap = "$($installer.FullName).blockmap"
+          $latestYml = Join-Path $installer.DirectoryName "latest.yml"
+
+          if (-not (Test-Path -LiteralPath $blockmap -PathType Leaf)) {
+            throw "Brakuje pliku blockmap: $blockmap"
+          }
+
+          if ($isVersionTag) {
+            if (-not (Test-Path -LiteralPath $latestYml -PathType Leaf)) {
+              throw "Brakuje latest.yml — electron-builder nie wygenerował metadanych aktualizacji."
+            }
+
+            & gh release upload $tag $installer.FullName $blockmap $latestYml --repo $repository --clobber
+            if ($LASTEXITCODE -ne 0) {
+              throw "Nie udało się przesłać kompletu: instalatora .exe, blockmap i latest.yml."
+            }
+
+            & gh release edit $tag --repo $repository --draft=false
+            if ($LASTEXITCODE -ne 0) {
+              throw "Pliki przesłano, ale nie udało się opublikować GitHub Release."
+            }
+          }
+
+          Write-Host "Zweryfikowany instalator: $($installer.FullName)"
+          Write-Host "Rozmiar instalatora: $([math]::Round($installer.Length / 1MB, 2)) MB"
 
       - name: Upload installer artifact
         uses: actions/upload-artifact@v4
