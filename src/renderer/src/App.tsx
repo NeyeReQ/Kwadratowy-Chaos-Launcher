@@ -56,7 +56,7 @@ export default function App() {
         <div className="breadcrumb"><span>KWADRATOWY CHAOS</span><ChevronRight size={13}/><b>{page === "home" ? "CENTRUM GRY" : page === "mods" ? "PACZKA MODÓW" : "KONFIGURACJA"}</b></div>
         <div className="top-actions">
           {updateMessage && <button className="update-pill" onClick={() => void window.launcher.installUpdate()}><Download size={14}/>{updateMessage}</button>}
-          <button className="login-button" onClick={() => void run(() => window.launcher.openOfficialLauncher())} disabled={busy}><ExternalLink size={16}/> Otwórz Minecraft Launcher</button>
+          <button className="login-button" onClick={() => void run(() => window.launcher.openOfficialLauncher(), "Mody są aktualne. Oficjalny launcher został otwarty.")} disabled={busy}><ExternalLink size={16}/> Sprawdź mody i otwórz launcher</button>
         </div>
       </header>
 
