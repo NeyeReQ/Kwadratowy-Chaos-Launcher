@@ -6,5 +6,5 @@
     "jsx": "react-jsx", "types": ["node", "vite/client"],
     "baseUrl": ".", "paths": { "@shared/*": ["src/shared/*"] }, "noEmit": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "electron.vite.config.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts", "electron.vite.config.ts"]
 }
