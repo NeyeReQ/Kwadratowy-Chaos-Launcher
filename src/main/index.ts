@@ -13,7 +13,7 @@ import { totalmem } from "node:os";
 import type { BootstrapState, LauncherManifest, LauncherProgress, LauncherSettings, ManifestFile } from "../shared/types";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const DEFAULT_SETTINGS: LauncherSettings = { memoryMb: 6144, gamePath: "", onboardingCompleted: false };
+const DEFAULT_SETTINGS: LauncherSettings = { memoryMb: 6144, gamePath: "", onboardingCompleted: false, onboardingVersion: 0 };
 const MANAGED_ROOTS = new Set(["mods", "config", "resourcepacks", "shaderpacks", "defaultconfigs", "kubejs", "scripts"]);
 interface AppConfig { manifestUrl: string; defaultGamePath?: string; }
 
@@ -46,7 +46,8 @@ async function loadSettings() {
       ...stored,
       memoryMb,
       // Older installations have no onboarding flag yet, so show the new welcome once.
-      onboardingCompleted: stored.onboardingCompleted === true
+      onboardingCompleted: stored.onboardingCompleted === true,
+      onboardingVersion: Number.isFinite(Number(stored.onboardingVersion)) ? Number(stored.onboardingVersion) : 0
     };
   } catch {
     cachedSettings = { ...DEFAULT_SETTINGS };
