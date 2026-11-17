@@ -163,13 +163,14 @@ export default function App() {
           <div className="onboarding-dots"><span className={onboardingStep === 0 ? "active" : ""}/><span className={onboardingStep === 1 ? "active" : ""}/><span className={onboardingStep === 2 ? "active" : ""}/></div>
           {onboardingStep === 0 && <button className="play-button onboarding-next" onClick={() => setOnboardingStep(1)}>DALEJ <ChevronRight size={16}/></button>}
           {onboardingStep === 1 && <div className="onboarding-actions"><button className="secondary-button" onClick={() => setOnboardingStep(0)}>WSTECZ</button><button className="play-button onboarding-next" onClick={() => setOnboardingStep(2)}>DALEJ <ChevronRight size={16}/></button></div>}
-          {onboardingStep === 2 && <div className="onboarding-actions">
-            {!ramAnalysis && <button className="secondary-button" disabled={busy || ramCheckBusy} onClick={() => setOnboardingStep(1)}>WSTECZ</button>}
+          {onboardingStep === 2 && ramCheckBusy && <span className="onboarding-wait-label">ANALIZOWANIE RAMU…</span>}
+          {onboardingStep === 2 && !ramCheckBusy && <div className="onboarding-actions">
+            {!ramAnalysis && <button className="secondary-button" disabled={busy} onClick={() => setOnboardingStep(1)}>WSTECZ</button>}
             {ramAnalysis ? (
               <button className="play-button onboarding-next" disabled={busy} onClick={() => void completeOnboarding()}>ZAKOŃCZ <Check size={16}/></button>
             ) : <>
-              <button className="secondary-button onboarding-skip" disabled={busy || ramCheckBusy} onClick={() => void completeOnboarding()}>NIE DZIĘKUJĘ</button>
-              <button className="play-button onboarding-next" disabled={busy || ramCheckBusy} onClick={() => void checkAndSetRam()}>SPRAWDŹ MÓJ RAM <ChevronRight size={16}/></button>
+              <button className="secondary-button onboarding-skip" disabled={busy} onClick={() => void completeOnboarding()}>NIE DZIĘKUJĘ</button>
+              <button className="play-button onboarding-next" disabled={busy} onClick={() => void checkAndSetRam()}>SPRAWDŹ MÓJ RAM <ChevronRight size={16}/></button>
             </>}
           </div>}
         </div>
