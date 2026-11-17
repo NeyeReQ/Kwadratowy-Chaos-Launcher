@@ -1,45 +1,37 @@
-import { app, BrowserWindow, ipcMain, safeStorage, shell, type WebContents } from "electron";
+import { app, BrowserWindow, ipcMain, shell, type WebContents } from "electron";
 import electronUpdater from "electron-updater";
 const { autoUpdater } = electronUpdater;
-import { MinecraftFolder, Version, launch as launchMinecraft } from "@xmcl/core";
+import { MinecraftFolder, Version } from "@xmcl/core";
 import { getVersionList, install, installDependencies, installFabric } from "@xmcl/installer";
-import { MicrosoftAuthenticator } from "@xmcl/user";
 import { createHash, randomUUID } from "node:crypto";
-import { spawnSync, type ChildProcess } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { lstat, mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
-import { delimiter, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
+import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { AccountProfile, BootstrapState, LauncherManifest, LauncherProgress, LauncherSettings, ManifestFile } from "../shared/types";
+import type { BootstrapState, LauncherManifest, LauncherProgress, LauncherSettings, ManifestFile } from "../shared/types";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const DEFAULT_SETTINGS: LauncherSettings = { memoryMb: 6144, javaPath: "", gamePath: "" };
+const DEFAULT_SETTINGS: LauncherSettings = { memoryMb: 6144, gamePath: "" };
 const MANAGED_ROOTS = new Set(["mods", "config", "resourcepacks", "shaderpacks", "defaultconfigs", "kubejs", "scripts"]);
-const wait = (ms: number) => new Promise((resolveWait) => setTimeout(resolveWait, ms));
-interface AppConfig { microsoftClientId: string; manifestUrl: string; defaultGamePath?: string; }
-interface SavedAccount { profile: AccountProfile; encryptedRefreshToken: string; }
+interface AppConfig { manifestUrl: string; defaultGamePath?: string; }
 
 let mainWindow: BrowserWindow | null = null;
-let gameProcess: ChildProcess | null = null;
-let pendingLogin = false;
 let cachedManifest: LauncherManifest | null = null;
 let cachedSettings = { ...DEFAULT_SETTINGS };
-let config: AppConfig = { microsoftClientId: "", manifestUrl: "" };
+let config: AppConfig = { manifestUrl: "" };
 
 const userData = () => app.getPath("userData");
 const gamePath = () => cachedSettings.gamePath || config.defaultGamePath || join(app.getPath("appData"), ".kwadratowy-chaos", "instance");
-const accountFile = () => join(userData(), "account.json");
 const settingsFile = () => join(userData(), "settings.json");
+const minecraftRoot = () => join(app.getPath("appData"), ".minecraft");
 const managedFile = () => join(gamePath(), ".kwadratowy-chaos", "managed-files.json");
+const launcherProfilesFile = () => join(minecraftRoot(), "launcher_profiles.json");
 const emit = (value: LauncherProgress) => mainWindow?.webContents.send("launcher:progress", value);
-const sendAuth = (value: string) => mainWindow?.webContents.send("auth:status", value);
-async function readAccount(): Promise<SavedAccount | null> {
-  try { return JSON.parse(await readFile(accountFile(), "utf8")) as SavedAccount; } catch { return null; }
-}
 async function loadConfig() {
   const path = app.isPackaged ? join(process.resourcesPath, "launcher.json") : join(app.getAppPath(), "config", "launcher.json");
   try { config = JSON.parse(await readFile(path, "utf8")) as AppConfig; }
-  catch { config = { microsoftClientId: "", manifestUrl: "" }; }
+  catch { config = { manifestUrl: "" }; }
 }
 async function loadSettings() {
   try { cachedSettings = { ...DEFAULT_SETTINGS, ...JSON.parse(await readFile(settingsFile(), "utf8")) }; }
@@ -149,140 +141,91 @@ async function syncPack(sender?: WebContents) {
   emit({ phase: "done", current: manifest.files.length, total: manifest.files.length, message: "Paczka " + manifest.packVersion + " jest aktualna." });
   return { updated, removed, unchanged, total: manifest.files.length };
 }
-function findJava(): string {
-  const candidates = [
-    cachedSettings.javaPath,
-    process.env.JAVA_HOME ? join(process.env.JAVA_HOME, "bin", process.platform === "win32" ? "java.exe" : "java") : "",
-    ...(process.env.PATH || "").split(delimiter).map((folder) => join(folder, process.platform === "win32" ? "java.exe" : "java"))
-  ].filter(Boolean);
-  for (const candidate of candidates) {
-    if (!existsSync(candidate)) continue;
-    const result = spawnSync(candidate, ["-version"], { encoding: "utf8", windowsHide: true });
-    if (!result.error && result.status === 0) return candidate;
-  }
-  throw new Error("Nie znaleziono Java. Zainstaluj wymaganą wersję albo wskaż java.exe w Ustawieniach.");
-}
-function verifyJava(path: string, requiredMajor: number) {
-  const result = spawnSync(path, ["-version"], { encoding: "utf8", windowsHide: true });
-  const output = (result.stderr || "") + (result.stdout || "");
-  const match = output.match(/version "(\d+)/i);
-  const major = match ? Number(match[1]) : 0;
-  if (result.error || result.status !== 0 || major < requiredMajor) throw new Error("Ta paczka wymaga Java " + requiredMajor + " lub nowszej.");
-}
-async function oauthExchange(accessToken: string) {
-  const auth = new MicrosoftAuthenticator();
-  const tokens = await auth.acquireXBoxToken(accessToken);
-  const claim = tokens.minecraftXstsResponse.DisplayClaims.xui[0];
-  const minecraft = await auth.loginMinecraftWithXBox(claim.uhs, tokens.minecraftXstsResponse.Token);
-  const response = await fetch("https://api.minecraftservices.com/minecraft/profile", { headers: { Authorization: "Bearer " + minecraft.access_token } });
-  if (!response.ok) throw new Error("To konto Microsoft nie ma aktywnego profilu Minecraft Java Edition.");
-  const profile = await response.json() as AccountProfile;
-  return { profile, minecraftToken: minecraft.access_token };
-}
-async function saveAccount(profile: AccountProfile, refreshToken: string) {
-  if (!safeStorage.isEncryptionAvailable()) throw new Error("Szyfrowanie tokenów przez system Windows jest niedostępne.");
-  const record: SavedAccount = { profile, encryptedRefreshToken: safeStorage.encryptString(refreshToken).toString("base64") };
-  await mkdir(userData(), { recursive: true });
-  await writeFile(accountFile(), JSON.stringify(record), "utf8");
-  mainWindow?.webContents.send("auth:account", profile);
-}
-async function accessTokenForGame() {
-  const saved = await readAccount();
-  if (!saved) throw new Error("Najpierw zaloguj się na konto Microsoft.");
-  const refreshToken = safeStorage.decryptString(Buffer.from(saved.encryptedRefreshToken, "base64"));
-  const response = await fetch("https://login.microsoftonline.com/consumers/oauth2/v2.0/token", {
-    method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({ client_id: config.microsoftClientId, grant_type: "refresh_token", refresh_token: refreshToken, scope: "XboxLive.signin offline_access" })
-  });
-  const token = await response.json() as { access_token?: string; refresh_token?: string; error?: string };
-  if (!response.ok || !token.access_token) {
-    await rm(accountFile(), { force: true });
-    mainWindow?.webContents.send("auth:account", null);
-    throw new Error("Sesja Microsoft wygasła. Zaloguj się ponownie.");
-  }
-  const result = await oauthExchange(token.access_token);
-  await saveAccount(result.profile, token.refresh_token || refreshToken);
-  return { accessToken: result.minecraftToken, profile: result.profile };
-}
-async function completeDeviceLogin(deviceCode: string) {
-  const until = Date.now() + 15 * 60 * 1000;
-  while (Date.now() < until) {
-    await wait(5000);
-    const response = await fetch("https://login.microsoftonline.com/consumers/oauth2/v2.0/token", {
-      method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ grant_type: "urn:ietf:params:oauth:grant-type:device_code", client_id: config.microsoftClientId, device_code: deviceCode })
-    });
-    const data = await response.json() as { access_token?: string; refresh_token?: string; error?: string; error_description?: string };
-    if (data.access_token && data.refresh_token) {
-      sendAuth("Weryfikowanie konta Xbox i licencji Minecraft Java…");
-      const result = await oauthExchange(data.access_token);
-      await saveAccount(result.profile, data.refresh_token);
-      sendAuth("Zalogowano jako " + result.profile.name + ".");
-      return;
-    }
-    if (data.error === "authorization_pending") continue;
-    if (data.error === "slow_down") { await wait(5000); continue; }
-    if (data.error) throw new Error(data.error_description || data.error);
-  }
-  throw new Error("Kod logowania wygasł. Spróbuj ponownie.");
-}
-async function beginLogin() {
-  if (pendingLogin) throw new Error("Logowanie Microsoft jest już w toku.");
-  if (!config.microsoftClientId) throw new Error("Uzupełnij microsoftClientId w config/launcher.json i przebuduj aplikację.");
-  if (!safeStorage.isEncryptionAvailable()) throw new Error("Bezpieczny magazyn tokenów jest niedostępny.");
-  pendingLogin = true;
+async function registerOfficialLauncherProfile(versionId: string) {
+  await mkdir(minecraftRoot(), { recursive: true });
+  let launcherData: Record<string, unknown> = {};
   try {
-    const response = await fetch("https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode", {
-      method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ client_id: config.microsoftClientId, scope: "XboxLive.signin offline_access" })
-    });
-    const data = await response.json() as { device_code?: string; user_code?: string; verification_uri?: string; message?: string; error?: string };
-    if (!response.ok || !data.device_code || !data.user_code || !data.verification_uri) throw new Error(data.error || "Nie udało się rozpocząć logowania Microsoft.");
-    void completeDeviceLogin(data.device_code)
-      .catch((error: unknown) => sendAuth(error instanceof Error ? error.message : "Logowanie nie powiodło się."))
-      .finally(() => { pendingLogin = false; });
-    return { userCode: data.user_code, verificationUri: data.verification_uri, message: data.message || "Wpisz kod na stronie Microsoft." };
-  } catch (error) { pendingLogin = false; throw error; }
-}
-async function installAndLaunch() {
-  const manifest = cachedManifest || await fetchManifest();
-  const { accessToken, profile } = await accessTokenForGame();
-  const folder = gamePath();
-  await mkdir(folder, { recursive: true });
-  const javaPath = findJava();
-  verifyJava(javaPath, manifest.javaMajor || 21);
+    launcherData = JSON.parse(await readFile(launcherProfilesFile(), "utf8")) as Record<string, unknown>;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+      throw new Error("Nie można odczytać launcher_profiles.json. Zamknij oficjalny Minecraft Launcher i spróbuj ponownie.");
+    }
+  }
 
-  emit({ phase: "installing", current: 0, total: 3, message: "Instalowanie Minecrafta…" });
-  const minecraft = MinecraftFolder.from(folder);
+  const profiles = (launcherData.profiles && typeof launcherData.profiles === "object" && !Array.isArray(launcherData.profiles))
+    ? launcherData.profiles as Record<string, Record<string, unknown>>
+    : {};
+  const now = new Date().toISOString();
+  const previous = profiles["kwadratowy-chaos"] || {};
+  profiles["kwadratowy-chaos"] = {
+    ...previous,
+    created: typeof previous.created === "string" ? previous.created : now,
+    gameDir: gamePath(),
+    javaArgs: `-Xms2048M -Xmx${cachedSettings.memoryMb}M`,
+    lastUsed: now,
+    lastVersionId: versionId,
+    name: "Kwadratowy Chaos",
+    type: "custom"
+  };
+  launcherData.profiles = profiles;
+  if (typeof launcherData.version !== "number") launcherData.version = 3;
+
+  const temporary = launcherProfilesFile() + ".kwadratowy-chaos.tmp";
+  await writeFile(temporary, JSON.stringify(launcherData, null, 2), "utf8");
+  await rename(temporary, launcherProfilesFile());
+}
+
+async function prepareGame() {
+  const manifest = cachedManifest || await fetchManifest();
+  if (manifest.loader.type !== "fabric" && manifest.loader.type !== "vanilla") {
+    throw new Error("W tej wersji przygotowanie oficjalnego launchera obsługuje Fabric i Vanilla.");
+  }
+
+  emit({ phase: "installing", current: 0, total: 4, message: "Przygotowywanie Minecrafta " + manifest.minecraftVersion + "…" });
+  const minecraft = MinecraftFolder.from(minecraftRoot());
   const versions = await getVersionList();
   const vanilla = versions.versions.find((item) => item.id === manifest.minecraftVersion);
-  if (!vanilla) throw new Error("Nie znaleziono Minecrafta " + manifest.minecraftVersion + ".");
+  if (!vanilla) throw new Error("Nie znaleziono Minecrafta " + manifest.minecraftVersion + " w metadanych Mojang.");
   await install(vanilla, minecraft);
 
   let versionId = manifest.minecraftVersion;
   if (manifest.loader.type === "fabric") {
     if (!manifest.loader.version) throw new Error("Manifest nie określa wersji Fabric.");
+    emit({ phase: "installing", current: 1, total: 4, message: "Instalowanie Fabric Loader " + manifest.loader.version + "…" });
     versionId = await installFabric({ minecraft, minecraftVersion: manifest.minecraftVersion, version: manifest.loader.version });
-  } else if (manifest.loader.type !== "vanilla") {
-    throw new Error("Loader " + manifest.loader.type + " wymaga jeszcze osobnego instalatora.");
   }
-  emit({ phase: "installing", current: 2, total: 3, message: "Pobieranie bibliotek i assetów…" });
-  const resolved = await Version.parse(folder, versionId);
+
+  emit({ phase: "installing", current: 2, total: 4, message: "Pobieranie bibliotek i assetów gry…" });
+  const resolved = await Version.parse(minecraftRoot(), versionId);
   await installDependencies(resolved, {});
-  emit({ phase: "launching", current: 3, total: 3, message: "Uruchamianie Minecrafta…" });
-  const child = await launchMinecraft({
-    gamePath: folder, javaPath, version: versionId,
-    accessToken, gameProfile: { id: profile.id, name: profile.name },
-    maxMemory: cachedSettings.memoryMb, minMemory: Math.min(2048, cachedSettings.memoryMb),
-    launcherName: "Kwadratowy Chaos", launcherBrand: "Kwadratowy Chaos",
-    server: manifest.server?.host ? { ip: manifest.server.host, port: manifest.server.port || 25565 } : undefined,
-    extraExecOption: { detached: true, stdio: "ignore" }
-  });
-  gameProcess = child;
-  mainWindow?.webContents.send("game:status", true);
-  child.once("exit", () => { gameProcess = null; mainWindow?.webContents.send("game:status", false); });
-  child.unref();
-  emit({ phase: "done", current: 3, total: 3, message: "Minecraft został uruchomiony." });
+  emit({ phase: "installing", current: 3, total: 4, message: "Dodawanie profilu Kwadratowy Chaos do oficjalnego launchera…" });
+  await registerOfficialLauncherProfile(versionId);
+  emit({ phase: "done", current: 4, total: 4, message: "Paczka i profil Kwadratowy Chaos są gotowe." });
+}
+
+async function openOfficialLauncher() {
+  if (process.platform === "win32") {
+    const programFiles = process.env["ProgramFiles"] || "C:\\Program Files";
+    const programFilesX86 = process.env["ProgramFiles(x86)"] || "C:\\Program Files (x86)";
+    const candidates = [
+      join(programFilesX86, "Minecraft Launcher", "MinecraftLauncher.exe"),
+      join(programFiles, "Minecraft Launcher", "MinecraftLauncher.exe")
+    ];
+    const executable = candidates.find((candidate) => existsSync(candidate));
+    if (executable) {
+      const child = spawn(executable, [], { detached: true, stdio: "ignore", windowsHide: false });
+      child.unref();
+      return;
+    }
+
+    const storeLaunch = spawnSync("powershell.exe", [
+      "-NoProfile", "-NonInteractive", "-Command",
+      "$app = Get-StartApps | Where-Object { $_.Name -eq 'Minecraft Launcher' } | Select-Object -First 1; if ($app) { Start-Process ('shell:AppsFolder\\' + $app.AppID); exit 0 } else { exit 1 }"
+    ], { encoding: "utf8", windowsHide: true });
+    if (!storeLaunch.error && storeLaunch.status === 0) return;
+  }
+
+  await shell.openExternal("https://www.minecraft.net/download");
 }
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -296,19 +239,19 @@ function createWindow() {
 }
 function registerIpc() {
   ipcMain.handle("launcher:bootstrap", async (): Promise<BootstrapState> => {
-    const account = await readAccount();
     let manifestError: string | null = null;
     try { await fetchManifest(); } catch (error) { manifestError = error instanceof Error ? error.message : "Błąd manifestu."; }
-    return { account: account?.profile || null, settings: { ...cachedSettings, gamePath: gamePath() }, manifest: cachedManifest, manifestError, running: Boolean(gameProcess), appVersion: app.getVersion() };
+    return { settings: { ...cachedSettings, gamePath: gamePath() }, manifest: cachedManifest, manifestError, appVersion: app.getVersion() };
   });
-  ipcMain.handle("auth:begin", () => beginLogin());
-  ipcMain.handle("auth:logout", async () => { await rm(accountFile(), { force: true }); mainWindow?.webContents.send("auth:account", null); });
   ipcMain.handle("pack:sync", (event) => syncPack(event.sender));
-  ipcMain.handle("game:launch", async (event) => { await syncPack(event.sender); await installAndLaunch(); });
+  ipcMain.handle("game:prepare", async (event) => {
+    await syncPack(event.sender);
+    await prepareGame();
+  });
+  ipcMain.handle("launcher:open-official", () => openOfficialLauncher());
   ipcMain.handle("settings:save", async (_event, patch: Partial<LauncherSettings>) => {
     const memoryMb = Math.max(2048, Math.min(32768, Math.round(Number(patch.memoryMb ?? cachedSettings.memoryMb) / 512) * 512));
     const next = { ...cachedSettings, ...patch, memoryMb };
-    if (next.javaPath && !isAbsolute(next.javaPath)) throw new Error("Ścieżka do Java musi być bezwzględna.");
     cachedSettings = next;
     await mkdir(userData(), { recursive: true });
     await writeFile(settingsFile(), JSON.stringify(cachedSettings, null, 2), "utf8");
