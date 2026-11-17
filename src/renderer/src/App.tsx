@@ -1,5 +1,5 @@
 /// <reference path="../../preload/index.d.ts" />
-import { useEffect, useMemo, useState, type PointerEvent as ReactPointerEvent } from "react";
+import { useEffect, useMemo, useState, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { Activity, Blocks, Check, ChevronRight, Cpu, Download, ExternalLink, Gamepad2, HardDrive, MessageCircle, Monitor, Play, RefreshCw, Settings2, ShieldCheck, Sparkles, Users, X } from "lucide-react";
 import type { BootstrapState, LauncherProgress, LauncherSettings } from "../../shared/types";
 import { playUiSound, startActivitySound, type ActivitySound } from "./sounds";
@@ -33,7 +33,7 @@ export default function App() {
     playUiSound("hover");
   }
 
-  function handleAppClick(event: React.MouseEvent<HTMLDivElement>) {
+  function handleAppClick(event: ReactMouseEvent<HTMLDivElement>) {
     if (!(event.target instanceof Element)) return;
     const button = event.target.closest("button");
     if (button && !button.disabled) playUiSound("click");
