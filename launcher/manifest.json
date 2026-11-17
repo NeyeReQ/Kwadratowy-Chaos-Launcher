@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "name": "Kwadratowy Chaos",
+  "summary": "Oficjalna paczka serwera Kwadratowy Chaos.",
+  "packVersion": "0.1.0",
+  "minecraftVersion": "1.21.11",
+  "javaMajor": 21,
+  "loader": { "type": "fabric", "version": "0.18.4" },
+  "server": { "host": "", "port": 25565 },
+  "files": [],
+  "news": [{
+    "title": "Launcher Kwadratowego Chaosu",
+    "date": "START",
+    "tag": "INFO",
+    "body": "To pierwsza wersja systemu. Lista modów zostanie opublikowana w manifeście paczki."
+  }]
+}

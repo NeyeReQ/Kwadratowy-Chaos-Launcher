@@ -1,0 +1,12 @@
+node_modules/
+out/
+release/
+dist/
+.env
+.env.*
+!.env.example
+pack/**/*
+!pack/README.md
+.DS_Store
+Thumbs.db
+*.log
