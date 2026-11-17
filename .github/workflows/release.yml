@@ -88,6 +88,16 @@ jobs:
             if ($LASTEXITCODE -ne 0) {
               throw "Pliki przesłano, ale nie udało się opublikować GitHub Release."
             }
+
+            $publishedAssets = @(& gh release view $tag --repo $repository --json assets --jq ".assets[].name")
+            if ($LASTEXITCODE -ne 0) {
+              throw "Nie udało się zweryfikować plików opublikowanego Release."
+            }
+            foreach ($expectedAsset in @($installer.Name, [IO.Path]::GetFileName($blockmap), "latest.yml")) {
+              if ($publishedAssets -notcontains $expectedAsset) {
+                throw "Brakuje wymaganego assetu w GitHub Release: $expectedAsset"
+              }
+            }
           }
 
           Write-Host "Zweryfikowany instalator: $($installer.FullName)"
