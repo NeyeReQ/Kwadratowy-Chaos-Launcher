@@ -285,17 +285,25 @@ function registerIpc() {
     if (url.protocol !== "https:") throw new Error("Można otwierać wyłącznie adresy HTTPS.");
     await shell.openExternal(url.toString());
   });
-  ipcMain.handle("updates:check", async () => { if (app.isPackaged) await autoUpdater.checkForUpdates(); });
+  ipcMain.handle("updates:check", async () => {
+    if (!app.isPackaged) return;
+    try {
+      await autoUpdater.checkForUpdates();
+    } catch (error) {
+      console.error("Nie udało się sprawdzić aktualizacji launchera:", error);
+      mainWindow?.webContents.send("updates:status", "Nie udało się sprawdzić aktualizacji launchera. Spróbuj ponownie później.");
+    }
+  });
   ipcMain.handle("updates:install", () => autoUpdater.quitAndInstall());
 }
 app.whenReady().then(async () => {
   await loadConfig(); await loadSettings(); registerIpc(); createWindow();
-  autoUpdater.autoDownload = true; autoUpdater.autoInstallOnAppQuit = true;
+  autoUpdater.autoDownload = true; autoUpdater.autoInstallOnAppQuit = true; autoUpdater.allowPrerelease = false;
   autoUpdater.on("checking-for-update", () => mainWindow?.webContents.send("updates:status", "Sprawdzanie aktualizacji…"));
   autoUpdater.on("update-available", () => mainWindow?.webContents.send("updates:status", "Nowa wersja. Pobieranie…"));
   autoUpdater.on("update-not-available", () => mainWindow?.webContents.send("updates:status", "Launcher jest aktualny."));
   autoUpdater.on("update-downloaded", () => mainWindow?.webContents.send("updates:status", "Aktualizacja gotowa — kliknij, aby zainstalować."));
-  autoUpdater.on("error", (error) => mainWindow?.webContents.send("updates:status", error.message));
+  autoUpdater.on("error", (error) => { console.error("Błąd aktualizacji launchera:", error); mainWindow?.webContents.send("updates:status", "Nie udało się sprawdzić aktualizacji launchera."); });
   if (app.isPackaged) void autoUpdater.checkForUpdatesAndNotify().catch(() => undefined);
   app.on("activate", () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
 });
