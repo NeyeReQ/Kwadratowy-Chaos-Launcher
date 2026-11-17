@@ -40,18 +40,13 @@ export default function App() {
     catch (error) { setNotice(error instanceof Error ? error.message : "Operacja nie powiodła się."); setProgress({ phase: "error", current: 0, total: 0, message: "Błąd operacji" }); }
     finally { setBusy(false); }
   }
-  async function completeOnboarding(memoryMb?: number, detectedRamGb?: number) {
+  async function completeOnboarding() {
     setBusy(true);
     setNotice("");
     try {
-      const patch: Partial<LauncherSettings> = { onboardingCompleted: true, onboardingVersion: 2 };
-      if (memoryMb !== undefined) patch.memoryMb = memoryMb;
-      const saved = await window.launcher.saveSettings(patch);
+      const saved = await window.launcher.saveSettings({ onboardingCompleted: true, onboardingVersion: 2 });
       setState((current) => ({ ...current, settings: saved }));
       setDraft(saved);
-      if (memoryMb !== undefined && detectedRamGb !== undefined) {
-        setNotice(`Wykryto ${detectedRamGb} GB RAM. Przydzielono Minecraftowi ${memoryMb / 1024} GB. Wartość możesz zmienić w Ustawieniach.`);
-      }
       return true;
     } catch (error) {
       const message = error instanceof Error ? error.message : "Nie udało się zapisać ustawień powitalnych.";
@@ -69,7 +64,7 @@ export default function App() {
     setRamAnalysis(null);
     try {
       // Keep the analysis screen visible long enough to make the action clear.
-      await new Promise((resolve) => setTimeout(resolve, 1100));
+      await new Promise<void>((resolve) => setTimeout(resolve, 1100));
       const result = await window.launcher.getSystemMemory();
       if (!Number.isFinite(result.totalBytes) || result.totalBytes <= 0) {
         throw new Error("Nie udało się odczytać ilości pamięci RAM.");
@@ -89,7 +84,7 @@ export default function App() {
     }
   }
 
-  const onboardingOpen = onboardingReady && state.settings.onboardingVersion !== 2;
+  const onboardingOpen = onboardingReady && !(state.settings.onboardingCompleted === true && state.settings.onboardingVersion >= 2);
   const title = page === "home" ? "Witaj w Kwadratowym Chaosie" : page === "mods" ? "Twoja paczka" : "Ustawienia";
 
   return <div className="app-shell">
