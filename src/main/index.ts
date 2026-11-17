@@ -268,7 +268,10 @@ function registerIpc() {
     await prepareGame();
     await openOfficialLauncher();
   });
-  ipcMain.handle("launcher:open-official", () => openOfficialLauncher());
+  ipcMain.handle("launcher:open-official", async (event) => {
+    await syncPack(event.sender);
+    await openOfficialLauncher();
+  });
   ipcMain.handle("settings:save", async (_event, patch: Partial<LauncherSettings>) => {
     const memoryMb = Math.max(2048, Math.min(32768, Math.round(Number(patch.memoryMb ?? cachedSettings.memoryMb) / 512) * 512));
     const next = { ...cachedSettings, ...patch, memoryMb };
