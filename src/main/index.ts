@@ -141,6 +141,20 @@ async function syncPack(sender?: WebContents) {
   emit({ phase: "done", current: manifest.files.length, total: manifest.files.length, message: "Paczka " + manifest.packVersion + " jest aktualna." });
   return { updated, removed, unchanged, total: manifest.files.length };
 }
+function assertOfficialLauncherClosed() {
+  if (process.platform !== "win32") return;
+  const checks = ["MinecraftLauncher.exe", "Minecraft.exe"];
+  for (const image of checks) {
+    const result = spawnSync("tasklist", ["/FI", "IMAGENAME eq " + image, "/FO", "CSV", "/NH"], {
+      encoding: "utf8",
+      windowsHide: true
+    });
+    if (!result.error && (result.stdout || "").toLowerCase().includes(image.toLowerCase())) {
+      throw new Error("Zamknij Minecraft Launcher i uruchomioną grę przed przygotowaniem lub aktualizacją paczki.");
+    }
+  }
+}
+
 async function registerOfficialLauncherProfile(versionId: string) {
   await mkdir(minecraftRoot(), { recursive: true });
   let launcherData: Record<string, unknown> = {};
@@ -176,6 +190,7 @@ async function registerOfficialLauncherProfile(versionId: string) {
 }
 
 async function prepareGame() {
+  assertOfficialLauncherClosed();
   const manifest = cachedManifest || await fetchManifest();
   if (manifest.loader.type !== "fabric" && manifest.loader.type !== "vanilla") {
     throw new Error("W tej wersji przygotowanie oficjalnego launchera obsługuje Fabric i Vanilla.");
@@ -247,6 +262,7 @@ function registerIpc() {
   ipcMain.handle("game:prepare", async (event) => {
     await syncPack(event.sender);
     await prepareGame();
+    await openOfficialLauncher();
   });
   ipcMain.handle("launcher:open-official", () => openOfficialLauncher());
   ipcMain.handle("settings:save", async (_event, patch: Partial<LauncherSettings>) => {
