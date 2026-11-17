@@ -23,7 +23,7 @@ Nie trzeba ręcznie aktualizować modów na komputerze gracza. Administrator pub
 
 ## Stan bieżący
 
-To pierwsza wersja szkieletowa. Manifest startowy ma pustą listę plików (`files: []`), nie zawiera jeszcze właściwych modów ani adresu serwera. Wartości Minecraft/Fabric są konfiguracją roboczą do potwierdzenia przed wydaniem. Microsoft Client ID również wymaga konfiguracji. Launcher nie jest jeszcze gotowym publicznym instalatorem.
+To pierwsza wersja szkieletowa. Manifest startowy ma pustą listę plików (`files: []`), nie zawiera jeszcze właściwych modów ani adresu serwera. Manifest wskazuje teraz Minecraft Java 26.3, Java 25 i Fabric Loader 0.20.1; przed publicznym wydaniem trzeba jeszcze przetestować instalację gry. Microsoft Client ID również wymaga konfiguracji. Launcher nie jest jeszcze gotowym publicznym instalatorem.
 
 Obecnie aktywna ścieżka instalacji gry obsługuje **Vanilla i Fabric**. Forge/NeoForge wymagają osobnego wdrożenia.
 
