@@ -93,8 +93,17 @@ jobs:
             if ($LASTEXITCODE -ne 0) {
               throw "Nie udało się zweryfikować plików opublikowanego Release."
             }
+            # GitHub/electron-builder may normalize spaces and punctuation in asset names.
+            # Compare normalized names so "Kwadratowy Chaos ..." and "Kwadratowy-Chaos-..."
+            # are treated as the same asset.
+            $normalizeAssetName = {
+              param($name)
+              [regex]::Replace([string]$name, '[^A-Za-z0-9]', '').ToLowerInvariant()
+            }
+            $publishedAssetKeys = @($publishedAssets | ForEach-Object { & $normalizeAssetName $_ })
             foreach ($expectedAsset in @($installer.Name, [IO.Path]::GetFileName($blockmap), "latest.yml")) {
-              if ($publishedAssets -notcontains $expectedAsset) {
+              $expectedAssetKey = & $normalizeAssetName $expectedAsset
+              if ($publishedAssetKeys -notcontains $expectedAssetKey) {
                 throw "Brakuje wymaganego assetu w GitHub Release: $expectedAsset"
               }
             }
