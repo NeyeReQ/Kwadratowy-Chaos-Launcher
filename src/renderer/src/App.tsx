@@ -6,7 +6,7 @@ import { playUiSound, startActivitySound, type ActivitySound } from "./sounds";
 
 type Page = "home" | "mods" | "settings";
 const ONBOARDING_VERSION = 5;
-const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "", onboardingCompleted: false, onboardingVersion: 0 }, manifest: null, manifestError: null, appVersion: "0.1.6" };
+const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "", onboardingCompleted: false, onboardingVersion: 0 }, manifest: null, manifestError: null, appVersion: "0.1.7" };
 
 export default function App() {
   const [state, setState] = useState(initial);
