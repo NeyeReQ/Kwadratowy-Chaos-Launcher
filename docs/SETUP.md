@@ -5,7 +5,7 @@
 - Node.js 22 lub 24 LTS do developmentu (obecny stos Electron 39 nie jest testowany na Node.js 26)
 - GitHub CLI (darmowe narzedzie do publikowania assetow Release)
 - Konto Microsoft z licencja Minecraft: Java Edition
-- Java 25 dla Minecraft Java Edition 26.3
+- Oficjalny Minecraft Launcher (sam pobiera odpowiednie środowisko Java)
 
 ## Logowanie i uruchamianie gry
 
@@ -14,7 +14,7 @@ Launcher nie przechowuje danych logowania i nie wykonuje własnego OAuth. Gracz 
 Przed przygotowaniem profilu zamknij oficjalny Minecraft Launcher, aby nie nadpisał pliku `launcher_profiles.json`. Po przygotowaniu Kwadratowy Chaos może otworzyć oficjalną aplikację, jeśli jest zainstalowana.
 
 ## Wersja Minecrafta
-Biezacy manifest jest ustawiony na Minecraft Java Edition `26.3`, Java `25` i Fabric Loader `0.20.1`. Jesli zmienisz wersje serwera, zmien razem `minecraftVersion`, `javaMajor` i `loader.version`. Aktualnie aktywne sa vanilla i Fabric; Forge/NeoForge maja zarezerwowane typy, ale ich instalator nie zostal jeszcze wdrozony.
+Biezacy manifest jest ustawiony na Minecraft Java Edition `26.3` i Fabric Loader `0.20.1`. Oficjalny Minecraft Launcher zarzadza swoim srodowiskiem Java. Jesli zmienisz wersje serwera, zaktualizuj `minecraftVersion` i `loader.version`. Aktualnie aktywne sa vanilla i Fabric; Forge/NeoForge nie sa jeszcze obslugiwane.
 
 ## Darmowy hosting paczki: GitHub Releases
 
