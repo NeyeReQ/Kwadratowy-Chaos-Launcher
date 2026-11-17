@@ -28,9 +28,11 @@ Launcher Kwadratowego Chaosu nie prosi o hasło Microsoft i nie przechowuje sesj
 
 ## Automatyczne aktualizacje paczki
 
-Źródłem prawdy jest [launcher/manifest.json](launcher/manifest.json). Każdy plik paczki ma ścieżkę, bezpośredni adres HTTPS, rozmiar i sumę SHA-512. Przy synchronizacji launcher pobiera bieżący manifest, weryfikuje lokalne pliki i aktualizuje tylko różnice.
+Źródłem prawdy jest [launcher/manifest.json](launcher/manifest.json). Każdy plik paczki ma ścieżkę, bezpośredni adres HTTPS, rozmiar i sumę SHA-512. Przy każdym kliknięciu **„Sprawdź mody i otwórz launcher”** lub **„Przygotuj grę”** aplikacja pobiera bieżący manifest i aktualizuje wyłącznie nowe lub zmienione pliki. Niezmienione JAR-y nie są pobierane ponownie.
 
-Administrator publikuje nowy zestaw plików jako GitHub Release i zapisuje zaktualizowany manifest w repozytorium. Klient synchronizuje paczkę automatycznie.
+Administrator publikuje nowy zestaw plików jako kolejny GitHub Release i zapisuje zaktualizowany manifest w repozytorium. Gracze nie pobierają ponownie instalatora ani całej paczki — aktualizacje modów pobierają się automatycznie przy następnym użyciu launchera. Pliki usunięte z paczki są usuwane z katalogu zarządzanego przez launcher, a światy i pozostałe prywatne pliki gracza zostają zachowane.
+
+Szczegółowa procedura: [docs/SETUP.md](docs/SETUP.md).
 
 ## Bieżąca konfiguracja
 
