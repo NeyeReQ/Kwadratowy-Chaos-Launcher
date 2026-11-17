@@ -62,8 +62,14 @@ try {
         Copy-Item -LiteralPath $file.FullName -Destination $destination
     }
 
-    & gh release view $Tag --repo $Repository *> $null
-    if ($LASTEXITCODE -eq 0) {
+    # Check existing releases through a successful list request.
+    # Calling "gh release view" for a missing tag writes an error to stderr;
+    # PowerShell can promote that native stderr output to a terminating error.
+    $existingTags = @(& gh release list --repo $Repository --limit 1000 --json tagName --jq '.[].tagName')
+    if ($LASTEXITCODE -ne 0) {
+        throw "Nie udalo sie pobrac listy GitHub Releases."
+    }
+    if ($existingTags -contains $Tag) {
         throw "Release $Tag juz istnieje. Zmien packVersion w launcher/manifest.json (np. 0.2.1) i wygeneruj manifest ponownie."
     }
 
