@@ -98,14 +98,14 @@ try {
         }
     }
 
-    & gh release edit $Tag --repo $Repository --draft=false
+    & gh release edit $Tag --repo $Repository --draft=false --prerelease
     if ($LASTEXITCODE -ne 0) {
         throw "Pliki wyslano, ale nie udalo sie opublikowac release. Opublikuj go w GitHub Releases."
     }
 
     Write-Host ""
     Write-Host "Gotowe. Wyslano $($files.Count) plikow."
-    Write-Host "Release: https://github.com/$Repository/releases/tag/$Tag"
+    Write-Host "Release (pre-release, nie będzie traktowany jako aktualizacja launchera): https://github.com/$Repository/releases/tag/$Tag"
 }
 finally {
     Remove-Item -LiteralPath $staging -Recurse -Force -ErrorAction SilentlyContinue
