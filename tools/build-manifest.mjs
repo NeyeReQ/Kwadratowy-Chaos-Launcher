@@ -18,7 +18,7 @@ const files = [];
 const assetNames = new Set();
 
 function githubAssetName(relativePath) {
-  return relativePath.split("/").join("__");
+  return relativePath.split("/").join("__").replace(/[^A-Za-z0-9._-]/g, "_");
 }
 
 async function walk(dir) {
