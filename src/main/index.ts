@@ -169,10 +169,10 @@ function verifyJava(path: string, requiredMajor: number) {
   if (result.error || result.status !== 0 || major < requiredMajor) throw new Error("Ta paczka wymaga Java " + requiredMajor + " lub nowszej.");
 }
 async function oauthExchange(accessToken: string) {
-  const auth = new MicrosoftAuthenticator({});
-  const tokens = await auth.acquireXBoxToken(accessToken, new AbortController().signal);
+  const auth = new MicrosoftAuthenticator();
+  const tokens = await auth.acquireXBoxToken(accessToken);
   const claim = tokens.minecraftXstsResponse.DisplayClaims.xui[0];
-  const minecraft = await auth.loginMinecraftWithXBox(claim.uhs, tokens.minecraftXstsResponse.Token, new AbortController().signal);
+  const minecraft = await auth.loginMinecraftWithXBox(claim.uhs, tokens.minecraftXstsResponse.Token);
   const response = await fetch("https://api.minecraftservices.com/minecraft/profile", { headers: { Authorization: "Bearer " + minecraft.access_token } });
   if (!response.ok) throw new Error("To konto Microsoft nie ma aktywnego profilu Minecraft Java Edition.");
   const profile = await response.json() as AccountProfile;
