@@ -4,7 +4,7 @@ import { Activity, Blocks, Check, ChevronRight, Cpu, Download, ExternalLink, Gam
 import type { BootstrapState, LauncherProgress, LauncherSettings } from "../../shared/types";
 
 type Page = "home" | "mods" | "settings";
-const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "", onboardingCompleted: false, onboardingVersion: 0 }, manifest: null, manifestError: null, appVersion: "0.1.3" };
+const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "", onboardingCompleted: false, onboardingVersion: 0 }, manifest: null, manifestError: null, appVersion: "0.1.4" };
 
 export default function App() {
   const [state, setState] = useState(initial);
