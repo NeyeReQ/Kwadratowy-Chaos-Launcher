@@ -14,7 +14,7 @@ Desktopowy launcher Minecraft dla społeczności **Kwadratowy Chaos**. Aplikacja
 - Sprawdzanie plików przez SHA-512 i pobieranie tylko brakujących lub zmienionych modów.
 - Usuwanie wyłącznie plików, które launcher wcześniej zarejestrował jako zarządzane.
 - Darmowe publikowanie plików paczki jako assetów GitHub Releases.
-- Aktualizacje samego launchera przez GitHub Releases.
+- Aktualizacje samego launchera przez stabilne GitHub Releases (`v*`); wydania paczki modów (`pack-v*`) są oznaczane jako pre-release i pomijane przez updater.
 - Workflow GitHub Actions do budowania instalatora Windows.
 
 ## Jak wygląda uruchamianie gry
