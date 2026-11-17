@@ -52,7 +52,35 @@ Uzywamy assetow GitHub Releases w tym samym publicznym repozytorium. GitHub pozw
 
 Nie dodawaj zawartosci folderu `pack/` do zwyklych commitow Git — folder jest celowo ignorowany. Jesli pojedynczy plik ma 2 GiB lub wiecej albo paczka ma ponad 1000 plikow, trzeba podzielic publikacje na wiecej release'ow i dostosowac generator manifestu.
 
-Przed kazdym uruchomieniem gry launcher pobiera manifest z `config/launcher.json`, porownuje SHA-512, pobiera tylko brakujace lub zmienione pliki, weryfikuje je i zapisuje atomowo. Stare pliki usuwa tylko wtedy, gdy byly wczesniej wpisane do indeksu plikow zarzadzanych przez launcher. Nie usuwa swiatow, logow, screenshotow ani obcych plikow.
+### Jak aktualizować mody bez ponownego instalowania launchera
+
+To jest niezależne od aktualizacji samej aplikacji. Gracze **nie pobierają ponownie instalatora** i nie muszą ręcznie pobierać modów.
+
+1. Dodaj nowe pliki do `pack/mods/`, podmień istniejące JAR-y albo usuń te, których nie ma już być. Tak samo możesz aktualizować pliki w `config/`, `resourcepacks/` itd.
+2. Zwiększ `packVersion` w `launcher/manifest.json`, np. z `0.2.0` na `0.2.1`.
+3. W terminalu VS Code uruchom:
+   ```powershell
+   $env:PACK_VERSION = "0.2.1"
+   npm.cmd run manifest:build
+   powershell -ExecutionPolicy Bypass -File .\tools\publish-pack-release.ps1
+   git add launcher/manifest.json
+   git commit -m "Publish modpack 0.2.1"
+   git push origin main
+   ```
+   Wstaw ten sam nowy numer wersji w trzech miejscach. Najpierw publikowane są pliki Release, a potem manifest, który wskazuje na te pliki.
+4. Gracz zamyka Minecrafta i przy następnym użyciu launchera klika **„Sprawdź mody i otwórz launcher”** albo **„Przygotuj grę”**.
+
+Launcher pobiera najnowszy manifest z GitHuba i porównuje SHA-512 każdego lokalnego pliku. Pobiera tylko nowe lub zmienione pliki, a niezmienione pomija. Pliki usunięte z manifestu usuwa z komputera gracza tylko wtedy, gdy wcześniej były zarządzane przez launcher. Światy, screenshoty, logi i inne pliki użytkownika pozostają nietknięte. Zmiana samych modów **nie wymaga nowej wersji instalatora ani aktualizacji launchera**.
+
+### Jak opublikować aktualizację samego launchera
+
+Po pobraniu zmian z repozytorium:
+```powershell
+git pull origin main
+git tag v0.1.1
+git push origin v0.1.1
+```
+GitHub Actions zbuduje instalator Windows x64 i opublikuje go w GitHub Releases. Każdy push na `main` buduje też testowy instalator jako artefakt Actions. Zwiększ numer `version` w `package.json` i użyj odpowiedniego tagu `v...` dla kolejnej wersji aplikacji. Zainstalowane, spakowane wydania launchera sprawdzają aktualizacje przez Electron Updater; gracze nie muszą ręcznie pobierać nowego instalatora przy kolejnych aktualizacjach aplikacji.
 
 ## Uruchomienie i build
 ```powershell
