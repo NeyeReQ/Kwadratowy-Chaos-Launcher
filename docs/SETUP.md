@@ -7,14 +7,11 @@
 - Konto Microsoft z licencja Minecraft: Java Edition
 - Java 25 dla Minecraft Java Edition 26.3
 
-## Microsoft OAuth
-1. W Microsoft Entra utworz rejestracje aplikacji obslugujaca osobiste konta Microsoft.
-2. Wlacz public client flows / allow public client flows.
-3. Skopiuj Application (client) ID do pola `microsoftClientId` w `config/launcher.json`.
-4. Nie dodawaj client secret — aplikacja desktopowa jest publicznym klientem OAuth.
-5. Przebuduj instalator po zmianie konfiguracji.
+## Logowanie i uruchamianie gry
 
-Logowanie odbywa sie przez Device Code Flow na stronie Microsoft. Haslo nie trafia do launchera, a refresh token jest szyfrowany przez Windows DPAPI przez Electron safeStorage.
+Launcher nie przechowuje danych logowania i nie wykonuje własnego OAuth. Gracz loguje się w oficjalnym Minecraft Launcherze. Kwadratowy Chaos przygotowuje profil Fabric w `%APPDATA%\\.minecraft\\launcher_profiles.json`, a mody i konfiguracje zapisuje w osobnym katalogu danych paczki. W oficjalnym launcherze wybierz profil **Kwadratowy Chaos** i kliknij **Graj**.
+
+Przed przygotowaniem profilu zamknij oficjalny Minecraft Launcher, aby nie nadpisał pliku `launcher_profiles.json`. Po przygotowaniu Kwadratowy Chaos może otworzyć oficjalną aplikację, jeśli jest zainstalowana.
 
 ## Wersja Minecrafta
 Biezacy manifest jest ustawiony na Minecraft Java Edition `26.3`, Java `25` i Fabric Loader `0.20.1`. Jesli zmienisz wersje serwera, zmien razem `minecraftVersion`, `javaMajor` i `loader.version`. Aktualnie aktywne sa vanilla i Fabric; Forge/NeoForge maja zarezerwowane typy, ale ich instalator nie zostal jeszcze wdrozony.
@@ -70,4 +67,4 @@ Instalator NSIS powstaje w `release/`.
 Wypchnij tag `v0.1.1`. GitHub Actions zbuduje instalator x64 i opublikuje Release. Electron Updater sprawdza aktualizacje opublikowane przez GitHub Releases. Workflow wymaga Actions i uprawnien `contents: write`.
 
 ## Przed publicznym wydaniem
-Ustaw Microsoft Client ID, potwierdz wersje Minecrafta/loadera/Java, wpisz adres serwera, opublikuj faktyczne mody i konfiguracje oraz przetestuj instalacje na czystym koncie Windows.
+Potwierdz wersje Minecrafta/loadera/Java, wpisz adres serwera, opublikuj faktyczne mody i konfiguracje oraz przetestuj instalacje na czystym koncie Windows z oficjalnym Minecraft Launcherem.
