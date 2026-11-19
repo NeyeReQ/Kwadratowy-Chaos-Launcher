@@ -269,13 +269,18 @@ body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;back
 }
 .intro-bottomline span:first-child{display:flex;align-items:center;gap:9px}
 .intro-bottomline i{width:3px;height:3px;border-radius:50%;background:#c28bff;box-shadow:0 0 8px #c28bff}
-.intro-skip{
-  position:absolute;right:34px;top:68px;z-index:10;display:flex;align-items:center;gap:5px;padding:8px 10px;
+.intro-controls{
+  position:absolute;right:34px;top:68px;z-index:10;display:flex;align-items:center;gap:8px;
+}
+.intro-audio-toggle,.intro-skip{
+  display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 10px;
   border:1px solid #ffffff22;border-radius:5px;background:#0d0a18a8;color:#b9aacb;
   font:8px 'DM Mono',monospace;letter-spacing:1px;cursor:pointer;opacity:0;
   animation:kc-intro-reveal .5s ease-out .5s forwards;transition:background .2s,border-color .2s,color .2s;
 }
-.intro-skip:hover{background:#a36aff25;border-color:#bd91ff70;color:#fff}
+.intro-audio-toggle{color:#d9c7ec}
+.intro-audio-toggle:hover,.intro-skip:hover{background:#a36aff25;border-color:#bd91ff70;color:#fff}
+.intro-audio-toggle:focus-visible,.intro-skip:focus-visible{outline:2px solid #c28bff;outline-offset:3px}
 .startup-intro.is-exiting{animation:kc-intro-exit .72s ease-in forwards}
 @keyframes kc-intro-world{from{transform:scale(1.08);filter:saturate(.65) brightness(.68)}to{transform:scale(1);filter:saturate(.95) brightness(1)}}
 @keyframes kc-intro-grid{from{background-position:0 0}to{background-position:54px 54px}}
@@ -290,7 +295,9 @@ body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;back
 @keyframes kc-intro-exit{to{opacity:0;visibility:hidden;transform:scale(1.025)}}
 @media(max-width:760px){
   .intro-topline{top:18px;left:18px;right:18px;font-size:7px;letter-spacing:1px}
-  .intro-skip{right:16px;top:51px;font-size:7px}
+  .intro-controls{right:16px;top:51px;gap:6px}
+  .intro-audio-toggle,.intro-skip{padding:7px 8px;font-size:7px}
+  .intro-audio-toggle span{display:none}
   .intro-kicker{font-size:8px;letter-spacing:2px;gap:8px}
   .intro-kicker span{width:20px}
   .intro-logo{width:76px;height:76px}
