@@ -125,7 +125,7 @@ export default function App() {
     {onboardingOpen && <div className="onboarding-overlay">
       <section className="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
         <div className="onboarding-brand">
-          <div className="brand-mark"><span>K</span><i/></div>
+          <div className="brand-mark"><span><b>K</b><b>C</b></span><i/></div>
           <div><strong>KWADRATOWY CHAOS</strong><small>KRÓTKI PRZEWODNIK</small></div>
         </div>
         <div className="onboarding-progress">
@@ -203,7 +203,7 @@ export default function App() {
       </section>
     </div>}
     <aside className="sidebar">
-      <div className="brand"><div className="brand-mark"><span>K</span><i/></div><div><strong>KWADRATOWY</strong><small>CHAOS / LAUNCHER</small></div></div>
+      <div className="brand"><div className="brand-mark"><span><b>K</b><b>C</b></span><i/></div><div><strong>KWADRATOWY</strong><small>CHAOS / LAUNCHER</small></div></div>
       <div className="sidebar-caption">MENU GŁÓWNE</div>
       <nav className="nav-list">
         <button className={page === "home" ? "nav-item active" : "nav-item"} onClick={() => setPage("home")}><Gamepad2 size={18}/>Start</button>
@@ -239,8 +239,8 @@ export default function App() {
               </div>
               <div className="hero-hint"><ShieldCheck size={14}/> Logowanie i uruchomienie Minecrafta odbywają się w oficjalnym launcherze.</div>
             </div>
-            <div className="hero-art" aria-hidden="true"><div className="cube cube-back"/><div className="cube cube-main"><span>K</span></div><div className="cube cube-small"/><div className="art-ring ring-one"/><div className="art-ring ring-two"/><div className="art-label"><span>KC</span><small>PLAY<br/>YOUR WAY</small></div></div>
-            <div className="hero-bottom"><span><i/> AUTOMATYCZNE AKTUALIZACJE</span><span>01 / 03</span></div>
+            <div className="hero-art" aria-hidden="true"><div className="hero-kc-emblem"><span className="hero-kc-cube"><Blocks size={29}/></span><strong>KC</strong><small>CRAFT · PLAY · COMMUNITY</small></div></div>
+            <div className="hero-bottom"><span><i/> AUTOMATYCZNE AKTUALIZACJE</span><span className="hero-creator"><Sparkles size={12}/> Launcher stworzony przez użytkownika <b>NeyeR</b></span></div>
           </section>
 
           <section className="stats-grid">
