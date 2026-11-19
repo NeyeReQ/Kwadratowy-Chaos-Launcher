@@ -99,3 +99,13 @@ body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;back
 .hero-creator svg{color:#dca8ff;flex:none}
 .hero-creator b{color:#fff;font-weight:800}
 @media(max-width:1250px){.hero-art{left:53%}.hero-kc-emblem{padding:14px 18px}.hero-kc-emblem strong{font-size:54px}.hero-creator{font-size:6px;letter-spacing:.35px}}
+
+
+/* Use the original user-supplied KC pixel logo throughout the application. */
+.brand-mark{display:flex;align-items:center;justify-content:center;flex:0 0 43px;width:43px;height:43px;position:relative;border:0;border-radius:0;background:transparent;box-shadow:none;transform:none}
+.brand-mark img{display:block;width:100%;height:auto;max-height:100%;object-fit:contain;image-rendering:pixelated}
+.brand-mark i,.brand-mark:after{display:none;content:none}
+.onboarding-brand .brand-mark{width:39px;height:39px;flex-basis:39px}
+.hero-kc-emblem{transform:none}
+.hero-kc-logo{display:block;width:160px;max-width:100%;height:auto;max-height:120px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 9px 20px #a96cff55)}
+@media(max-width:1250px){.hero-kc-logo{width:140px;max-height:108px}}
