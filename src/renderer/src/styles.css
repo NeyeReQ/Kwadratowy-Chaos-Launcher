@@ -74,3 +74,28 @@
 .ram-result-note{font-size:10px!important;color:#aaa5bb!important;margin:5px 0 0!important}
 .onboarding-wait-label{font:9px 'DM Mono',monospace;letter-spacing:1px;color:#c9a8ff}
 @media(max-width:620px){.onboarding-progress{gap:5px}.onboarding-progress-step{padding:8px 6px;gap:6px;min-height:56px}.onboarding-step-icon{width:29px;height:29px;flex-basis:29px}.onboarding-step-label{font-size:8px}.onboarding-step-check{display:none}.ram-result-grid{gap:7px}.ram-result-grid>div{padding:12px}.ram-result-grid strong{font-size:20px}}
+
+
+/* Minecraft world imagery and KC visual identity */
+body{position:relative;isolation:isolate;background:#090912}
+body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(120deg,rgba(77,42,139,.76),rgba(19,12,37,.82)),var(--world-scene);background-position:center;background-size:cover;opacity:.62;filter:saturate(.86) contrast(.92)}
+.app-shell{position:relative;z-index:1;background:linear-gradient(140deg,rgba(15,14,28,.46),rgba(8,8,15,.62))}
+.sidebar{background:rgba(13,13,23,.86);backdrop-filter:blur(9px)}
+.topbar{background:rgba(12,11,21,.33);backdrop-filter:blur(8px)}
+.brand-mark{background:linear-gradient(135deg,#9e70ff 0%,#d75fc8 58%,#f6d9fa 100%);border:1px solid rgba(255,255,255,.22);box-shadow:0 7px 24px #b65cff48,inset 0 1px 10px #ffffff25}
+.brand-mark span{display:flex;align-items:center;gap:0;font-size:19px;font-weight:900;letter-spacing:-3px;color:white;transform:rotate(4deg);text-shadow:0 2px 0 #59328d,0 4px 12px #25103f}
+.brand-mark span b:first-child{color:#fff}
+.brand-mark span b:last-child{color:#ffe0f4;text-shadow:0 2px 0 #9c4d98,0 4px 12px #25103f}
+.brand-mark i{width:8px;height:8px;border:1px solid #fff8;background:#fff;box-shadow:0 0 12px #fff,2px 2px 0 #a56bff}
+.brand-mark:after{content:"";position:absolute;width:7px;height:7px;left:-3px;bottom:-3px;border-radius:2px;background:#f7d8ff;box-shadow:0 0 10px #e4aaff,0 0 0 2px #8f61d8}
+.hero-card{background:linear-gradient(90deg,rgba(17,12,31,.96) 0%,rgba(23,15,42,.84) 44%,rgba(30,14,46,.38) 100%),var(--world-scene);background-size:cover;background-position:center 50%;box-shadow:0 20px 55px #0007,0 0 28px #a76dff12}
+.hero-grid{opacity:.09}
+.hero-art{position:absolute;inset:0 0 0 55%;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.hero-kc-emblem{display:grid;justify-items:center;gap:9px;padding:18px 24px 16px;border:1px solid rgba(238,212,255,.36);border-radius:20px;background:linear-gradient(145deg,rgba(22,14,40,.79),rgba(88,44,113,.38));box-shadow:0 20px 50px #0805118c,inset 0 1px 16px #ffffff19;backdrop-filter:blur(5px);transform:rotate(3deg)}
+.hero-kc-cube{width:46px;height:46px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,#a881ff,#df68c8 66%,#fff0fb);color:#fff;box-shadow:0 7px 20px #b56aff65,inset 0 1px 5px #fff8}
+.hero-kc-emblem strong{font-size:62px;line-height:.95;font-weight:900;letter-spacing:-7px;padding-right:7px;background:linear-gradient(115deg,#fff 2%,#d7c0ff 37%,#f19bdc 78%,#fff 100%);color:transparent;background-clip:text;-webkit-background-clip:text;text-shadow:0 8px 28px #c277ff35}
+.hero-kc-emblem small{font:7px 'DM Mono',monospace;letter-spacing:1.4px;color:#e7d5fb;white-space:nowrap}
+.hero-creator{display:flex;align-items:center;gap:5px;color:#d4bde9;font-size:7px;letter-spacing:.65px;white-space:nowrap}
+.hero-creator svg{color:#dca8ff;flex:none}
+.hero-creator b{color:#fff;font-weight:800}
+@media(max-width:1250px){.hero-art{left:53%}.hero-kc-emblem{padding:14px 18px}.hero-kc-emblem strong{font-size:54px}.hero-creator{font-size:6px;letter-spacing:.35px}}
