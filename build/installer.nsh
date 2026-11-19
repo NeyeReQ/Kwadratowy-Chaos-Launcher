@@ -31,7 +31,7 @@
 
 !macro customUnWelcomePage
   !define MUI_WELCOMEPAGE_TITLE "Odinstaluj Kwadratowy Chaos"
-  !define MUI_WELCOMEPAGE_TEXT "Czy na pewno chcesz usunąć launcher Kwadratowy Chaos z tego komputera?$\\r$\\n$\\r$\\nUstawienia i dane gry zapisane poza folderem aplikacji pozostaną bez zmian."
+  !define MUI_WELCOMEPAGE_TEXT "Czy na pewno chcesz usunąć launcher Kwadratowy Chaos z tego komputera?$\r$\n$\r$\nUstawienia i dane gry zapisane poza folderem aplikacji pozostaną bez zmian."
   !insertmacro MUI_UNPAGE_WELCOME
 !macroend
 
