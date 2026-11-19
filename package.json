@@ -1,6 +1,6 @@
 {
   "name": "kwadratowy-chaos-launcher",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "private": true,
   "description": "Oficjalny launcher Minecraft dla Kwadratowego Chaosu",
   "main": "./out/main/index.js",
@@ -63,7 +63,8 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Kwadratowy Chaos"
+      "shortcutName": "Kwadratowy Chaos",
+      "differentialPackage": false
     },
     "publish": [
       {
