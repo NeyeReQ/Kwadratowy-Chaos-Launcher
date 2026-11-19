@@ -3,10 +3,11 @@ import { useEffect, useMemo, useState, type MouseEvent as ReactMouseEvent, type 
 import { Activity, Blocks, Check, ChevronRight, Cpu, Download, ExternalLink, Gamepad2, HardDrive, MessageCircle, Monitor, Play, RefreshCw, Settings2, ShieldCheck, Sparkles, Users, X } from "lucide-react";
 import type { BootstrapState, LauncherProgress, LauncherSettings } from "../../shared/types";
 import { playUiSound, startActivitySound, type ActivitySound } from "./sounds";
+import kcLogo from "./assets/kc-logo.png";
 
 type Page = "home" | "mods" | "settings";
 const ONBOARDING_VERSION = 5;
-const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "", onboardingCompleted: false, onboardingVersion: 0 }, manifest: null, manifestError: null, appVersion: "0.1.11" };
+const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "", onboardingCompleted: false, onboardingVersion: 0 }, manifest: null, manifestError: null, appVersion: "0.1.12" };
 
 export default function App() {
   const [state, setState] = useState(initial);
@@ -125,7 +126,7 @@ export default function App() {
     {onboardingOpen && <div className="onboarding-overlay">
       <section className="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
         <div className="onboarding-brand">
-          <div className="brand-mark"><img src="/kc-logo.png" alt="KC" draggable={false}/></div>
+          <div className="brand-mark"><img src={kcLogo} alt="KC" draggable={false}/></div>
           <div><strong>KWADRATOWY CHAOS</strong><small>KRÓTKI PRZEWODNIK</small></div>
         </div>
         <div className="onboarding-progress">
@@ -203,7 +204,7 @@ export default function App() {
       </section>
     </div>}
     <aside className="sidebar">
-      <div className="brand"><div className="brand-mark"><img src="/kc-logo.png" alt="KC" draggable={false}/></div><div><strong>KWADRATOWY</strong><small>CHAOS / LAUNCHER</small></div></div>
+      <div className="brand"><div className="brand-mark"><img src={kcLogo} alt="KC" draggable={false}/></div><div><strong>KWADRATOWY</strong><small>CHAOS / LAUNCHER</small></div></div>
       <div className="sidebar-caption">MENU GŁÓWNE</div>
       <nav className="nav-list">
         <button className={page === "home" ? "nav-item active" : "nav-item"} onClick={() => setPage("home")}><Gamepad2 size={18}/>Start</button>
@@ -239,7 +240,7 @@ export default function App() {
               </div>
               <div className="hero-hint"><ShieldCheck size={14}/> Logowanie i uruchomienie Minecrafta odbywają się w oficjalnym launcherze.</div>
             </div>
-            <div className="hero-art" aria-hidden="true"><div className="hero-kc-emblem"><img className="hero-kc-logo" src="/kc-logo.png" alt="KC" draggable={false}/><small>CRAFT · PLAY · COMMUNITY</small></div></div>
+            <div className="hero-art" aria-hidden="true"><div className="hero-kc-emblem"><img className="hero-kc-logo" src={kcLogo} alt="KC" draggable={false}/><small>CRAFT · PLAY · COMMUNITY</small></div></div>
             <div className="hero-bottom"><span><i/> AUTOMATYCZNE AKTUALIZACJE</span><span className="hero-creator"><Sparkles size={12}/> Launcher stworzony przez użytkownika <b>NeyeR</b></span></div>
           </section>
 
