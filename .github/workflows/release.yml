@@ -67,11 +67,11 @@ jobs:
           }
 
           $installer = $installers[0]
-          $blockmap = "$($installer.FullName).blockmap"
           $latestYml = Join-Path $installer.DirectoryName "latest.yml"
+          $blockmaps = @(Get-ChildItem -Path $installer.DirectoryName -Filter "*.blockmap" -File)
 
-          if (-not (Test-Path -LiteralPath $blockmap -PathType Leaf)) {
-            throw "Brakuje pliku blockmap: $blockmap"
+          if ($blockmaps.Count -gt 0) {
+            throw "Znaleziono pliki .blockmap mimo wyłączenia aktualizacji różnicowych: $($blockmaps.Name -join ', ')"
           }
 
           if ($isVersionTag) {
@@ -79,9 +79,9 @@ jobs:
               throw "Brakuje latest.yml — electron-builder nie wygenerował metadanych aktualizacji."
             }
 
-            & gh release upload $tag $installer.FullName $blockmap $latestYml --repo $repository --clobber
+            & gh release upload $tag $installer.FullName $latestYml --repo $repository --clobber
             if ($LASTEXITCODE -ne 0) {
-              throw "Nie udało się przesłać kompletu: instalatora .exe, blockmap i latest.yml."
+              throw "Nie udało się przesłać instalatora .exe i metadanych latest.yml."
             }
 
             & gh release edit $tag --repo $repository --draft=false
@@ -94,18 +94,31 @@ jobs:
               throw "Nie udało się zweryfikować plików opublikowanego Release."
             }
             # GitHub/electron-builder may normalize spaces and punctuation in asset names.
-            # Compare normalized names so "Kwadratowy Chaos ..." and "Kwadratowy-Chaos-..."
-            # are treated as the same asset.
             $normalizeAssetName = {
               param($name)
               [regex]::Replace([string]$name, '[^A-Za-z0-9]', '').ToLowerInvariant()
             }
             $publishedAssetKeys = @($publishedAssets | ForEach-Object { & $normalizeAssetName $_ })
-            foreach ($expectedAsset in @($installer.Name, [IO.Path]::GetFileName($blockmap), "latest.yml")) {
+            foreach ($expectedAsset in @($installer.Name, "latest.yml")) {
               $expectedAssetKey = & $normalizeAssetName $expectedAsset
               if ($publishedAssetKeys -notcontains $expectedAssetKey) {
                 throw "Brakuje wymaganego assetu w GitHub Release: $expectedAsset"
               }
+            }
+            if (@($publishedAssets | Where-Object { $_ -match '\.blockmap
+
+          Write-Host "Zweryfikowany instalator: $($installer.FullName)"
+          Write-Host "Rozmiar instalatora: $([math]::Round($installer.Length / 1MB, 2)) MB"
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Kwadratowy-Chaos-Setup-${{ github.ref_name }}
+          path: release/*.exe
+          if-no-files-found: error
+          retention-days: 14
+ }).Count -gt 0) {
+              throw "Release zawiera .blockmap mimo wyłączenia aktualizacji różnicowych."
             }
           }
 
