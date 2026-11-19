@@ -9,10 +9,10 @@
 !define KC_COLOR_PINK "D75DC9"
 !define KC_COLOR_BUTTON_ALT "352442"
 
-!define MUI_BGCOLOR "\${KC_COLOR_BG}"
-!define MUI_TEXTCOLOR "\${KC_COLOR_TEXT}"
+!define MUI_BGCOLOR "${KC_COLOR_BG}"
+!define MUI_TEXTCOLOR "${KC_COLOR_TEXT}"
 !define MUI_HEADER_TRANSPARENT_TEXT
-!define MUI_INSTFILESPAGE_COLORS "DDAFF8 \${KC_COLOR_BG}"
+!define MUI_INSTFILESPAGE_COLORS "DDAFF8 ${KC_COLOR_BG}"
 !define MUI_INSTFILESPAGE_PROGRESSBAR "smooth colored"
 !define MUI_INSTFILESPAGE_FINISHHEADER_TEXT "OPERACJA ZAKOŃCZONA"
 !define MUI_INSTFILESPAGE_FINISHHEADER_SUBTEXT "Kwadratowy Chaos jest gotowy."
@@ -33,7 +33,7 @@ Var KC_InstallerButtonFont
   ; The Modern UI creates the outer navigation buttons before these callbacks run.
   ; Remove Windows' dark/light native theme so SetCtlColors also controls button text.
   Function KC_InstallerGuiInit
-    SetCtlColors $HWNDPARENT "" "\${KC_COLOR_BG}"
+    SetCtlColors $HWNDPARENT "" "${KC_COLOR_BG}"
     Call KC_StyleWizardButtons
   FunctionEnd
 
@@ -43,24 +43,24 @@ Var KC_InstallerButtonFont
     ; Primary action: Next / Install / Finish, using the launcher's Start purple.
     GetDlgItem $0 $HWNDPARENT 1
     System::Call 'UXTHEME::SetWindowTheme(p$0,w" ",w" ")'
-    SetCtlColors $0 "FFFFFF" "\${KC_COLOR_PRIMARY}"
-    SendMessage $0 \${WM_SETFONT} $KC_InstallerButtonFont 1
+    SetCtlColors $0 "FFFFFF" "${KC_COLOR_PRIMARY}"
+    SendMessage $0 ${WM_SETFONT} $KC_InstallerButtonFont 1
 
     ; Secondary actions: Back and Cancel on a dark plum surface.
     GetDlgItem $0 $HWNDPARENT 2
     System::Call 'UXTHEME::SetWindowTheme(p$0,w" ",w" ")'
-    SetCtlColors $0 "\${KC_COLOR_TEXT}" "\${KC_COLOR_BUTTON_ALT}"
-    SendMessage $0 \${WM_SETFONT} $KC_InstallerButtonFont 1
+    SetCtlColors $0 "${KC_COLOR_TEXT}" "${KC_COLOR_BUTTON_ALT}"
+    SendMessage $0 ${WM_SETFONT} $KC_InstallerButtonFont 1
 
     GetDlgItem $0 $HWNDPARENT 3
     System::Call 'UXTHEME::SetWindowTheme(p$0,w" ",w" ")'
-    SetCtlColors $0 "\${KC_COLOR_TEXT}" "\${KC_COLOR_BUTTON_ALT}"
-    SendMessage $0 \${WM_SETFONT} $KC_InstallerButtonFont 1
+    SetCtlColors $0 "${KC_COLOR_TEXT}" "${KC_COLOR_BUTTON_ALT}"
+    SendMessage $0 ${WM_SETFONT} $KC_InstallerButtonFont 1
   FunctionEnd
 
   !ifdef BUILD_UNINSTALLER
     Function un.KC_UninstallerGuiInit
-      SetCtlColors $HWNDPARENT "" "\${KC_COLOR_BG}"
+      SetCtlColors $HWNDPARENT "" "${KC_COLOR_BG}"
       Call un.KC_StyleUninstallerButtons
     FunctionEnd
 
@@ -69,48 +69,48 @@ Var KC_InstallerButtonFont
 
       GetDlgItem $0 $HWNDPARENT 1
       System::Call 'UXTHEME::SetWindowTheme(p$0,w" ",w" ")'
-      SetCtlColors $0 "FFFFFF" "\${KC_COLOR_PRIMARY}"
-      SendMessage $0 \${WM_SETFONT} $KC_InstallerButtonFont 1
+      SetCtlColors $0 "FFFFFF" "${KC_COLOR_PRIMARY}"
+      SendMessage $0 ${WM_SETFONT} $KC_InstallerButtonFont 1
 
       GetDlgItem $0 $HWNDPARENT 2
       System::Call 'UXTHEME::SetWindowTheme(p$0,w" ",w" ")'
-      SetCtlColors $0 "\${KC_COLOR_TEXT}" "\${KC_COLOR_BUTTON_ALT}"
-      SendMessage $0 \${WM_SETFONT} $KC_InstallerButtonFont 1
+      SetCtlColors $0 "${KC_COLOR_TEXT}" "${KC_COLOR_BUTTON_ALT}"
+      SendMessage $0 ${WM_SETFONT} $KC_InstallerButtonFont 1
 
       GetDlgItem $0 $HWNDPARENT 3
       System::Call 'UXTHEME::SetWindowTheme(p$0,w" ",w" ")'
-      SetCtlColors $0 "\${KC_COLOR_TEXT}" "\${KC_COLOR_BUTTON_ALT}"
-      SendMessage $0 \${WM_SETFONT} $KC_InstallerButtonFont 1
+      SetCtlColors $0 "${KC_COLOR_TEXT}" "${KC_COLOR_BUTTON_ALT}"
+      SendMessage $0 ${WM_SETFONT} $KC_InstallerButtonFont 1
     FunctionEnd
   !else
     ; Install-scope selection uses nsDialogs radio buttons. Windows' themed
     ; radio controls ignore SetCtlColors, so disable their theme before repaint.
     Function KC_InstallModePageShow
-      SetCtlColors $MultiUser.InstallModePage "" "\${KC_COLOR_BG}"
+      SetCtlColors $MultiUser.InstallModePage "" "${KC_COLOR_BG}"
 
-      SetCtlColors $MultiUser.InstallModePage.Text "\${KC_COLOR_TEXT}" "\${KC_COLOR_BG}"
-      SendMessage $MultiUser.InstallModePage.Text \${WM_SETFONT} $KC_InstallerButtonFont 0
+      SetCtlColors $MultiUser.InstallModePage.Text "${KC_COLOR_TEXT}" "${KC_COLOR_BG}"
+      SendMessage $MultiUser.InstallModePage.Text ${WM_SETFONT} $KC_InstallerButtonFont 0
 
-      SetCtlColors $MultiUser.InstallModePage.AllUsers "\${KC_COLOR_TEXT}" "\${KC_COLOR_BG}"
+      SetCtlColors $MultiUser.InstallModePage.AllUsers "${KC_COLOR_TEXT}" "${KC_COLOR_BG}"
       System::Call 'UXTHEME::SetWindowTheme(p$MultiUser.InstallModePage.AllUsers,w" ",w" ")'
-      SendMessage $MultiUser.InstallModePage.AllUsers \${WM_SETFONT} $KC_InstallerButtonFont 1
+      SendMessage $MultiUser.InstallModePage.AllUsers ${WM_SETFONT} $KC_InstallerButtonFont 1
 
-      SetCtlColors $MultiUser.InstallModePage.CurrentUser "\${KC_COLOR_TEXT}" "\${KC_COLOR_BG}"
+      SetCtlColors $MultiUser.InstallModePage.CurrentUser "${KC_COLOR_TEXT}" "${KC_COLOR_BG}"
       System::Call 'UXTHEME::SetWindowTheme(p$MultiUser.InstallModePage.CurrentUser,w" ",w" ")'
-      SendMessage $MultiUser.InstallModePage.CurrentUser \${WM_SETFONT} $KC_InstallerButtonFont 1
+      SendMessage $MultiUser.InstallModePage.CurrentUser ${WM_SETFONT} $KC_InstallerButtonFont 1
 
-      SetCtlColors $RadioButtonLabel1 "\${KC_COLOR_MUTED}" "\${KC_COLOR_BG}"
+      SetCtlColors $RadioButtonLabel1 "${KC_COLOR_MUTED}" "${KC_COLOR_BG}"
     FunctionEnd
 
     ; Live extraction log and progress page: readable lavender text on deep purple.
     Function KC_InstallFilesPageShow
-      SetCtlColors $mui.InstFilesPage "" "\${KC_COLOR_BG}"
-      SetCtlColors $mui.InstFilesPage.Text "\${KC_COLOR_TEXT}" "\${KC_COLOR_BG}"
-      SetCtlColors $mui.InstFilesPage.Log "\${KC_COLOR_TEXT}" "\${KC_COLOR_BG}"
+      SetCtlColors $mui.InstFilesPage "" "${KC_COLOR_BG}"
+      SetCtlColors $mui.InstFilesPage.Text "${KC_COLOR_TEXT}" "${KC_COLOR_BG}"
+      SetCtlColors $mui.InstFilesPage.Log "${KC_COLOR_TEXT}" "${KC_COLOR_BG}"
 
-      SetCtlColors $mui.InstFilesPage.ShowLogButton "\${KC_COLOR_TEXT}" "\${KC_COLOR_BUTTON_ALT}"
+      SetCtlColors $mui.InstFilesPage.ShowLogButton "${KC_COLOR_TEXT}" "${KC_COLOR_BUTTON_ALT}"
       System::Call 'UXTHEME::SetWindowTheme(p$mui.InstFilesPage.ShowLogButton,w" ",w" ")'
-      SendMessage $mui.InstFilesPage.ShowLogButton \${WM_SETFONT} $KC_InstallerButtonFont 1
+      SendMessage $mui.InstFilesPage.ShowLogButton ${WM_SETFONT} $KC_InstallerButtonFont 1
 
       Call KC_StyleWizardButtons
     FunctionEnd
@@ -119,7 +119,7 @@ Var KC_InstallerButtonFont
 
 !macro customWelcomePage
   !define MUI_WELCOMEPAGE_TITLE "Witaj w Kwadratowym Chaosie"
-  !define MUI_WELCOMEPAGE_TEXT "Twój świat zaczyna się tutaj.$\\r$\\n$\\r$\\nZainstaluj oficjalny launcher, aby uruchamiać Minecrafta, synchronizować mody i zarządzać ustawieniami w jednym miejscu.$\\r$\\n$\\r$\\nKliknij Dalej, aby przygotować instalację."
+  !define MUI_WELCOMEPAGE_TEXT "Twój świat zaczyna się tutaj.$\r$\n$\r$\nZainstaluj oficjalny launcher, aby uruchamiać Minecrafta, synchronizować mody i zarządzać ustawieniami w jednym miejscu.$\r$\n$\r$\nKliknij Dalej, aby przygotować instalację."
   !insertmacro MUI_PAGE_WELCOME
 
   ; The next page is electron-builder's install-scope selector.
@@ -127,8 +127,8 @@ Var KC_InstallerButtonFont
 
   !define MUI_DIRECTORYPAGE_TEXT_TOP "Wybierz miejsce dla swojego launchera."
   !define MUI_DIRECTORYPAGE_TEXT_DESTINATION "Folder instalacji:"
-  !define MUI_DIRECTORYPAGE_BGCOLOR "\${KC_COLOR_FIELD}"
-  !define MUI_DIRECTORYPAGE_TEXTCOLOR "\${KC_COLOR_TEXT}"
+  !define MUI_DIRECTORYPAGE_BGCOLOR "${KC_COLOR_FIELD}"
+  !define MUI_DIRECTORYPAGE_TEXTCOLOR "${KC_COLOR_TEXT}"
 
   ; Replace the generic native button caption with the installer's Polish action.
   InstallButtonText "ZAINSTALUJ"
@@ -145,7 +145,7 @@ Var KC_InstallerButtonFont
 
 !macro customUnWelcomePage
   !define MUI_WELCOMEPAGE_TITLE "Odinstaluj Kwadratowy Chaos"
-  !define MUI_WELCOMEPAGE_TEXT "Czy na pewno chcesz usunąć launcher Kwadratowy Chaos z tego komputera?$\\r$\\n$\\r$\\nUstawienia i dane gry zapisane poza folderem aplikacji pozostaną bez zmian."
+  !define MUI_WELCOMEPAGE_TEXT "Czy na pewno chcesz usunąć launcher Kwadratowy Chaos z tego komputera?$\r$\n$\r$\nUstawienia i dane gry zapisane poza folderem aplikacji pozostaną bez zmian."
   !insertmacro MUI_UNPAGE_WELCOME
 
   !define MUI_FINISHPAGE_TITLE "Kwadratowy Chaos został usunięty"
