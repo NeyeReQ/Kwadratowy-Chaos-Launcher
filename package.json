@@ -1,6 +1,6 @@
 {
   "name": "kwadratowy-chaos-launcher",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "private": true,
   "description": "Oficjalny launcher Minecraft dla Kwadratowego Chaosu",
   "main": "./out/main/index.js",
@@ -9,7 +9,7 @@
     "dev": "electron-vite dev",
     "build": "electron-vite build",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "dist:win": "npm run typecheck && npm run build && electron-builder --win nsis",
+    "dist:win": "node tools/generate-installer-art.mjs && npm run typecheck && npm run build && electron-builder --win nsis",
     "manifest:build": "node tools/build-manifest.mjs",
     "postinstall": "electron-builder install-app-deps"
   },
@@ -75,7 +75,12 @@
       "shortcutName": "Kwadratowy Chaos",
       "differentialPackage": false,
       "installerIcon": "build/icon.ico",
-      "uninstallerIcon": "build/icon.ico"
+      "uninstallerIcon": "build/icon.ico",
+      "include": "build/installer.nsh",
+      "installerHeader": "build/installer-header.bmp",
+      "installerSidebar": "build/installer-sidebar.bmp",
+      "uninstallerSidebar": "build/installer-sidebar.bmp",
+      "language": "1045"
     },
     "publish": [
       {
