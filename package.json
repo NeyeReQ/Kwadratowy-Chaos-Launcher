@@ -1,6 +1,6 @@
 {
   "name": "kwadratowy-chaos-launcher",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "private": true,
   "description": "Oficjalny launcher Minecraft dla Kwadratowego Chaosu",
   "main": "./out/main/index.js",
@@ -65,7 +65,7 @@
           ]
         }
       ],
-      "icon": "build/icon.png"
+      "icon": "build/icon.ico"
     },
     "nsis": {
       "oneClick": false,
