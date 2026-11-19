@@ -88,8 +88,8 @@ Po tej zmianie GitHub przestanie traktować paczkę modów jako stabilne wydanie
 Po pobraniu zmian z repozytorium:
 ```powershell
 git pull origin main
-git tag v0.1.7
-git push origin v0.1.1
+git tag v0.1.8
+git push origin v0.1.8
 ```
 GitHub Actions zbuduje instalator Windows x64 i opublikuje go w GitHub Releases. Każdy push na `main` buduje też testowy instalator jako artefakt Actions. Zwiększ numer `version` w `package.json` i użyj odpowiedniego tagu `v...` dla kolejnej wersji aplikacji. Zainstalowane, spakowane wydania launchera sprawdzają aktualizacje przez Electron Updater; gracze nie muszą ręcznie pobierać nowego instalatora przy kolejnych aktualizacjach aplikacji.
 
@@ -117,7 +117,7 @@ npm run dist:win
 Instalator NSIS powstaje w `release/`.
 
 ## Aktualizacje launchera
-Wypchnij tag `v0.1.7`. GitHub Actions zbuduje instalator x64 i opublikuje Release. Electron Updater sprawdza aktualizacje opublikowane przez GitHub Releases. Workflow wymaga Actions i uprawnien `contents: write`.
+Wypchnij tag `v0.1.8`. GitHub Actions zbuduje instalator x64 i opublikuje Release. Electron Updater sprawdza aktualizacje opublikowane przez GitHub Releases. Workflow wymaga Actions i uprawnien `contents: write`.
 
 ## Przed publicznym wydaniem
 Potwierdz wersje Minecrafta/loadera/Java, wpisz adres serwera, opublikuj faktyczne mody i konfiguracje oraz przetestuj instalacje na czystym koncie Windows z oficjalnym Minecraft Launcherem.
