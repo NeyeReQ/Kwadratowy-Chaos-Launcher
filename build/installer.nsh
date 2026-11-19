@@ -16,30 +16,30 @@
 !define MUI_CUSTOMFUNCTION_UNGUIINIT "un.KC_UninstallerGuiInit"
 
 !macro customHeader
-  ; All wizard surfaces and standard navigation buttons use the launcher palette.
-  Function KC_InstallerGuiInit
-    SetCtlColors $HWNDPARENT "" "130B20"
-    GetDlgItem $0 $HWNDPARENT 1
-    SetCtlColors $0 "FFFFFF" "9145C8"
-    GetDlgItem $0 $HWNDPARENT 2
-    SetCtlColors $0 "F8F1FF" "38234B"
-    GetDlgItem $0 $HWNDPARENT 3
-    SetCtlColors $0 "F8F1FF" "38234B"
-  FunctionEnd
+  ; NSIS compiles the uninstaller and installer as separate scripts.
+  ; Keep install callbacks out of the uninstaller script and vice versa.
+  !ifdef BUILD_UNINSTALLER
+    Function un.KC_UninstallerGuiInit
+      SetCtlColors $HWNDPARENT "" "130B20"
+      GetDlgItem $0 $HWNDPARENT 1
+      SetCtlColors $0 "FFFFFF" "9145C8"
+      GetDlgItem $0 $HWNDPARENT 2
+      SetCtlColors $0 "F8F1FF" "38234B"
+      GetDlgItem $0 $HWNDPARENT 3
+      SetCtlColors $0 "F8F1FF" "38234B"
+    FunctionEnd
+  !else
+    ; All installer wizard surfaces and standard navigation buttons.
+    Function KC_InstallerGuiInit
+      SetCtlColors $HWNDPARENT "" "130B20"
+      GetDlgItem $0 $HWNDPARENT 1
+      SetCtlColors $0 "FFFFFF" "9145C8"
+      GetDlgItem $0 $HWNDPARENT 2
+      SetCtlColors $0 "F8F1FF" "38234B"
+      GetDlgItem $0 $HWNDPARENT 3
+      SetCtlColors $0 "F8F1FF" "38234B"
+    FunctionEnd
 
-  Function un.KC_UninstallerGuiInit
-    SetCtlColors $HWNDPARENT "" "130B20"
-    GetDlgItem $0 $HWNDPARENT 1
-    SetCtlColors $0 "FFFFFF" "9145C8"
-    GetDlgItem $0 $HWNDPARENT 2
-    SetCtlColors $0 "F8F1FF" "38234B"
-    GetDlgItem $0 $HWNDPARENT 3
-    SetCtlColors $0 "F8F1FF" "38234B"
-  FunctionEnd
-
-  ; These callbacks belong only to the installer build. electron-builder
-  ; compiles the uninstaller first with BUILD_UNINSTALLER defined.
-  !ifndef BUILD_UNINSTALLER
     ; This page is the install-scope selection inserted after Welcome.
     Function KC_InstallModePageShow
       SetCtlColors $MultiUser.InstallModePage "" "130B20"
