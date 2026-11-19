@@ -109,3 +109,45 @@ body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;back
 .hero-kc-emblem{transform:none}
 .hero-kc-logo{display:block;width:160px;max-width:100%;height:auto;max-height:120px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 9px 20px #a96cff55)}
 @media(max-width:1250px){.hero-kc-logo{width:140px;max-height:108px}}
+
+/* Small Minecraft-inspired companions in the hero panel. */
+.minecraft-ambient{position:absolute;inset:0;z-index:2;overflow:hidden;pointer-events:none}
+.minecraft-bee{position:absolute;right:9%;top:27px;width:54px;height:42px;filter:drop-shadow(0 7px 12px #0008);transform-origin:center;animation:kc-bee-flight 11s ease-in-out infinite}
+.bee-wings{transform-box:fill-box;transform-origin:50% 80%;animation:kc-bee-wings .19s steps(2,end) infinite alternate}
+.minecraft-walker-track{position:absolute;right:18px;bottom:37px;width:31%;height:52px;overflow:hidden}
+.minecraft-walker{position:absolute;left:-40px;bottom:0;width:36px;height:50px;overflow:visible;filter:drop-shadow(0 4px 6px #0009);animation:kc-walker-traverse 12s linear infinite}
+.walker-leg,.walker-arm{transform-box:fill-box;transform-origin:50% 0}
+.walker-leg-left{animation:kc-walk-step .34s steps(2,end) infinite alternate}
+.walker-leg-right{animation:kc-walk-step .34s steps(2,end) infinite alternate-reverse}
+.walker-arm-left{animation:kc-arm-swing .34s steps(2,end) infinite alternate-reverse}
+.walker-arm-right{animation:kc-arm-swing .34s steps(2,end) infinite alternate}
+@keyframes kc-bee-flight{
+  0%,100%{transform:translate3d(0,2px,0) rotate(4deg)}
+  25%{transform:translate3d(-58px,-11px,0) rotate(-7deg)}
+  52%{transform:translate3d(-132px,5px,0) rotate(5deg)}
+  78%{transform:translate3d(-69px,-8px,0) rotate(-4deg)}
+}
+@keyframes kc-bee-wings{from{transform:scaleY(.42) rotate(-8deg)}to{transform:scaleY(1) rotate(8deg)}}
+@keyframes kc-walker-traverse{
+  0%{left:-40px;transform:scaleX(1)}
+  48%{left:calc(100% - 34px);transform:scaleX(1)}
+  50%{left:calc(100% - 34px);transform:scaleX(-1)}
+  98%{left:-40px;transform:scaleX(-1)}
+  100%{left:-40px;transform:scaleX(1)}
+}
+@keyframes kc-walk-step{from{transform:rotate(-23deg)}to{transform:rotate(23deg)}}
+@keyframes kc-arm-swing{from{transform:rotate(18deg)}to{transform:rotate(-18deg)}}
+.hero-art{z-index:1}
+.hero-copy{z-index:3}
+.hero-bottom{z-index:4}
+@media(max-width:1250px){
+  .minecraft-bee{right:8%;top:24px;width:46px;height:36px}
+  .minecraft-walker-track{right:12px;width:34%;bottom:37px}
+  .minecraft-walker{width:32px;height:46px}
+}
+@media(prefers-reduced-motion:reduce){
+  .minecraft-bee,.bee-wings,.minecraft-walker,.walker-leg,.walker-arm{animation:none!important}
+  .minecraft-bee{transform:translateY(2px)}
+  .minecraft-walker{left:42%;transform:none}
+}
+
