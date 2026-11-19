@@ -262,10 +262,12 @@ async function openOfficialLauncher() {
 
   await shell.openExternal("https://www.minecraft.net/download");
 }
+const appIconPath = () => app.isPackaged ? join(process.resourcesPath, "icon.png") : join(app.getAppPath(), "build", "icon.png");
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1440, height: 900, minWidth: 1120, minHeight: 700,
-    backgroundColor: "#090912", title: "Kwadratowy Chaos", autoHideMenuBar: true,
+    backgroundColor: "#090912", title: "Kwadratowy Chaos", icon: appIconPath(), autoHideMenuBar: true,
     webPreferences: { preload: join(__dirname, "../preload/index.cjs"), contextIsolation: true, nodeIntegration: false, sandbox: true }
   });
   if (process.env.ELECTRON_RENDERER_URL) void mainWindow.loadURL(process.env.ELECTRON_RENDERER_URL);
