@@ -262,7 +262,7 @@ async function openOfficialLauncher() {
 
   await shell.openExternal("https://www.minecraft.net/download");
 }
-const appIconPath = () => app.isPackaged ? join(process.resourcesPath, "icon.png") : join(app.getAppPath(), "build", "icon.png");
+const appIconPath = () => app.isPackaged ? join(process.resourcesPath, "icon.ico") : join(app.getAppPath(), "build", "icon.ico");
 
 function createWindow() {
   mainWindow = new BrowserWindow({
