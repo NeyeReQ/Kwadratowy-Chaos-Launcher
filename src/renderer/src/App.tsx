@@ -7,7 +7,7 @@ import kcLogo from "./assets/kc-logo.png";
 
 type Page = "home" | "mods" | "settings";
 const ONBOARDING_VERSION = 5;
-const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "", onboardingCompleted: false, onboardingVersion: 0 }, manifest: null, manifestError: null, appVersion: "0.1.12" };
+const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "", onboardingCompleted: false, onboardingVersion: 0 }, manifest: null, manifestError: null, appVersion: "0.1.13" };
 
 function MinecraftBee() {
   return <svg className="minecraft-bee" viewBox="0 0 56 42" role="presentation" shapeRendering="crispEdges">
