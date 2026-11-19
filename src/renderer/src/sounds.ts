@@ -280,103 +280,106 @@ function introHat(context: AudioContext, output: AudioNode, startAt: number, ope
   introNoiseHit(context, output, startAt, open ? 0.16 : 0.055, open ? 0.042 : 0.024, "highpass", 6900);
 }
 
-/** Original cinematic synth soundtrack generated locally with Web Audio. */
+function introBell(
+  context: AudioContext,
+  output: AudioNode,
+  frequency: number,
+  startAt: number,
+  volume: number,
+  duration = 0.82
+) {
+  const partials = [
+    { ratio: 1, level: 1, decay: 1 },
+    { ratio: 2.01, level: 0.28, decay: 0.58 },
+    { ratio: 3.93, level: 0.095, decay: 0.34 }
+  ];
+
+  for (const partial of partials) {
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    const filter = context.createBiquadFilter();
+    const endAt = startAt + duration * partial.decay;
+
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(frequency * partial.ratio, startAt);
+    oscillator.detune.setValueAtTime(partial.ratio === 1 ? -2 : 3, startAt);
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(Math.min(8500, frequency * partial.ratio * 4.2), startAt);
+    gain.gain.setValueAtTime(0.0001, startAt);
+    gain.gain.exponentialRampToValueAtTime(Math.max(0.0002, volume * partial.level), startAt + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, endAt);
+
+    oscillator.connect(filter);
+    filter.connect(gain);
+    gain.connect(output);
+    oscillator.start(startAt);
+    oscillator.stop(endAt + 0.035);
+  }
+}
+
+/** Original, Windows-startup-inspired chime generated locally with Web Audio. */
 export function playIntroTrailerSound(reducedMotion = false): IntroSoundHandle {
   const context = getAudioContext();
   if (!context) return { setMuted: () => undefined, stop: () => undefined };
 
   const master = context.createGain();
   const compressor = context.createDynamicsCompressor();
-  compressor.threshold.setValueAtTime(-19, context.currentTime);
-  compressor.knee.setValueAtTime(18, context.currentTime);
-  compressor.ratio.setValueAtTime(5.5, context.currentTime);
-  compressor.attack.setValueAtTime(0.004, context.currentTime);
-  compressor.release.setValueAtTime(0.22, context.currentTime);
-  master.gain.setValueAtTime(0.88, context.currentTime);
+  compressor.threshold.setValueAtTime(-24, context.currentTime);
+  compressor.knee.setValueAtTime(20, context.currentTime);
+  compressor.ratio.setValueAtTime(4.2, context.currentTime);
+  compressor.attack.setValueAtTime(0.012, context.currentTime);
+  compressor.release.setValueAtTime(0.32, context.currentTime);
+  master.gain.setValueAtTime(0.84, context.currentTime);
   master.connect(compressor);
   compressor.connect(context.destination);
 
   if (reducedMotion) {
-    introMusicNote(context, master, 523.25, context.currentTime + 0.04, 0.34, 0.075, "sine", 2200);
-    introMusicNote(context, master, 659.25, context.currentTime + 0.19, 0.4, 0.075, "sine", 2200);
-    introMusicNote(context, master, 783.99, context.currentTime + 0.38, 0.52, 0.08, "sine", 2400);
+    const start = context.currentTime + 0.04;
+    introBell(context, master, 659.25, start, 0.052, 0.58);
+    introBell(context, master, 1046.5, start + 0.24, 0.045, 0.66);
   } else {
     const start = context.currentTime + 0.035;
-    const bpm = 148;
-    const beat = 60 / bpm;
-    const bar = beat * 4;
 
-    // Chord progression: A minor / F / C / G — bright, adventurous and cinematic.
-    const chords = [
-      { pad: [220, 261.63, 329.63], bass: 55 },
-      { pad: [174.61, 220, 261.63], bass: 43.65 },
-      { pad: [261.63, 329.63, 392], bass: 65.41 },
-      { pad: [196, 246.94, 293.66], bass: 49 }
-    ];
-
-    // Wide, filtered synth chords that lift the whole intro.
-    chords.forEach((chord, barIndex) => {
-      const at = start + barIndex * bar;
-      chord.pad.forEach((frequency, voice) => {
-        introMusicNote(context, master, frequency, at + 0.015, bar - 0.06, 0.028, "sawtooth", 1550, voice === 1 ? -7 : 5);
-        introMusicNote(context, master, frequency * 2, at + 0.035, bar - 0.1, 0.009, "triangle", 3200);
-      });
-      // A gentle swell before each new chord.
-      introNoise(context, master, Math.max(0, at - start + 0.88), 0.68, 260, 4300, 0.032);
-    });
-
-    // Pulsing bass follows the chord root and adds movement between the kicks.
-    chords.forEach((chord, barIndex) => {
-      for (let pulse = 0; pulse < 4; pulse += 1) {
-        const at = start + barIndex * bar + pulse * beat;
-        introMusicNote(context, master, chord.bass, at, 0.31, pulse % 2 === 0 ? 0.12 : 0.085, "triangle", 620);
-        if (pulse === 2) {
-          introMusicNote(context, master, chord.bass * 2, at + beat * 0.5, 0.16, 0.045, "sawtooth", 1100);
-        }
+    // A soft, warm C-major-seven pad slowly blooms underneath the chime.
+    const pad = [130.81, 196, 261.63, 329.63, 392, 493.88];
+    pad.forEach((frequency, index) => {
+      introMusicNote(context, master, frequency, start + index * 0.018, 5.45, index < 2 ? 0.026 : 0.019, "sine", 1800, index % 2 === 0 ? -4 : 4);
+      if (index > 1) {
+        introMusicNote(context, master, frequency * 2, start + 0.1 + index * 0.018, 4.9, 0.006, "sine", 3400, 2);
       }
     });
 
-    // Punchy four-on-the-floor kick, backbeat snare and crisp eighth-note hats.
-    for (let step = 0; step < 16; step += 1) {
-      const at = start + step * beat;
-      const isBackbeat = step % 4 === 1 || step % 4 === 3;
-      introKick(context, master, at, isBackbeat ? 0.14 : 0.235);
-      if (isBackbeat) introSnare(context, master, at);
-      introHat(context, master, at + beat * 0.5, step === 7 || step === 15);
-      if (step % 4 === 2) introHat(context, master, at + beat * 0.25);
-    }
+    // Airy rising shimmer, more like a computer waking up than a music beat.
+    introTone(context, master, 145, 0.08, 2.05, 0.022, "sine", 620);
+    introNoise(context, master, 0.06, 1.72, 260, 6200, 0.026);
+    introNoise(context, master, 1.32, 0.92, 680, 5100, 0.014);
 
-    // A memorable, rising eight-note motif, repeated with a different resolution each bar.
+    // A delicate, ascending glass-bell phrase.
     const melody = [
-      [659.25, 783.99, 880, 1046.5, 880, 783.99, 659.25, 587.33],
-      [698.46, 880, 1046.5, 1174.66, 1046.5, 880, 783.99, 698.46],
-      [783.99, 1046.5, 1318.51, 1567.98, 1318.51, 1174.66, 1046.5, 783.99],
-      [587.33, 783.99, 987.77, 1174.66, 987.77, 880, 783.99, 659.25]
+      { note: 659.25, at: 0.78, volume: 0.064 },
+      { note: 783.99, at: 1.43, volume: 0.066 },
+      { note: 1046.5, at: 2.08, volume: 0.073 },
+      { note: 1318.51, at: 2.73, volume: 0.074 },
+      { note: 1567.98, at: 3.38, volume: 0.07 },
+      { note: 1318.51, at: 4.03, volume: 0.052 },
+      { note: 1046.5, at: 4.62, volume: 0.048 }
     ];
-    melody.forEach((notes, barIndex) => {
-      notes.forEach((frequency, noteIndex) => {
-        const at = start + barIndex * bar + noteIndex * beat * 0.5 + 0.025;
-        const accent = noteIndex === 0 || noteIndex === 3 ? 0.085 : 0.061;
-        introMusicNote(context, master, frequency, at, 0.17, accent, "triangle", 4200);
-        if (noteIndex === 3 || noteIndex === 7) {
-          introMusicNote(context, master, frequency * 2, at + 0.012, 0.115, 0.022, "sine", 5200);
-        }
-      });
+    melody.forEach(({ note, at, volume }) => {
+      introBell(context, master, note, start + at, volume);
     });
 
-    // Portal impact on the first big downbeat and a final sparkle as the logo settles.
-    introNoise(context, master, 1.38, 0.55, 5200, 110, 0.12);
-    introMusicNote(context, master, 55, start + bar, 0.72, 0.22, "sine", 260);
-    introMusicNote(context, master, 110, start + bar, 0.48, 0.1, "triangle", 700);
-    introNoiseHit(context, master, start + bar, 0.75, 0.052, "highpass", 2400);
-    introMusicNote(context, master, 1567.98, start + bar * 2.88, 0.72, 0.032, "sine", 5200);
+    // Final warm chord and a small sparkling tail as the logo settles.
+    [523.25, 659.25, 783.99, 987.77, 1174.66].forEach((frequency, index) => {
+      introBell(context, master, frequency, start + 4.78 + index * 0.026, 0.025, 1.05);
+    });
+    introNoiseHit(context, master, start + 4.72, 0.58, 0.018, "highpass", 3600);
   }
 
   return {
     setMuted(muted: boolean) {
       const now = context.currentTime;
       master.gain.cancelScheduledValues(now);
-      master.gain.setTargetAtTime(muted ? 0.0001 : 0.88, now, 0.035);
+      master.gain.setTargetAtTime(muted ? 0.0001 : 0.84, now, 0.035);
     },
     stop() {
       const now = context.currentTime;
@@ -385,7 +388,7 @@ export function playIntroTrailerSound(reducedMotion = false): IntroSoundHandle {
       window.setTimeout(() => {
         master.disconnect();
         compressor.disconnect();
-      }, 220);
+      }, 240);
     }
   };
 }
