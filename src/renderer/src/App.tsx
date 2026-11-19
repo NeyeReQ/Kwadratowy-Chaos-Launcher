@@ -9,6 +9,46 @@ type Page = "home" | "mods" | "settings";
 const ONBOARDING_VERSION = 5;
 const initial: BootstrapState = { settings: { memoryMb: 6144, gamePath: "", onboardingCompleted: false, onboardingVersion: 0 }, manifest: null, manifestError: null, appVersion: "0.1.12" };
 
+function MinecraftBee() {
+  return <svg className="minecraft-bee" viewBox="0 0 56 42" role="presentation" shapeRendering="crispEdges">
+    <g className="bee-wings">
+      <rect x="13" y="3" width="12" height="10" rx="2" fill="#f7eaff" opacity=".9"/>
+      <rect x="29" y="1" width="13" height="11" rx="2" fill="#e8dcff" opacity=".82"/>
+      <rect x="16" y="5" width="7" height="5" fill="#fff" opacity=".65"/>
+    </g>
+    <rect x="10" y="13" width="34" height="20" fill="#30213d"/>
+    <rect x="12" y="15" width="30" height="16" fill="#f5c94e"/>
+    <rect x="20" y="15" width="6" height="16" fill="#3a2b40"/>
+    <rect x="32" y="15" width="6" height="16" fill="#3a2b40"/>
+    <rect x="40" y="18" width="9" height="10" fill="#efbd3e"/>
+    <rect x="45" y="20" width="3" height="3" fill="#30213d"/>
+    <rect x="45" y="25" width="3" height="3" fill="#30213d"/>
+    <rect x="14" y="32" width="3" height="5" fill="#30213d"/>
+    <rect x="35" y="32" width="3" height="5" fill="#30213d"/>
+    <rect x="8" y="19" width="3" height="8" fill="#30213d"/>
+    <rect x="3" y="21" width="5" height="3" fill="#30213d"/>
+  </svg>;
+}
+
+function MinecraftWalker() {
+  return <svg className="minecraft-walker" viewBox="0 0 38 52" role="presentation" shapeRendering="crispEdges">
+    <rect x="9" y="2" width="20" height="5" fill="#4b3025"/>
+    <rect x="7" y="6" width="24" height="15" fill="#dca47d"/>
+    <rect x="7" y="6" width="24" height="5" fill="#493026"/>
+    <rect x="7" y="10" width="4" height="5" fill="#493026"/>
+    <rect x="11" y="13" width="3" height="3" fill="#25202f"/>
+    <rect x="24" y="13" width="3" height="3" fill="#25202f"/>
+    <rect x="14" y="18" width="10" height="3" fill="#a96858"/>
+    <g className="walker-arm walker-arm-left"><rect x="2" y="23" width="6" height="15" fill="#dca47d"/><rect x="2" y="34" width="6" height="5" fill="#7f55c4"/></g>
+    <rect x="8" y="21" width="22" height="17" fill="#a66be9"/>
+    <rect x="8" y="21" width="22" height="4" fill="#c28cff"/>
+    <rect x="14" y="25" width="10" height="10" fill="#7949b8"/>
+    <g className="walker-arm walker-arm-right"><rect x="30" y="23" width="6" height="15" fill="#dca47d"/><rect x="30" y="34" width="6" height="5" fill="#7f55c4"/></g>
+    <g className="walker-leg walker-leg-left"><rect x="9" y="38" width="9" height="10" fill="#334b85"/><rect x="7" y="46" width="12" height="4" fill="#252431"/></g>
+    <g className="walker-leg walker-leg-right"><rect x="20" y="38" width="9" height="10" fill="#334b85"/><rect x="20" y="46" width="12" height="4" fill="#252431"/></g>
+  </svg>;
+}
+
 export default function App() {
   const [state, setState] = useState(initial);
   const [page, setPage] = useState<Page>("home");
@@ -119,7 +159,7 @@ export default function App() {
     }
   }
 
-  const onboardingOpen = onboardingReady && !(state.settings.onboardingCompleted === true && state.settings.onboardingVersion >= ONBOARDING_VERSION);
+  const onboardingOpen = onboardingReady && state.settings.onboardingCompleted !== true;
   const title = page === "home" ? "Witaj w Kwadratowym Chaosie" : page === "mods" ? "Twoja paczka" : "Ustawienia";
 
   return <div className="app-shell" onPointerOver={handleButtonPointerOver} onClick={handleAppClick}>
@@ -241,6 +281,7 @@ export default function App() {
               <div className="hero-hint"><ShieldCheck size={14}/> Logowanie i uruchomienie Minecrafta odbywają się w oficjalnym launcherze.</div>
             </div>
             <div className="hero-art" aria-hidden="true"><div className="hero-kc-emblem"><img className="hero-kc-logo" src={kcLogo} alt="KC" draggable={false}/><small>CRAFT · PLAY · COMMUNITY</small></div></div>
+            <div className="minecraft-ambient" aria-hidden="true"><MinecraftBee/><div className="minecraft-walker-track"><MinecraftWalker/></div></div>
             <div className="hero-bottom"><span><i/> AUTOMATYCZNE AKTUALIZACJE</span><span className="hero-creator"><Sparkles size={12}/> Launcher stworzony przez użytkownika <b>NeyeR</b></span></div>
           </section>
 
