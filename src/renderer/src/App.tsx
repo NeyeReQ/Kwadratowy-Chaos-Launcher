@@ -49,8 +49,45 @@ function MinecraftWalker() {
   </svg>;
 }
 
+
+function StartupIntro({ onSkip }: { onSkip: () => void }) {
+  return <div className="startup-intro" role="dialog" aria-label="Intro Kwadratowego Chaosu">
+    <div className="intro-grid" aria-hidden="true"/>
+    <div className="intro-glow" aria-hidden="true"/>
+    <div className="intro-portal" aria-hidden="true"><span/><i/></div>
+    <div className="intro-topline">
+      <span><i/> TRANSMISJA OTWARTA</span>
+      <span>KWADRATOWY CHAOS <b>//</b> 001</span>
+    </div>
+    <div className="intro-bee-flight" aria-hidden="true"><MinecraftBee/></div>
+    <div className="intro-center">
+      <div className="intro-kicker"><span/> SERWER DLA STREAMERÓW <span/></div>
+      <img className="intro-logo" src={kcLogo} alt="Kwadratowy Chaos" draggable={false}/>
+      <div className="intro-wordmark"><span>KWADRATOWY</span><b>CHAOS</b></div>
+      <p className="intro-tagline">JEDEN ŚWIAT. SETKI HISTORII. <strong>ZERO SCENARIUSZA.</strong></p>
+      <div className="intro-loading">
+        <span>OTWIERANIE PORTALU</span>
+        <i><b/></i>
+        <small>ŁADOWANIE ŚWIATA STREAMERÓW…</small>
+      </div>
+    </div>
+    <div className="intro-landscape" aria-hidden="true">
+      <div className="intro-blocks"><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/></div>
+      <div className="intro-ground"/>
+      <div className="intro-walker-track"><MinecraftWalker/></div>
+    </div>
+    <div className="intro-side-note"><span>WORLD GENERATION</span><b>● ONLINE</b><small>COMMUNITY BUILD 01</small></div>
+    <div className="intro-bottomline">
+      <span>CRAFT <i/> CREATE <i/> CHAOS</span>
+      <span>TWÓJ SERWER. WASZE ZASADY.</span>
+    </div>
+    <button className="intro-skip" type="button" onClick={onSkip}>POMIŃ INTRO <ChevronRight size={13}/></button>
+  </div>;
+}
+
 export default function App() {
   const [state, setState] = useState(initial);
+  const [introVisible, setIntroVisible] = useState(true);
   const [page, setPage] = useState<Page>("home");
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState<LauncherProgress | null>(null);
@@ -79,6 +116,12 @@ export default function App() {
     const button = event.target.closest("button");
     if (button && !button.disabled) playUiSound("click");
   }
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const timer = window.setTimeout(() => setIntroVisible(false), reducedMotion ? 1100 : 6500);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     let activity: ActivitySound | null = null;
@@ -163,6 +206,7 @@ export default function App() {
   const title = page === "home" ? "Witaj w Kwadratowym Chaosie" : page === "mods" ? "Twoja paczka" : "Ustawienia";
 
   return <div className="app-shell" onPointerOver={handleButtonPointerOver} onClick={handleAppClick}>
+    {introVisible && <StartupIntro onSkip={() => setIntroVisible(false)}/>}
     {onboardingOpen && <div className="onboarding-overlay">
       <section className="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
         <div className="onboarding-brand">
