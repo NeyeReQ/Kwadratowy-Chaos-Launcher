@@ -19,6 +19,7 @@ export default defineConfig({
   },
   renderer: {
     root: resolve("src/renderer"),
+    base: "./",
     plugins: [react()],
     resolve: { alias: { "@shared": resolve("src/shared") } },
     build: { outDir: resolve("out/renderer"), emptyOutDir: true }
