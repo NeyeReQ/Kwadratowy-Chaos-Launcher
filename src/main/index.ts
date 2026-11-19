@@ -315,7 +315,7 @@ function registerIpc() {
 }
 app.whenReady().then(async () => {
   await loadConfig(); await loadSettings(); registerIpc(); createWindow();
-  autoUpdater.autoDownload = true; autoUpdater.autoInstallOnAppQuit = true; autoUpdater.allowPrerelease = false;
+  autoUpdater.autoDownload = true; autoUpdater.autoInstallOnAppQuit = true; autoUpdater.allowPrerelease = false; autoUpdater.disableDifferentialDownload = true;
   autoUpdater.on("checking-for-update", () => mainWindow?.webContents.send("updates:status", "Sprawdzanie aktualizacji…"));
   autoUpdater.on("update-available", () => mainWindow?.webContents.send("updates:status", "Nowa wersja. Pobieranie…"));
   autoUpdater.on("update-not-available", () => mainWindow?.webContents.send("updates:status", "Launcher jest aktualny."));
