@@ -35,6 +35,9 @@ jobs:
       - name: Build application
         run: npm run build
 
+      - name: Generate branded NSIS artwork
+        run: node tools/generate-installer-art.mjs
+
       - name: Build and publish Windows installer
         shell: pwsh
         env:
