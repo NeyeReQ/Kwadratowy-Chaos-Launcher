@@ -37,22 +37,26 @@
     SetCtlColors $0 "F8F1FF" "38234B"
   FunctionEnd
 
-  ; This page is the install-scope selection inserted after Welcome.
-  Function KC_InstallModePageShow
-    SetCtlColors $MultiUser.InstallModePage "" "130B20"
-    SetCtlColors $MultiUser.InstallModePage.Text "F8F1FF" "130B20"
-    SetCtlColors $MultiUser.InstallModePage.AllUsers "F8F1FF" "130B20"
-    SetCtlColors $MultiUser.InstallModePage.CurrentUser "F8F1FF" "130B20"
-    SetCtlColors $RadioButtonLabel1 "DCC8EB" "130B20"
-  FunctionEnd
+  ; These callbacks belong only to the installer build. electron-builder
+  ; compiles the uninstaller first with BUILD_UNINSTALLER defined.
+  !ifndef BUILD_UNINSTALLER
+    ; This page is the install-scope selection inserted after Welcome.
+    Function KC_InstallModePageShow
+      SetCtlColors $MultiUser.InstallModePage "" "130B20"
+      SetCtlColors $MultiUser.InstallModePage.Text "F8F1FF" "130B20"
+      SetCtlColors $MultiUser.InstallModePage.AllUsers "F8F1FF" "130B20"
+      SetCtlColors $MultiUser.InstallModePage.CurrentUser "F8F1FF" "130B20"
+      SetCtlColors $RadioButtonLabel1 "DCC8EB" "130B20"
+    FunctionEnd
 
-  ; The progress page shows the live NSIS file operation log on a dark surface.
-  Function KC_InstallFilesPageShow
-    SetCtlColors $mui.InstFilesPage "" "130B20"
-    SetCtlColors $mui.InstFilesPage.Text "F8F1FF" "130B20"
-    SetCtlColors $mui.InstFilesPage.Log "F8F1FF" "130B20"
-    SetCtlColors $mui.InstFilesPage.ShowLogButton "FFFFFF" "9145C8"
-  FunctionEnd
+    ; The progress page shows the live NSIS file operation log on a dark surface.
+    Function KC_InstallFilesPageShow
+      SetCtlColors $mui.InstFilesPage "" "130B20"
+      SetCtlColors $mui.InstFilesPage.Text "F8F1FF" "130B20"
+      SetCtlColors $mui.InstFilesPage.Log "F8F1FF" "130B20"
+      SetCtlColors $mui.InstFilesPage.ShowLogButton "FFFFFF" "9145C8"
+    FunctionEnd
+  !endif
 !macroend
 
 !macro customWelcomePage
