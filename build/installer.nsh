@@ -16,9 +16,20 @@
 !define MUI_CUSTOMFUNCTION_UNGUIINIT "un.KC_UninstallerGuiInit"
 
 !macro customHeader
-  ; NSIS compiles the uninstaller and installer as separate scripts.
-  ; Keep install callbacks out of the uninstaller script and vice versa.
+  ; MUI compiles .onGUIInit in both the installer and uninstaller scripts.
+  ; Keep this ordinary install callback available in both compile passes.
+  Function KC_InstallerGuiInit
+    SetCtlColors $HWNDPARENT "" "130B20"
+    GetDlgItem $0 $HWNDPARENT 1
+    SetCtlColors $0 "FFFFFF" "9145C8"
+    GetDlgItem $0 $HWNDPARENT 2
+    SetCtlColors $0 "F8F1FF" "38234B"
+    GetDlgItem $0 $HWNDPARENT 3
+    SetCtlColors $0 "F8F1FF" "38234B"
+  FunctionEnd
+
   !ifdef BUILD_UNINSTALLER
+    ; Only the uninstaller build may contain un.* functions.
     Function un.KC_UninstallerGuiInit
       SetCtlColors $HWNDPARENT "" "130B20"
       GetDlgItem $0 $HWNDPARENT 1
@@ -29,18 +40,7 @@
       SetCtlColors $0 "F8F1FF" "38234B"
     FunctionEnd
   !else
-    ; All installer wizard surfaces and standard navigation buttons.
-    Function KC_InstallerGuiInit
-      SetCtlColors $HWNDPARENT "" "130B20"
-      GetDlgItem $0 $HWNDPARENT 1
-      SetCtlColors $0 "FFFFFF" "9145C8"
-      GetDlgItem $0 $HWNDPARENT 2
-      SetCtlColors $0 "F8F1FF" "38234B"
-      GetDlgItem $0 $HWNDPARENT 3
-      SetCtlColors $0 "F8F1FF" "38234B"
-    FunctionEnd
-
-    ; This page is the install-scope selection inserted after Welcome.
+    ; Page-specific installer callbacks are excluded from the uninstaller.
     Function KC_InstallModePageShow
       SetCtlColors $MultiUser.InstallModePage "" "130B20"
       SetCtlColors $MultiUser.InstallModePage.Text "F8F1FF" "130B20"
@@ -49,7 +49,6 @@
       SetCtlColors $RadioButtonLabel1 "DCC8EB" "130B20"
     FunctionEnd
 
-    ; The progress page shows the live NSIS file operation log on a dark surface.
     Function KC_InstallFilesPageShow
       SetCtlColors $mui.InstFilesPage "" "130B20"
       SetCtlColors $mui.InstFilesPage.Text "F8F1FF" "130B20"
