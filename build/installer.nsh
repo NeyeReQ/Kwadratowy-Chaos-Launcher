@@ -1,19 +1,21 @@
-!macro customHeader
-  ; One dark violet/pink theme for every MUI page.
-  !define MUI_BGCOLOR "130B20"
-  !define MUI_TEXTCOLOR "F8F1FF"
-  !define MUI_HEADERIMAGE
-  !define MUI_HEADER_TRANSPARENT_TEXT
-  !define MUI_INSTFILESPAGE_COLORS "E6A1F3 130B20"
-  !define MUI_INSTFILESPAGE_PROGRESSBAR "smooth colored"
-  !define MUI_INSTFILESPAGE_FINISHHEADER_TEXT "INSTALACJA ZAKOŃCZONA"
-  !define MUI_INSTFILESPAGE_FINISHHEADER_SUBTEXT "Kwadratowy Chaos jest gotowy do uruchomienia."
-  !define MUI_INSTFILESPAGE_ABORTHEADER_TEXT "INSTALACJA PRZERWANA"
-  !define MUI_INSTFILESPAGE_ABORTHEADER_SUBTEXT "Proces instalacji został zatrzymany."
+; Interface values must be defined before assistedInstaller.nsh inserts its MUI pages.
+!define MUI_BGCOLOR "130B20"
+!define MUI_TEXTCOLOR "F8F1FF"
+!define MUI_HEADER_TRANSPARENT_TEXT
+!define MUI_INSTFILESPAGE_COLORS "E6A1F3 130B20"
+!define MUI_INSTFILESPAGE_PROGRESSBAR "smooth colored"
+!define MUI_INSTFILESPAGE_FINISHHEADER_TEXT "INSTALACJA ZAKOŃCZONA"
+!define MUI_INSTFILESPAGE_FINISHHEADER_SUBTEXT "Kwadratowy Chaos jest gotowy do uruchomienia."
+!define MUI_INSTFILESPAGE_ABORTHEADER_TEXT "INSTALACJA PRZERWANA"
+!define MUI_INSTFILESPAGE_ABORTHEADER_SUBTEXT "Proces instalacji został zatrzymany."
+!ifndef MUI_ABORTWARNING
   !define MUI_ABORTWARNING
-  !define MUI_ABORTWARNING_TEXT "Czy na pewno chcesz przerwać instalację Kwadratowego Chaosu?"
-  !define MUI_CUSTOMFUNCTION_GUIINIT "KC_InstallerGuiInit"
-  !define MUI_CUSTOMFUNCTION_UNGUIINIT "un.KC_UninstallerGuiInit"
+!endif
+!define MUI_ABORTWARNING_TEXT "Czy na pewno chcesz przerwać instalację Kwadratowego Chaosu?"
+!define MUI_CUSTOMFUNCTION_GUIINIT "KC_InstallerGuiInit"
+!define MUI_CUSTOMFUNCTION_UNGUIINIT "un.KC_UninstallerGuiInit"
+
+!macro customHeader
 !macroend
 
 !macro customWelcomePage
