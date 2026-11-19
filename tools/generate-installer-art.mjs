@@ -29,7 +29,10 @@ const font = {
 
 function canvas(width, height, baseTop, baseBottom, glow) {
   const data = new Uint8Array(width * height * 3);
-  const parse = (hex) => [0, 2, 4].map(i => parseInt(hex.slice(i, i + 2), 16));
+  const parse = (hex) => {
+    const value = hex.startsWith("#") ? hex.slice(1) : hex;
+    return [0, 2, 4].map(i => parseInt(value.slice(i, i + 2), 16));
+  };
   const top = parse(baseTop), bottom = parse(baseBottom);
   const glows = glow.map(g => ({ ...g, color: parse(g.color) }));
   for (let y = 0; y < height; y++) {
