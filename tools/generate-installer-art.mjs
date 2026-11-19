@@ -133,10 +133,10 @@ function bmp(image) {
 }
 
 function makeSidebar() {
-  const image = canvas(164, 314, "#080711", "#120c22", [
-    { x: 83, y: 132, radiusX: 100, radiusY: 105, color: "#6336a4", alpha: 0.46 },
-    { x: 150, y: 244, radiusX: 75, radiusY: 105, color: "#a33f9f", alpha: 0.22 },
-    { x: 12, y: 65, radiusX: 60, radiusY: 80, color: "#3b3ba1", alpha: 0.2 }
+  const image = canvas(164, 314, "#11091E", "#281037", [
+    { x: 83, y: 132, radiusX: 100, radiusY: 105, color: "#9B4BD0", alpha: 0.54 },
+    { x: 150, y: 244, radiusX: 75, radiusY: 105, color: "#DC62BE", alpha: 0.38 },
+    { x: 12, y: 65, radiusX: 60, radiusY: 80, color: "#7047CA", alpha: 0.32 }
   ]);
   const violet = [185, 138, 255], pink = [238, 131, 212], pale = [238, 232, 249];
   // Sparse stars and fine grid lines.
@@ -190,9 +190,9 @@ function makeSidebar() {
 }
 
 function makeHeader() {
-  const image = canvas(150, 57, "#100b1d", "#080711", [
-    { x: 30, y: 27, radiusX: 60, radiusY: 46, color: "#7641b8", alpha: 0.42 },
-    { x: 125, y: 8, radiusX: 48, radiusY: 48, color: "#a64d9d", alpha: 0.16 }
+  const image = canvas(150, 57, "#241039", "#120A20", [
+    { x: 30, y: 27, radiusX: 60, radiusY: 46, color: "#A84DE1", alpha: 0.54 },
+    { x: 125, y: 8, radiusX: 48, radiusY: 48, color: "#E56ABF", alpha: 0.3 }
   ]);
   // Small portal emblem on the left.
   circle(image, 27, 28, 20, [185, 138, 255], 1, 0.7);
