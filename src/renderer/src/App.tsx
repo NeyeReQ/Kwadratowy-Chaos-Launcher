@@ -1,8 +1,8 @@
 /// <reference path="../../preload/index.d.ts" />
-import { useEffect, useMemo, useState, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent } from "react";
-import { Activity, Blocks, Check, ChevronRight, Cpu, Download, ExternalLink, Gamepad2, HardDrive, MessageCircle, Monitor, Play, RefreshCw, Settings2, ShieldCheck, Sparkles, Users, X } from "lucide-react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent } from "react";
+import { Activity, Blocks, Check, ChevronRight, Cpu, Download, ExternalLink, Gamepad2, HardDrive, MessageCircle, Monitor, Play, RefreshCw, Settings2, ShieldCheck, Sparkles, Users, Volume2, VolumeX, X } from "lucide-react";
 import type { BootstrapState, LauncherProgress, LauncherSettings } from "../../shared/types";
-import { playUiSound, startActivitySound, type ActivitySound } from "./sounds";
+import { playIntroTrailerSound, playUiSound, startActivitySound, type ActivitySound, type IntroSoundHandle } from "./sounds";
 import kcLogo from "./assets/kc-logo.png";
 
 type Page = "home" | "mods" | "settings";
@@ -50,7 +50,7 @@ function MinecraftWalker() {
 }
 
 
-function StartupIntro({ onSkip }: { onSkip: () => void }) {
+function StartupIntro({ onSkip, muted, onToggleMute }: { onSkip: () => void; muted: boolean; onToggleMute: () => void }) {
   return <div className="startup-intro" role="dialog" aria-label="Intro Kwadratowego Chaosu">
     <div className="intro-grid" aria-hidden="true"/>
     <div className="intro-glow" aria-hidden="true"/>
@@ -81,13 +81,18 @@ function StartupIntro({ onSkip }: { onSkip: () => void }) {
       <span>CRAFT <i/> CREATE <i/> CHAOS</span>
       <span>TWÓJ SERWER. WASZE ZASADY.</span>
     </div>
-    <button className="intro-skip" type="button" onClick={onSkip}>POMIŃ INTRO <ChevronRight size={13}/></button>
+    <div className="intro-controls">
+      <button className="intro-audio-toggle" type="button" onClick={onToggleMute} aria-label={muted ? "Włącz dźwięk intro" : "Wycisz intro"} aria-pressed={!muted}>{muted ? <VolumeX size={13}/> : <Volume2 size={13}/>}<span>{muted ? "DŹWIĘK WYŁ." : "DŹWIĘK WŁ."}</span></button>
+      <button className="intro-skip" type="button" onClick={onSkip}>POMIŃ INTRO <ChevronRight size={13}/></button>
+    </div>
   </div>;
 }
 
 export default function App() {
   const [state, setState] = useState(initial);
   const [introVisible, setIntroVisible] = useState(true);
+  const [introMuted, setIntroMuted] = useState(false);
+  const introSoundRef = useRef<IntroSoundHandle | null>(null);
   const [page, setPage] = useState<Page>("home");
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState<LauncherProgress | null>(null);
@@ -122,6 +127,21 @@ export default function App() {
     const timer = window.setTimeout(() => setIntroVisible(false), reducedMotion ? 1100 : 6500);
     return () => window.clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (!introVisible) return;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const sound = playIntroTrailerSound(reducedMotion);
+    introSoundRef.current = sound;
+    return () => {
+      sound.stop();
+      if (introSoundRef.current === sound) introSoundRef.current = null;
+    };
+  }, [introVisible]);
+
+  useEffect(() => {
+    introSoundRef.current?.setMuted(introMuted);
+  }, [introMuted]);
 
   useEffect(() => {
     let activity: ActivitySound | null = null;
@@ -206,7 +226,7 @@ export default function App() {
   const title = page === "home" ? "Witaj w Kwadratowym Chaosie" : page === "mods" ? "Twoja paczka" : "Ustawienia";
 
   return <div className="app-shell" onPointerOver={handleButtonPointerOver} onClick={handleAppClick}>
-    {introVisible && <StartupIntro onSkip={() => setIntroVisible(false)}/>}
+    {introVisible && <StartupIntro muted={introMuted} onToggleMute={() => setIntroMuted((value) => !value)} onSkip={() => setIntroVisible(false)}/>} 
     {onboardingOpen && <div className="onboarding-overlay">
       <section className="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
         <div className="onboarding-brand">
