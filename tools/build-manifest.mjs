@@ -90,7 +90,7 @@ for (const id of configuredOrder) {
   }
   if (id.startsWith("file/")) {
     const fileName = id.slice("file/".length);
-    if (!fileName || fileName.includes("/") || fileName.includes("\\\\") || !/\.zip$/i.test(fileName)) {
+    if (!fileName || fileName.includes("/") || fileName.includes(String.fromCharCode(92)) || !/\.zip$/i.test(fileName)) {
       throw new Error("Nieprawidłowy identyfikator plikowej paczki ZIP: " + id);
     }
     if (!availableResourcePackIds.has(id)) {
