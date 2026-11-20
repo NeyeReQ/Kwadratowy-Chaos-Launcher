@@ -1,6 +1,6 @@
 {
   "name": "kwadratowy-chaos-launcher",
-  "version": "0.1.20",
+  "version": "0.1.21",
   "private": true,
   "description": "Oficjalny launcher Minecraft dla Kwadratowego Chaosu",
   "main": "./out/main/index.js",
