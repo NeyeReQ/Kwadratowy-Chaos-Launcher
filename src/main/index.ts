@@ -150,7 +150,7 @@ function parseOptionsStringList(value: string | undefined): string[] {
 }
 
 function supportsVulkanBackend(version: string): boolean {
-  const match = /^(\\d+)\\.(\\d+)/.exec(version);
+  const match = /^(\d+)\.(\d+)/.exec(version);
   if (!match) return false;
   const major = Number(match[1]);
   const minor = Number(match[2]);
@@ -166,8 +166,8 @@ async function applyClientPreferences(manifest: LauncherManifest) {
     if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
   }
 
-  const lineEnding = original.includes("\\r\\n") ? "\\r\\n" : "\\n";
-  const lines = original.split(/\\r?\\n/);
+  const lineEnding = original.includes("\r\n") ? "\r\n" : "\n";
+  const lines = original ? original.split(/\r?\n/) : [];
   if (lines.length && lines[lines.length - 1] === "") lines.pop();
   const existing = new Map<string, string>();
   for (const line of lines) {
