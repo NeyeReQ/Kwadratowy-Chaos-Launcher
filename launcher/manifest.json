@@ -16,477 +16,675 @@
   "files": [
     {
       "path": "mods/[26.3] Only Jugs [1.8.1].jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods___26.3__Only_Jugs__1.8.1_.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods___26.3__Only_Jugs__1.8.1_.jar",
       "sha512": "f6a1ef0b7b07774f1f660547444d84e84877693047d071a548e557f1d8d89b4864600cb250737b81c8eddcfa66b0ad209b0cc11769aa90ef5f68703eb5dc5381",
       "size": 501533
     },
     {
       "path": "mods/a-little-furniture-mod-1.11.1.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__a-little-furniture-mod-1.11.1.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__a-little-furniture-mod-1.11.1.jar",
       "sha512": "89af38d3c1c05067b214b044d132a22ef6842780216962e64533d7169c107c876d547f40516025856c6c8d46104cddb6f4cb6b29bdd068aab3e741603cd03270",
       "size": 3790787
     },
     {
-      "path": "mods/alcocraft-1.1.0-mc26.3-fabric.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__alcocraft-1.1.0-mc26.3-fabric.jar",
-      "sha512": "a5a1297f2ad5ee454acf9e144cde223367d4c8d31894e154b4a38f30333d869a3704b094356f709d81d1420267ab1338f961050e7cdd65770faf81be49a20963",
-      "size": 266617
+      "path": "mods/AccurateBlockPlacement-Reborn-1.4.8+mc-26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__AccurateBlockPlacement-Reborn-1.4.8_mc-26.3.jar",
+      "sha512": "ee4271a466bdcfa22541b28fb82db581bff4c20c2e941e951718207a296cb23db03defeba7002d44317656cec6f827f382ae2bf540940b6b38f8628abfe2e345",
+      "size": 46748
     },
     {
       "path": "mods/almanac-fabric-26.3-1.26.11.1.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__almanac-fabric-26.3-1.26.11.1.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__almanac-fabric-26.3-1.26.11.1.jar",
       "sha512": "70f9481e1e067ea6950a74dfecd753eeb9d4d3b5c965d64aeef84a8a0771e4d18ed2f90cdf4b5b0dd3c18d5fc015bb713758c091fdc11e81b64153cd2ce6cb90",
       "size": 438706
     },
     {
+      "path": "mods/architectury-fabric-22.0.5.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__architectury-fabric-22.0.5.jar",
+      "sha512": "14c61af2088b80b465f06edd3b3005038fa5be1c95a2161ce712c8da408a358038b7cd7ae4acf3198f6d47c693e4fdf65d646dac7e124f7cdd7f32bbc0dcd0ce",
+      "size": 622542
+    },
+    {
       "path": "mods/armor-hider-fabric-0.14.6+26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__armor-hider-fabric-0.14.6_26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__armor-hider-fabric-0.14.6_26.3.jar",
       "sha512": "da5f6b0785b163c57b34dbce6c94cd4a5b38cf2756e6177c2fcf064a3e02e3176e6e42b0f57b7cc3c55799edf74533c86c11358fe85596c7ddb8450960e04d2e",
       "size": 733368
     },
     {
       "path": "mods/arsenal-textures-1.0.0+26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__arsenal-textures-1.0.0_26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__arsenal-textures-1.0.0_26.3.jar",
       "sha512": "59eac735c7940050ca5b06282a0086fa273c9de2c906d68d3fa291b6f37570760e18a931b78450e18a93f184b5603554765e150b2a0bb9c5057382c29fd28ebe",
       "size": 208827
     },
     {
       "path": "mods/audioplayer-fabric-2.5.1+26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__audioplayer-fabric-2.5.1_26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__audioplayer-fabric-2.5.1_26.3.jar",
       "sha512": "7c8ab4ef14c30518d95285ea1b320dcc94d043667dc4a525434d06114db6b375a28bc0f1207ab105fb1b851f27f7881574389e8d7e21e77f01b8b53249bc417e",
       "size": 1203512
     },
     {
       "path": "mods/automobility-1.3.1+26.3-fabric.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__automobility-1.3.1_26.3-fabric.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__automobility-1.3.1_26.3-fabric.jar",
       "sha512": "56efcab0094e338c8d6d0cbdef3fb50dd1949a41b007ef2ba890bc9c44885a2d892247b8a50e6906fdba731a0b4e2ef628b949b2a1a71576d7532c4be57866ba",
       "size": 4562763
     },
     {
       "path": "mods/BadOptimizations-2.4.1-26.3-fabric.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__BadOptimizations-2.4.1-26.3-fabric.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__BadOptimizations-2.4.1-26.3-fabric.jar",
       "sha512": "048a0979807afb96bae7801b7445746c985081bb55fab9b80b286036234a9869cc84f83c40ab77a2600b7e06ad44178ee17935b706b751c9b38f87ebc6e180f8",
       "size": 60760
     },
     {
       "path": "mods/baguettelib-26.3-Fabric-2.0.8.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__baguettelib-26.3-Fabric-2.0.8.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__baguettelib-26.3-Fabric-2.0.8.jar",
       "sha512": "d20b4f1483deb4031404885f45bb96788b891b60dcc6b4917586c993c6cbae385ad7cd45cfe8b05e9f57985f697b5ac090457474bce95ef04039713f6be77d4a",
       "size": 106523
     },
     {
       "path": "mods/balm-fabric-26.3-26.3.0.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__balm-fabric-26.3-26.3.0.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__balm-fabric-26.3-26.3.0.3.jar",
       "sha512": "aaf07f5b94f7015c87df7b242f3f45f0729fb3f72d887745ad5c5ceb31eb071e425254009158774101676d6480f31c832dd60860d79da5b661cc10b84241c319",
       "size": 1213047
     },
     {
-      "path": "mods/bbe-fabric-1.4.0+mc26.3-mod.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__bbe-fabric-1.4.0_mc26.3-mod.jar",
-      "sha512": "061404c7a546fcf97b1e95c84be6538634ef8a64c38c50ab52413bc30eb3ca631d70469ec9a5ec6e701bbfbbd9779d65a3a70e359e80d8c36449ff2a2d286cab",
-      "size": 207605
+      "path": "mods/bbe-fabric-1.3.9+mc26.3-mod.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__bbe-fabric-1.3.9_mc26.3-mod.jar",
+      "sha512": "dbad4387672fea686a6610ac238d0243fdbce718bed3aafc6006068bf769df2eea8f2c7189f5cb3835008f11eb9c767f1e2eaf436c67bddc17fb8607af26dd88",
+      "size": 207630
     },
     {
       "path": "mods/BetterF3-20.0.0-Fabric-26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__BetterF3-20.0.0-Fabric-26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__BetterF3-20.0.0-Fabric-26.3.jar",
       "sha512": "1e78531358f690404efe98b26de1024284078596785420a92ff5dba052003064e87537936c006c3c58470ccdc2ed6ae69a65f26ca534366e90d97470f2973118",
       "size": 719577
     },
     {
       "path": "mods/blockandboard-fabric-26.3-0.5.0.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__blockandboard-fabric-26.3-0.5.0.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__blockandboard-fabric-26.3-0.5.0.jar",
       "sha512": "02e3939aec818a64e36cc7792a6171c98787be6701e6faf8d5aecd3571e30f7fba045e6f884b7549da9fcaa529cd6c4d86733c07b66d6ee9b33ed8ed743400d9",
       "size": 2753797
     },
     {
+      "path": "mods/bobby-5.2.16+mc26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__bobby-5.2.16_mc26.3.jar",
+      "sha512": "99795d013cec9d59319005b252e426ac78fa50da3e1839989b5ed94554d401101a336d1235a1633a2c1a15e5e64c7453694838abfa3ba715251ab1ca87f72e7e",
+      "size": 867268
+    },
+    {
+      "path": "mods/bobbyshare-1.4.0-mc26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__bobbyshare-1.4.0-mc26.3.jar",
+      "sha512": "07b563b0be316279873a81fc1e8cbd4cd348a2245bb6f9d69d44eba62be5bf42523b1e3580d2e5db8d4a71dd0de263be82a66905092836837a59491d86686f43",
+      "size": 126547
+    },
+    {
+      "path": "mods/BridgingMod-2.7.0+26.3.fabric-release.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__BridgingMod-2.7.0_26.3.fabric-release.jar",
+      "sha512": "a8241b5df1402f7447e43a65a99880ff75170ba683453c400a1e2888ff647474645a3ecadcc823c16aca2b009006ab4cc6c7ef5299e24408ddcf550b2321ded7",
+      "size": 5944084
+    },
+    {
       "path": "mods/camerapture-1.10.15+mc26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__camerapture-1.10.15_mc26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__camerapture-1.10.15_mc26.3.jar",
       "sha512": "321f75547b7c9684b76a677d091f96f4387d35be7c41555916f6e59bebd05d3826f2a5bae328090c83c78130c45c3ad5eb39c90e5cb4a3f61a2e9bc13ce3af8f",
       "size": 2435261
     },
     {
       "path": "mods/chaoschatplus-fabric-26.3-1.1.1.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__chaoschatplus-fabric-26.3-1.1.1.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__chaoschatplus-fabric-26.3-1.1.1.jar",
       "sha512": "1d09acde68af0108c8a6dd693d965b3d8deba23e775ed5059ebde3761fa6e4307b2efa7668c552eec0617be12702f0c4e07856b39f1c8a6f39ee0568f9a33724",
       "size": 3722206
     },
     {
       "path": "mods/chaosranks-fabric-26.3-1.0.2.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__chaosranks-fabric-26.3-1.0.2.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__chaosranks-fabric-26.3-1.0.2.jar",
       "sha512": "a19c861b29763def00c9d078bba7634b10a599c8bbd135955b772d62ff1674e92cb081eb07f78c9918757cd6e91f2bc97fea830ad10dde5421656e9a08b00234",
       "size": 139358
     },
     {
       "path": "mods/chaostablist-fabric-26.3-1.2.0.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__chaostablist-fabric-26.3-1.2.0.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__chaostablist-fabric-26.3-1.2.0.jar",
       "sha512": "25cf2bb7a9ffca6d6d963a7c6c0c47705fdc90d3a7e85db0a6c5e2aa4f9f6f04a8fa587d892921e1873958873f2ceae58b9f3dd30853754525ca031e4d925707",
       "size": 392427
     },
     {
       "path": "mods/chat_heads-1.3.2-fabric-26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__chat_heads-1.3.2-fabric-26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__chat_heads-1.3.2-fabric-26.3.jar",
       "sha512": "2e18d30d38fde2417d9b18a6a7065333f80313e6b73430a82b657ecf4322127587dd0f63da90f93d718ffeef67f104c56c1ef169cf2cde362c11ab2cdfefcc47",
       "size": 98686
     },
     {
+      "path": "mods/cinematic_respawn-26.3-fabric-1.5.0.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__cinematic_respawn-26.3-fabric-1.5.0.jar",
+      "sha512": "67d943df1b97b34e6584b85d518b1b745cc255599f87c4736e0a1197379b36010321b8a98d20ceb1e523d63cbf63e03c61c0b9a39de50e2ad91aded816838ecd",
+      "size": 173696
+    },
+    {
       "path": "mods/cloth-config-26.3.158.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__cloth-config-26.3.158.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__cloth-config-26.3.158.jar",
       "sha512": "16975b66f5c1e08443883db44079c89e26a9e237ea9a07d82faf3a899c9337e39a8cb4e5a8c4cad7796ed6a0c40f720cbb9baf0f0fc8a02f3e83246362f23792",
       "size": 1134982
     },
     {
       "path": "mods/cloth-config-fabric-26.3.159.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__cloth-config-fabric-26.3.159.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__cloth-config-fabric-26.3.159.jar",
       "sha512": "8924e19d41845096724fa10f3717bc51964a0edbbbcad0ff1e6c6187a398b08f356e49579a657c2dc44a7f92e3850771f3ca70bf8c1f654de60425163b91dbb1",
       "size": 1135009
     },
     {
+      "path": "mods/collective-26.3.0-8.85.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__collective-26.3.0-8.85.jar",
+      "sha512": "9ba05e4a4d78e8dde139c593727f10108615e2a83faa98329a4a8592ce03562a6643f79baab514ce0a87925fa92203e707826d913ec60d5d38c5bbd61bea4e3c",
+      "size": 1657391
+    },
+    {
+      "path": "mods/continuity-3.0.1+26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__continuity-3.0.1_26.3.jar",
+      "sha512": "1ec1e3b2f73c26b19445d664822a8936e9076f4d8855a2ed5fac19786daa8da42da8fdc9526c4a53c227a82819a87ad8e73d5b4fc003f6519c50454c33014f04",
+      "size": 1002033
+    },
+    {
+      "path": "mods/controllable-fabric-26.3-0.26.2.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__controllable-fabric-26.3-0.26.2.jar",
+      "sha512": "853a10c5ad26e509d06d0b3f4e8f7446708fcfd0efb0b3965c848feaff04b677846df7e6ea025d2e9b1c5bc95d56424a4cc30af703c52577b8e9c62708413c54",
+      "size": 569298
+    },
+    {
       "path": "mods/CrashAssistant-fabric-26.2-26.3-1.11.14.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__CrashAssistant-fabric-26.2-26.3-1.11.14.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__CrashAssistant-fabric-26.2-26.3-1.11.14.jar",
       "sha512": "eab56ff4773821ea74c16987a986032e0d41119078efed17f66e4d6f1e19ab43e1e465463b09386644c4ae73942909f29ff725736e2ea1ad6de9b8313080de31",
       "size": 3464190
     },
     {
       "path": "mods/CreativeCore_FABRIC_v2.14.24_mc26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__CreativeCore_FABRIC_v2.14.24_mc26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__CreativeCore_FABRIC_v2.14.24_mc26.3.jar",
       "sha512": "d05bbab192eaff9e66496bc0ba7b2bce67c1d23d99132ec7241dd2c4c07c5199983bd60ad83246b0ad78609a2724358510fa189530c19b0590f5de494bbd19e5",
       "size": 1422113
     },
     {
-      "path": "mods/diorama-0.7.0-26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__diorama-0.7.0-26.3.jar",
-      "sha512": "b293b0fc3315d13e1442d03f787bafacba5e78e09e33e758efc5172716155b7036914a718b7178309e685aea0ce08e8c5e172fcf687cc237e7d631e6e03dab47",
-      "size": 946353
+      "path": "mods/diorama-0.10.2-26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__diorama-0.10.2-26.3.jar",
+      "sha512": "53318caf58842532d5ac88c0d3680a58e7fbf50170664ab29ad0bcf29babc0a63caeefdf33d81d216932a636e180ce0dde22b15161f7f7c93393931b3331df6c",
+      "size": 1506584
     },
     {
       "path": "mods/display-delight-1.8.5-mc26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__display-delight-1.8.5-mc26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__display-delight-1.8.5-mc26.3.jar",
       "sha512": "839859b8df8fbb9b75293c448781b41af3ab98d4023f8d02098c08c5358b768e7a264d4b2086721de8883723cf53cfb071caae98c41b8c318a33f070f9536237",
       "size": 1382704
     },
     {
-      "path": "mods/dreamdisplays-fabric-26.3-1.10.8.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__dreamdisplays-fabric-26.3-1.10.8.jar",
-      "sha512": "77fd12c51ee991e6d78e984478283748854b35830cb734d94a33c5fe71f394398198b6b9029a2fa40ba15ff8c86fbaa43ad3eaeb76f0c390c6406854a743e7da",
-      "size": 26634459
+      "path": "mods/dreamdisplays-fabric-26.3-1.10.9.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__dreamdisplays-fabric-26.3-1.10.9.jar",
+      "sha512": "02bb4c44df01cd53a420b2d7fcde9ce5b821dee37cc145957eee0895f9172a6d649508cf45cfdefa6b3b93148dd4277c59698dd665f5379c095f24a23e57ab9b",
+      "size": 26635871
     },
     {
       "path": "mods/easy_npc_bundle-fabric-26.3-7.18.0.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__easy_npc_bundle-fabric-26.3-7.18.0.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__easy_npc_bundle-fabric-26.3-7.18.0.jar",
       "sha512": "072097b28edbbca4f8d61120b06a905f78cf058629e7d48a32e49543ef973018e879db5d57381983f64f491de21fc76703b44a1cb83d731a9651aacdd6b22b9c",
       "size": 25253
     },
     {
       "path": "mods/easy_npc_config_ui-fabric-26.3-7.18.0.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__easy_npc_config_ui-fabric-26.3-7.18.0.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__easy_npc_config_ui-fabric-26.3-7.18.0.jar",
       "sha512": "99b5ecd7cf05724272a55523699edb2a0b1925adbf11bd3137cb170425199d7688c5a2071106103c49b9869c4360f82c915f51aec8f1430d126c6849cab0b528",
       "size": 1184186
     },
     {
       "path": "mods/easy_npc-fabric-26.3-7.18.0.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__easy_npc-fabric-26.3-7.18.0.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__easy_npc-fabric-26.3-7.18.0.jar",
       "sha512": "ed101903fa2b4bc1b658926590c4c13d884d7dbb2de1e801684fe40f224daa2962de2f00a51fdad8d1d3e0ba21e4d3dc99116ce1a268cff7d996d9e6c97925fd",
       "size": 3245521
     },
     {
       "path": "mods/EditEverything-26.3.0.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__EditEverything-26.3.0.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__EditEverything-26.3.0.jar",
       "sha512": "73d229fb348e31b7901bbdaf540f32136574916ce842333b330528a670e94e3b91240896ebc5f15f7f20b8745209ca0e38e718c8967b9bad056acd9f04b058fe",
       "size": 1429971
     },
     {
       "path": "mods/emotecraft-for-MC26.3-3.5.0-b.build.179.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__emotecraft-for-MC26.3-3.5.0-b.build.179.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__emotecraft-for-MC26.3-3.5.0-b.build.179.jar",
       "sha512": "9985654cd3b1e601d2b6dde3ed950cfdce35369ee44c3694d576dfb18396823e496f739eb148e5217b144cfa41fece45ee29e14a3274d992bb0780c7eac501bb",
       "size": 2246411
     },
     {
       "path": "mods/entity_model_features-3.3.12-26.3-fabric.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__entity_model_features-3.3.12-26.3-fabric.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__entity_model_features-3.3.12-26.3-fabric.jar",
       "sha512": "4572fc065e757264947aff35a96d17d5e45d4b43e8e385b9a207f5380a8f43da5dbf8e10f30a7bc7cc4c0c8f7999717b4dd22d325667bdf8a0de6e839ad81efc",
       "size": 665386
     },
     {
       "path": "mods/entity_texture_features-7.2.7-26.3-fabric.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__entity_texture_features-7.2.7-26.3-fabric.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__entity_texture_features-7.2.7-26.3-fabric.jar",
       "sha512": "69193c58d4d05e08fea9afa34cc47563e9b9e95aa2da276441085ade44ed36f8123b9cc1a2938f9ecac9aea6fd9ceb51120dd20f7284337a3bb592bc3b904336",
       "size": 798322
     },
     {
       "path": "mods/entityculling-fabric-1.11.3-mc26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__entityculling-fabric-1.11.3-mc26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__entityculling-fabric-1.11.3-mc26.3.jar",
       "sha512": "b6209bb62d72376d3fd284da137ec93a6dd38ebe5fd38ab9190deeade68b5b7f4bf915f4abcb4a807afe18cb9f0b59e11be789d46df6f0e6f64388ed2edc284d",
       "size": 1508547
     },
     {
       "path": "mods/eunomia-fabric-0.3.15+26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__eunomia-fabric-0.3.15_26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__eunomia-fabric-0.3.15_26.3.jar",
       "sha512": "6ab6e748f5b7d4b067c7cc84b33f8e84e7a5c6fca86df848d916f4fa6bde91a61e9ca08b8a96bd01f07ecd6534b938a41219fdfa4baf88f12f9a1ef30869c4ba",
       "size": 376206
     },
     {
-      "path": "mods/fabric-api-0.165.2-26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__fabric-api-0.165.2-26.3.jar",
-      "sha512": "21ce87863ed73c4c871e072f13c5a7b00bd148a098c5064a5f381479d1ddd7c54b0f40ef7d17ce2ae5712deb647c5fcaf12cb72fb663fe8d958188e870b33de0",
-      "size": 1779306
+      "path": "mods/fabric-api-0.166.0-26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__fabric-api-0.166.0-26.3.jar",
+      "sha512": "de0d1a502cfcfcc594e0338e91c2fcf92a1239d47904ac2c3c50980ee132c676dba6abd81cd9449cdb0383657683c286f5bfc5c1bc1609c6b13bd569d36351d2",
+      "size": 1797522
+    },
+    {
+      "path": "mods/fabric-api-0.166.2-26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__fabric-api-0.166.2-26.3.jar",
+      "sha512": "fb686a9fa923248328107a12498229d6951e316257f18b7d0e4cbd6885ba447ed50a44076a8a5ba47cfe2043b329db3587ab000aeab1face26b2587a5d4ba6b5",
+      "size": 1797523
     },
     {
       "path": "mods/fabric-language-kotlin-1.14.2+kotlin.2.4.21.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__fabric-language-kotlin-1.14.2_kotlin.2.4.21.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__fabric-language-kotlin-1.14.2_kotlin.2.4.21.jar",
       "sha512": "7fb475c4a7e7bdf8d0aca4b5798a58a354c51443d5b1fbde3e8cf34dfbf7191ef4238b5f07d08ec9490ec180b371624523326c3ad45d4ed2b2be541de9407e5d",
       "size": 8142878
     },
     {
+      "path": "mods/FallingTree-26.3-25.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__FallingTree-26.3-25.jar",
+      "sha512": "2039f5fc9c513694c435d2541792f06654b345acc3a043483ba9f11a8ec4f17c767cc19719afbf02f914b3b7478aad1d88bda6cb909696ac7221eb4e2ab5b117",
+      "size": 493854
+    },
+    {
       "path": "mods/FarmersDelight-26.3-3.6.30+refabricated.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__FarmersDelight-26.3-3.6.30_refabricated.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__FarmersDelight-26.3-3.6.30_refabricated.jar",
       "sha512": "099f724599022ac9232f265d62907fdde6ad48a73b246d45930d938a7f850be6a8b520244ffa218a59fdef96b0170fc0c04f00ff91f108b5a02bbc4cb2a013bc",
       "size": 3482244
     },
     {
       "path": "mods/ferritecore-9.0.0-fabric.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__ferritecore-9.0.0-fabric.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__ferritecore-9.0.0-fabric.jar",
       "sha512": "d81fa97e11784c19d42f89c2f433831d007603dd7193cee45fa177e4a6a9c52b384b198586e04a0f7f63cd996fed713322578bde9a8db57e1188854ae5cbe584",
       "size": 72677
     },
     {
       "path": "mods/Flashback-0.43.6-for-MC26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__Flashback-0.43.6-for-MC26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__Flashback-0.43.6-for-MC26.3.jar",
       "sha512": "80d194d117352942ebf2bc96914e5f0f550ab857204cda5b362459110ea22a38332825ecebf5ee3fc54d4f01c72279c0a06e45f26e26b62c49015e208167242e",
       "size": 201008177
     },
     {
       "path": "mods/flashback-extras-1.3.0-MC26.3.x.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__flashback-extras-1.3.0-MC26.3.x.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__flashback-extras-1.3.0-MC26.3.x.jar",
       "sha512": "11fefd83cb2ebcad1c2e6f5c9fc5501527c1e35fbf002353916687986d918c20a05b76c8fd603d018ab5f82bdf6f69d27b9a21b5eb049a00953dd4f5226bffc6",
       "size": 48269
     },
     {
       "path": "mods/flashbacksettings-fabric-26.3-1.2.1+26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__flashbacksettings-fabric-26.3-1.2.1_26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__flashbacksettings-fabric-26.3-1.2.1_26.3.jar",
       "sha512": "72ea2a8413768d4009719c24989de57d55a14cbc19d239b694d287320bc75bf9eabece20279c3f87ddb7c7bf913d9287914a20cc03bce08c8854db436d8df875",
       "size": 39902
     },
     {
       "path": "mods/ForgeConfigAPIPort-v26.3.1-mc26.3.x-Fabric.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__ForgeConfigAPIPort-v26.3.1-mc26.3.x-Fabric.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__ForgeConfigAPIPort-v26.3.1-mc26.3.x-Fabric.jar",
       "sha512": "b9339c21e14beec2eae0ca215317284bcaacef72e1d1dee8b3dfbe2de0eefaa758a172446df85419b6534557c479abe972d7d21f4ec194f2d436f9ed4329cb9f",
       "size": 609574
     },
     {
-      "path": "mods/fwa-26.3-1.3.4.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__fwa-26.3-1.3.4.jar",
-      "sha512": "4270dc6e49584955ed2dd3c0fd975fa2eb89fadbef8fa439226c59bcd7bcf61d7f46b9502886f39cd6fd8507c37566fd28bbe2dfd1a0f396a5dfb28ca78fa48d",
-      "size": 217138
+      "path": "mods/framework-fabric-26.3-0.13.27.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__framework-fabric-26.3-0.13.27.jar",
+      "sha512": "bbd2d4159907a1a6b98cc962425cc18fbc401f5436b5b80ac185f4982dd334910920412530eb4f3ea4daae4c4476d1db88cdbd5dce5d6835a63f739aa85afe7f",
+      "size": 1804585
     },
     {
       "path": "mods/fzzy_config-0.7.7+fix3+26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__fzzy_config-0.7.7_fix3_26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__fzzy_config-0.7.7_fix3_26.3.jar",
       "sha512": "bbf47ab921fec1215d6e59ab0d875b565c22bbf039ae985b6e64313412b66835c443006c428ac9b8ef7ba396a4e0aa2bb0d65126c95a595bc56376655cb1c9ee",
       "size": 2375413
     },
     {
-      "path": "mods/ImmediatelyFast-Fabric-1.17.1+26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__ImmediatelyFast-Fabric-1.17.1_26.3.jar",
-      "sha512": "8e139589fd995bce3d485a34d92a07243964212f7ed2e4fc2f6de5b9a74d0f59b03252e7ce40c64e006cf3e21bed5de27b830d33ef048b286e041f6178ad8428",
-      "size": 99586
+      "path": "mods/ImmersiveVFX-2.3.3-fabric.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__ImmersiveVFX-2.3.3-fabric.jar",
+      "sha512": "b6545df70ef5a46aaad83b6602d08d5150192c4d7ed3da5b14e786ffddc1c0678b033a4c56d2b81d6fbb6f6263ae19d940299ef30f0232ea5c5aabec100f9671",
+      "size": 4471796
     },
     {
-      "path": "mods/jei-26.3-fabric-31.14.0.72.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__jei-26.3-fabric-31.14.0.72.jar",
-      "sha512": "5bbf0499207292d1e47fdc03139adec6dd90302b10648e7b283e4737631524d8c2b17ca9b7263b13f1fcdde9fd3f5867874b0a9c333c02bc55466dbbf8ce8ead",
-      "size": 2410982
+      "path": "mods/kaleidoscope_cookery-1.6.0.8-fabric-mc26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__kaleidoscope_cookery-1.6.0.8-fabric-mc26.3.jar",
+      "sha512": "81448b052edb011ac08f8392b28dd66b1d824759b9af19d9b89f26dc5d1cf92342789fce89108372bc6ea1a31822599dab57305b42ae45c5040029b6d8db439c",
+      "size": 6549825
+    },
+    {
+      "path": "mods/kaleidoscope_end-1.1.0.2-fabric-mc26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__kaleidoscope_end-1.1.0.2-fabric-mc26.3.jar",
+      "sha512": "ae0933b8ce3693890ca3e9c54da6b2f2307c08814e66d987805b9450c09f44d3898d49a8ca9e27537c6baaf2cd27932a84ea3814e025e6112073cedaaeae492c",
+      "size": 538864
+    },
+    {
+      "path": "mods/kaleidoscope_nether-1.1.15-fabric-mc26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__kaleidoscope_nether-1.1.15-fabric-mc26.3.jar",
+      "sha512": "2921200aa45b2ea6cec71b6be6210b292c088653aca55b30ec664454238fa48883d81ee537c0aa9d7c4eaa8e5048fa0ff978b54a26d337f1e4d285b998c7cdd1",
+      "size": 1074799
+    },
+    {
+      "path": "mods/kaleidoscope_tavern-1.2.0.14-fabric-mc26.3 (1).jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__kaleidoscope_tavern-1.2.0.14-fabric-mc26.3__1_.jar",
+      "sha512": "9ab3a77952626007f6a1c9dfe831f49639f86112da44e16290d7d59c88af70d7a98d67780637353f1b3b09032871302c646cf8cc35f29fa2e91a194e0002a726",
+      "size": 2081058
+    },
+    {
+      "path": "mods/kaleidoscope_tavern-1.2.0.14-fabric-mc26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__kaleidoscope_tavern-1.2.0.14-fabric-mc26.3.jar",
+      "sha512": "9ab3a77952626007f6a1c9dfe831f49639f86112da44e16290d7d59c88af70d7a98d67780637353f1b3b09032871302c646cf8cc35f29fa2e91a194e0002a726",
+      "size": 2081058
     },
     {
       "path": "mods/konkrete_fabric_1.11.1_MC_26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__konkrete_fabric_1.11.1_MC_26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__konkrete_fabric_1.11.1_MC_26.3.jar",
       "sha512": "ef6b12dbf3f616ba4089e706f27d76c543987f4a20509bf3def711ddb9279b94170c67228b9e44a2e2c189a80a7c9a5cd4c7e079281b7ac1cb0ec7d9c46b9aa8",
       "size": 1214374
     },
     {
       "path": "mods/lithium-fabric-0.26.3-mc26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__lithium-fabric-0.26.3-mc26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__lithium-fabric-0.26.3-mc26.3.jar",
       "sha512": "2ca92fb530135d2baddf0ba4cc4f93976234876a38c4aa02b487b2552400f005afcfbeebf5373fb4396fe2020537a42d7597b8da5a52b904355ef51d5fef07ad",
       "size": 919892
     },
     {
       "path": "mods/mcw-paintings-1.1.0-mc26.3fabric.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__mcw-paintings-1.1.0-mc26.3fabric.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__mcw-paintings-1.1.0-mc26.3fabric.jar",
       "sha512": "1bd3ff00e3308f2691a2bc4ffa01d35aeefcd9a95ab9c246d6333930d93a961602d72a9d65831729c0c8427f61325918a6a398eaaaa1a15b108642eab3084b74",
       "size": 179319
     },
     {
       "path": "mods/melody_fabric_1.0.17_MC_26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__melody_fabric_1.0.17_MC_26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__melody_fabric_1.0.17_MC_26.3.jar",
       "sha512": "f0ac30c3a0eb0908d05824a9a43e44c614a95dc99b4cba9abeea750406430fde21d6e26bae5a1e5c63b63359e49d4bc96ced32400717fc72064c50826e11b9ca",
       "size": 681316
     },
     {
-      "path": "mods/mezz_config-26.3-fabric-0.6.11.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__mezz_config-26.3-fabric-0.6.11.jar",
-      "sha512": "c8084e5f77c396fed196565f9fae88cde356a8fd10d5a94677515ef3b761e2c74d8d205fddfddc21700105e7dfc8729b3d93ee6a8d0c041c6f2e18f6aca8928a",
-      "size": 390121
+      "path": "mods/mezz_config-26.3-fabric-0.7.1.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__mezz_config-26.3-fabric-0.7.1.jar",
+      "sha512": "3edb3239ece519c6de657d14faa17838afbe37f85cfe1d9b505f5519257794d929d18e54071e993efff26ac68ed98a6b05037db73f2c0d3da8f018733c3ebb6d",
+      "size": 390537
     },
     {
-      "path": "mods/minevegas-casino-fabric-26.3-1.1.1.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__minevegas-casino-fabric-26.3-1.1.1.jar",
-      "sha512": "a27a6f5bdeafc80e84c5791199cf3f15280af692c8604078b2bc9239405efb4a669deb07f2a30fbc336f1f4e31b827ec976616f09bfda5cf6a74273ab727d0b1",
-      "size": 27046969
+      "path": "mods/minevegas-casino-fabric-26.3-1.1.2.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__minevegas-casino-fabric-26.3-1.1.2.jar",
+      "sha512": "5fa4981b18e949d5d9ca227ea343ce648ff146ef7bf3ef39594c217271b14feb5b45851f2bf5026df2abfe3d96a4ec226ce2249ef98d9218b2cc2afd9f4fdd00",
+      "size": 27050235
     },
     {
-      "path": "mods/modmenu-21.0.0.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__modmenu-21.0.0.jar",
-      "sha512": "588c0c557963f4778572ee81bfafc190b332c26d5926c5fe7e3e1614dcf8e14f58e3bc80a97694521dd05907e9753a7c8575048ea769e4dbf40a3db74a4e2606",
-      "size": 856779
+      "path": "mods/modmenu-21.0.1.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__modmenu-21.0.1.jar",
+      "sha512": "d00d52d5342728da13a6237f76c50fc5fd1c62d8112ae4e07726bbc64d2019a76130d6b2968765df81c6499225588eacee6681eebc13c0ada3cad91fc8ab2984",
+      "size": 862761
     },
     {
       "path": "mods/MouseTweaks-fabric-mc26.3-2.31.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__MouseTweaks-fabric-mc26.3-2.31.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__MouseTweaks-fabric-mc26.3-2.31.jar",
       "sha512": "61c011308b5d1d0b2163473cbbc1ad0f1b3ac873b77e3e9ff67ccb437a946fbe5f34077281ebd2b91647324969d319f6499ac4b319cfcb9ea027bac47a52c081",
       "size": 74569
     },
     {
-      "path": "mods/multiview-0.5.0-mc26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__multiview-0.5.0-mc26.3.jar",
-      "sha512": "61b7630440c882c43fb3165d0f14adae7bff2589fe771de5c191fcb6dc21faaf1139279c831752376daa9818af4261a7e32dc735e5a95164507631442e7de006",
-      "size": 3742775
-    },
-    {
-      "path": "mods/musicalinstruments-fabric-26.3-26.3.0.0.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__musicalinstruments-fabric-26.3-26.3.0.0.jar",
-      "sha512": "8deaf5da9c965d82e7e67badfc59344b488d35afe295d2691c1dc77ea1b2f87e0931465b58195d65803c06f635fa577c22b2b42385f09dc18e7427ba5788fea7",
-      "size": 53645
+      "path": "mods/multiview-0.5.1-mc26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__multiview-0.5.1-mc26.3.jar",
+      "sha512": "0ef80252737ef988876504e61457df5bd5d5eb52e40c209402a6b4e0b691ca10f5c447ffa689f56e629027dec03e7d6d276ff583bab0cb0c2ba936d918aa7091",
+      "size": 3713489
     },
     {
       "path": "mods/nanite-library-fabric-26.3.0.6.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__nanite-library-fabric-26.3.0.6.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__nanite-library-fabric-26.3.0.6.jar",
       "sha512": "138b43c695036cc2e55fcdfed5d4fa83afc073717ea0b8cae09ff84fa9d6c3ac994311ffc1b12cd89218c32dc013a5b1f5e01ea3932913f385a3387f8ac778d6",
       "size": 132795
     },
     {
+      "path": "mods/nclskins-1.3.1-26.3-fabric.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__nclskins-1.3.1-26.3-fabric.jar",
+      "sha512": "7fd91b057c7b473faef005bbcd83fdaf82b9462cde9257926340ab95c50032f59322f8a6e6793fbe8b317a1d2103f266bc1599a1f988381ee0c1daedf68f66c4",
+      "size": 3110764
+    },
+    {
       "path": "mods/particle_core-0.3.3+fix1+26.2.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__particle_core-0.3.3_fix1_26.2.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__particle_core-0.3.3_fix1_26.2.jar",
       "sha512": "7818227221913c2be92f7ef2882abfa85629e126fdd86c5715772df27334c1774aa30a87e88cd373d7d65cebdde2576592b10767ac62fcb5de2cf54d41a8bca5",
       "size": 141191
     },
     {
-      "path": "mods/particular-26.3-Fabric-1.5.7.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__particular-26.3-Fabric-1.5.7.jar",
-      "sha512": "01b656a45a6c31bd96ff513badd741696cf22860ef51b43d640a5fd6510298469c8cb32df59624fa3abfa04e2e2f5a37667b361f932c11a3648ee56b3904997a",
-      "size": 287956
+      "path": "mods/particular-26.3-Fabric-1.6.1.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__particular-26.3-Fabric-1.6.1.jar",
+      "sha512": "c4e988ea5f17078da5f92a05f258da33871f4e633254a8696f9c630152bfe2d87de14f7735a87ef257f0b4cecd2402e18014db32386377d32cf5714df423d069",
+      "size": 374548
+    },
+    {
+      "path": "mods/PatPat-1.3.2+26.3+fabric.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__PatPat-1.3.2_26.3_fabric.jar",
+      "sha512": "dce5f88145093640ef7fe159e1ff24d2860e07ff4b3f549839948440bce8ff7ab0bb909c2f21baac86585489fd15962176750ce630f324a27225a171d3f5ed33",
+      "size": 1211460
     },
     {
       "path": "mods/placeholder-api-3.1.0-beta.1+26.2.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__placeholder-api-3.1.0-beta.1_26.2.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__placeholder-api-3.1.0-beta.1_26.2.jar",
       "sha512": "07b6fc802559d54ec6577f6e2788926ef391d755206c2bfb0528280977885cae4bc0c517d8a53eb6f34092015ebe6c41210627d255aa6504662daefa8fb76397",
       "size": 254973
     },
     {
       "path": "mods/player-revive-1.0.1-mc26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__player-revive-1.0.1-mc26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__player-revive-1.0.1-mc26.3.jar",
       "sha512": "1d2e13661e6081146fd216814879cc4411fc51c429aa2434ccbdbcb5964f33f16f93c76caa11abfa39fc623b8c58cdd88240de365394e61cdff1e6dbbf6ea6a8",
       "size": 121883
     },
     {
       "path": "mods/PlayerAnimationLibMerged-1.2.9-mc.26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__PlayerAnimationLibMerged-1.2.9-mc.26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__PlayerAnimationLibMerged-1.2.9-mc.26.3.jar",
       "sha512": "8b2644fb5e593cd85d4859c2e78aefa494a818f6a8b62ae85d92de98c73bc80cd2a61d2d9e90b2e094b49e8ec715b5dc8cc23442e38b6cbb3ba797eb34bdd979",
       "size": 411384
     },
     {
-      "path": "mods/punchy-3.1b-fabric-26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__punchy-3.1b-fabric-26.3.jar",
-      "sha512": "be19d19c3f9b2319f34f780de17799c2aebd0c2e090c5a0813317b2ce1eb0da43044e3d3d4ab5352d86aeb39f1418e7966e3907b98e62858ca3584978cccaca2",
-      "size": 3806532
+      "path": "mods/polytone-26.3-6.8.6-fabric.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__polytone-26.3-6.8.6-fabric.jar",
+      "sha512": "f50370557e24f5404f17b6c055d35a3e4540f6d0dc9b9b406afc4d0f1f8a14a33b7993b747bb9e7d92f7c83d818493b1082858cf2f85b06d476107577af9a087",
+      "size": 1681327
     },
     {
-      "path": "mods/punchy-moves-1.0.7-fabric-26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__punchy-moves-1.0.7-fabric-26.3.jar",
-      "sha512": "cc278d764c8ff07a3219f5a2995b1e4d5102c0c8a1d73308a667e6fd6d93ada9a3e07ea610fd99df1eaa3b3d1beb9d965285e5925ec7dde65f680c40d739a032",
-      "size": 1793900
+      "path": "mods/punchy-3.2b-fabric-26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__punchy-3.2b-fabric-26.3.jar",
+      "sha512": "58beb164c5f385ad73c3fc3bd75ff69b1fb87c69ddfc0697c99519692c4d83c5fe3dae184d0d025fb5c7f9bf2e1d05b9d0216ed632b7129c7b6b917a39e37b8f",
+      "size": 5100736
+    },
+    {
+      "path": "mods/punchy-moves-1.0.9-fabric-26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__punchy-moves-1.0.9-fabric-26.3.jar",
+      "sha512": "1639877e68b361738efd21083d3009ae043f92f68b908181e377fae99eb00642215f38f6b99fb0cd49a0f4de142ae59dab980f513934a78a3639ccd2188edfba",
+      "size": 1856959
     },
     {
       "path": "mods/relics-textures-1.0.0+26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__relics-textures-1.0.0_26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__relics-textures-1.0.0_26.3.jar",
       "sha512": "1fe6d678bd5299480fa77639100b590791201f23de65c2492157c1b86580e9422fe4f0f5859d072f46c1b3651a8d1914092b8481080c7b93b33559f9bb651ca2",
       "size": 113300
     },
     {
+      "path": "mods/RoughlyEnoughItems-26.3.824.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__RoughlyEnoughItems-26.3.824.jar",
+      "sha512": "7724d8e8dc50248641686c878b6b60736572c49e0cd8c71640c1c57fe85aed9941cad8ff7806b923903253da3540ff3df9bf619d701f50b904990fa7cdd59ee9",
+      "size": 2421605
+    },
+    {
       "path": "mods/rusticdelight-fabric-26.3-1.7.0.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__rusticdelight-fabric-26.3-1.7.0.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__rusticdelight-fabric-26.3-1.7.0.jar",
       "sha512": "736b828e78fb14e79a0b57e01e206aa5ddc5bbdfd506bfe99882e17006b9d5488f548b2b49d97f8b92689f49109f2fa79338360df4a8f0dc32151ee30ba14189",
       "size": 1064440
     },
     {
+      "path": "mods/saros_construction_mod-2.6.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__saros_construction_mod-2.6.jar",
+      "sha512": "30bd317e3c3d48cd2bc79f717969809074bb24d1aab23762c402a81278ef308820268ba2d4b27af7ce48fc49326fcf523fbdea394feb04e20f0e27190651e996",
+      "size": 222082
+    },
+    {
+      "path": "mods/Saros-Neon-Blocks-Fabric-26.3-1.1.0.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__Saros-Neon-Blocks-Fabric-26.3-1.1.0.jar",
+      "sha512": "1329f6d138b11e795d3bb5fb840a1b62b84ff425035be0eb7035aca5e18557700ca30ff08c6d148601b74a966c79c981a95c48d34db6f3e3621b8ae2dedf3b49",
+      "size": 1117018
+    },
+    {
+      "path": "mods/Saros-Road-Blocks-Fabric-26.3-5.14.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__Saros-Road-Blocks-Fabric-26.3-5.14.jar",
+      "sha512": "edfd3eef8b6b4a450265af710216a342ea2b418314399627f93812312a3f2c6783b9a3f3189775db4ce1c8c1c50f92e0a7a07cf91e01339e1c87f0616d1d80bc",
+      "size": 1837743
+    },
+    {
+      "path": "mods/Saros-Road-Signs-Fabric-26.3-4.20.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__Saros-Road-Signs-Fabric-26.3-4.20.jar",
+      "sha512": "f921659b701df3388fd98bca68b6cdfb990c472ed5a58b262f8e4f6f6bfab99b735aa479321f5e104bf6c27384aa104d7852e44d0b7a3ed5a9ea20c5b5fa84a4",
+      "size": 1908135
+    },
+    {
+      "path": "mods/Saros-Worldborder-Customizer-Fabric-26.3-1.0.2.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__Saros-Worldborder-Customizer-Fabric-26.3-1.0.2.jar",
+      "sha512": "398f5fb3008418195b76f3744840d969a7fc3838f8207b65f60e93bce000424674f46e1c67463f90b8a238c39694bf7adc2ce786c8edc4b9e456c8d9296e8c0d",
+      "size": 22062
+    },
+    {
       "path": "mods/shogi-fabric-26.3-26.3.0.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__shogi-fabric-26.3-26.3.0.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__shogi-fabric-26.3-26.3.0.3.jar",
       "sha512": "37f76d1b8654e070c01dd2181a0257750c2352b2cfdf975a9bf72f4dd327c94bdd2d467d9173fc35167da9d94dd4961ce99bfb37db4cbbaa3b3001b66edbac00",
       "size": 466899
     },
     {
       "path": "mods/shulkerboxtooltip-fabric-5.4.3+26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__shulkerboxtooltip-fabric-5.4.3_26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__shulkerboxtooltip-fabric-5.4.3_26.3.jar",
       "sha512": "e5c5dc22e1a7eb386a3e3499ad1ea0571f9992554d4bb023dc12b3a989e2389b65d4be337199ca842b6d194801f2340bcd976007eb4ab7440a3bdec4a0fbabf3",
       "size": 424841
     },
     {
       "path": "mods/SimpleDiscordRichPresence-fabric-26.3.0.1.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__SimpleDiscordRichPresence-fabric-26.3.0.1.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__SimpleDiscordRichPresence-fabric-26.3.0.1.jar",
       "sha512": "daf8df59f7216dfe2432e0b93d491dcc1eb0d2bcf78b9ad247970c0227d2cc0458e6ee38f55ca59f4268b5c0d47a9e67ff8912700a8cec20058fe4a5f79c5097",
       "size": 76802
     },
     {
-      "path": "mods/sit-fabric-26.1.1-1.5.1.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__sit-fabric-26.1.1-1.5.1.jar",
-      "sha512": "3a2816e750b02606c80c7ef9b44d7b19812e8e864802e0bbaf4550c5b84171efbb7ba0de936a627e68ddb4188c2d1df1fb57a9062f5a3777002d189daf5ecf09",
-      "size": 71100
+      "path": "mods/simplevoiceanimations-fabric-1.3.1+26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__simplevoiceanimations-fabric-1.3.1_26.3.jar",
+      "sha512": "66e859b7fab5842b52572cd769b27841953482bf436bfc7aefab606a0fb9e922fca9211be8fce44afa88b1c75379b0518c15ded528aa651dd8e6fdada7db4bb2",
+      "size": 579530
     },
     {
       "path": "mods/sodium-fabric-0.9.2+mc26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__sodium-fabric-0.9.2_mc26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__sodium-fabric-0.9.2_mc26.3.jar",
       "sha512": "f3f260f204b8ce5e8777c2c73f537956755ec61f3817b0b78b5e5568e8aa40f14891f146475075109747665c7c88a45ca0ca9a8df3c68d79c58ecdaa8d8c4b93",
       "size": 1908068
     },
     {
-      "path": "mods/spatial-gui-1.10.1-26.3-fabric.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__spatial-gui-1.10.1-26.3-fabric.jar",
-      "sha512": "ad5df037ffae456d774e52f6249b637ef0e4edb0f9305a6615daed78d994a508434f3849aa2d2c577dc8f0aafd72c67c2925248f527712eb83e19a302b1c0ac1",
-      "size": 735955
+      "path": "mods/spatial-gui-1.11.1-26.3-fabric.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__spatial-gui-1.11.1-26.3-fabric.jar",
+      "sha512": "4a3fd9375faef1029abf6bcf18d52fc3ea63c9fe91d34c2a38a532ed75d6002dbf3d72fb1af162a93dbc5161476c5a54e8c691e16550a937e69127f1782dcac4",
+      "size": 750820
     },
     {
-      "path": "mods/vitrail-0.13.0-beta+mc26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__vitrail-0.13.0-beta_mc26.3.jar",
-      "sha512": "b4915c8251614a3457c7c226f62b7c39c44219a7e5cc6e9a099f55f7a5d171b58e8df7ca9367d72dfc307732a771e3af3c7672879536edacbe1a595105018298",
-      "size": 1878930
+      "path": "mods/stackrefill-26.3.0-6.2.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__stackrefill-26.3.0-6.2.jar",
+      "sha512": "4a59484e1c9e396dde3adbc2fd30c14201298e2331dfac6cc12dce9383ae723be67c69cf1ed380064815c42c26b2a2f407481549e986eb8503eaceb0c8d5957e",
+      "size": 66467
+    },
+    {
+      "path": "mods/thatmakessense-fabric-0.3.0.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__thatmakessense-fabric-0.3.0.jar",
+      "sha512": "e318330b0b40b8a6ebf66e03982c75505a6e5f19c05793af35797e8388761474f8b71d9a8405142a4b71b137c49ff7974af7b7d71601463aad7e7f8302428b16",
+      "size": 143629
     },
     {
       "path": "mods/voicechat-fabric-2.6.27+26.3.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__voicechat-fabric-2.6.27_26.3.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__voicechat-fabric-2.6.27_26.3.jar",
       "sha512": "f2de66761c0f249bb0f9a4b348f98b97ab4e89d3ed3fd37638420364b7431b757933aa08c0cc3e7ba3dd85a602d6c2de313c2309fc587e93cabf31fc5f6df27e",
       "size": 5611159
     },
     {
+      "path": "mods/walljump-26.3-1.3.8-fabric.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__walljump-26.3-1.3.8-fabric.jar",
+      "sha512": "34f888930327cb97e468bac9aeb7893246daad9b860ac4dcd4d603e2cee516f3dc657067f6a00243abc6ee69ef00d4299206bba42f5fbf956c3a2fff87bb2468",
+      "size": 193315
+    },
+    {
       "path": "mods/waystones-fabric-26.3-26.3.0.2.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__waystones-fabric-26.3-26.3.0.2.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__waystones-fabric-26.3-26.3.0.2.jar",
       "sha512": "2caf3c4e4f2a8f6109378ebede5226f8d601064c2791a36d2aaf5a548195a14fe0abde656121b2d88bfd8ac8d6d87c2cde4a885e1c78edfe684f1cd88f477ba1",
       "size": 1211879
     },
     {
-      "path": "mods/weatherglass-0.5.0-26.3-fabric.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__weatherglass-0.5.0-26.3-fabric.jar",
-      "sha512": "56f3713dedc5f9d23e41a541d1a34762bd113fb991ee4838dc717565f7c4d32c3d6e6bba8c66d2314d261518969ba950690800ff680ee8ac59f824cb9e7e4cf6",
-      "size": 331596
+      "path": "mods/weatherglass-0.6.2-26.3-fabric.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__weatherglass-0.6.2-26.3-fabric.jar",
+      "sha512": "35b75e36aad1bd59ed166d0be05d6e60f8723887c7d994257610e592822f45c55a993e55252638f6acedc1d8a030f449297a0a99b7bf5af701d370a796cde93e",
+      "size": 640601
     },
     {
       "path": "mods/yet_another_config_lib_v3-3.9.7+26.3-fabric.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__yet_another_config_lib_v3-3.9.7_26.3-fabric.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__yet_another_config_lib_v3-3.9.7_26.3-fabric.jar",
       "sha512": "f3957028dd31cae78f08aee3e768f61bd12c4c8423257d357bc3c1a2172047c769d37901f99775c7ffff1e5ee794025dc72738b2869cab06f1c2811841d68b24",
       "size": 1125377
     },
     {
       "path": "mods/zoomify-2.17.0+mc26.3-universal.jar",
-      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.0/mods__zoomify-2.17.0_mc26.3-universal.jar",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/mods__zoomify-2.17.0_mc26.3-universal.jar",
       "sha512": "1c5bc8e46a3575847584bb6993034dbe7d8060be32ee676c473d36bd4bbbc4df21d03a8f3b3f8904e42312667e9716050cca2cf7a098c8ebf6985d52eea4d637",
       "size": 579146
+    },
+    {
+      "path": "resourcepacks/§aReimagined§0_§8[v1.63.7]§0.zip",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/resourcepacks___aReimagined_0__8_v1.63.7__0.zip",
+      "sha512": "2bd746f3c2f6c2f804ba69d5238e0effee1425b1d03b90631b2c8cda19a5f470cea9161f228b084b2368e147a4618f8b6e4cec56c5971590e727828958e42f8b",
+      "size": 36255954
+    },
+    {
+      "path": "resourcepacks/Aimz - Tiny Crosshair.zip",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/resourcepacks__Aimz_-_Tiny_Crosshair.zip",
+      "sha512": "d14b328d658e96b3f6d6ab8018fdbda1bb722c716853316b9af875e47d134c6e8808dfb6a2a121bf496c77792ed5dc956838ceaaf5928bba583fe7214bda8ca5",
+      "size": 4404
+    },
+    {
+      "path": "resourcepacks/BetterHotbar+ Default 1.2.zip",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/resourcepacks__BetterHotbar__Default_1.2.zip",
+      "sha512": "0e49f2c400ebf2f46d64e486ee794940db3a32065286d63e2820f2fb4a69671a07687bca6be22b30c0b9929d826fa3e9ff3bd3af0112268f803c45d7eceef348",
+      "size": 313394
+    },
+    {
+      "path": "resourcepacks/Default-Dark-Mode-26.3-2026.9.0.zip",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/resourcepacks__Default-Dark-Mode-26.3-2026.9.0.zip",
+      "sha512": "85ce27a77eda65a84b17a0495def5f6b72c405f7cbe82d17939a98134319a5baa1ce7f18179c9c67fd444d5798ce4f3822d982fed590399a2aefd4ebcc73751f",
+      "size": 761869
+    },
+    {
+      "path": "resourcepacks/Enchantment Glows v1.12.1.zip",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/resourcepacks__Enchantment_Glows_v1.12.1.zip",
+      "sha512": "6232c6a2df9a73aecbd0732b61bc3d8d4186b510d273612d9abef021f895bb767a366daf37b0d6f7f2958f10c3262084727581a550f9e5886dc0ebd7c2b97b89",
+      "size": 2126138
+    },
+    {
+      "path": "resourcepacks/FA-All_Extensions-v1.10.1.zip",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/resourcepacks__FA-All_Extensions-v1.10.1.zip",
+      "sha512": "7accd41fc3b4286e08085b3dcc3818c6c4d1c0e4a90d6b13bed125a827131531706d20c62ec87edd271c8880077c25d7731acaae88e5f5ec0fa92f5600e6859e",
+      "size": 548952
+    },
+    {
+      "path": "resourcepacks/Fluid & Foolish 1.0.1.zip",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/resourcepacks__Fluid___Foolish_1.0.1.zip",
+      "sha512": "09544efccdb63bbd6a2f583184bea82cfe01c78cd36f9bf9343cd8cc0243b19d7993aa280481d42c68c4b19e6abb3b52346d93115d48b50e1e37be9c53efafb9",
+      "size": 1881476
+    },
+    {
+      "path": "resourcepacks/FreshAnimations_v1.11.2_26.1.zip",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/resourcepacks__FreshAnimations_v1.11.2_26.1.zip",
+      "sha512": "c0a529479b9e43465d8b5c5f939711fded92d92fd26053b75fcbe0560046e23655f2d429d108b286cbfceb0470960b5a519ac2311ab108899b7529b76a9e9e30",
+      "size": 778725
+    },
+    {
+      "path": "resourcepacks/LowOnFire v26.1§8.zip",
+      "url": "https://github.com/NeyeReQ/Kwadratowy-Chaos-Launcher/releases/download/pack-v0.2.1/resourcepacks__LowOnFire_v26.1_8.zip",
+      "sha512": "713a20a8171c8249c30d9eb72342162754c627c7a86dc0971cb555faf43c322c181fd5546e0c770fc9ae922161ee846a7af951267c1d9a8a75af466a17e19d5e",
+      "size": 42760
     }
   ],
   "news": [
@@ -497,5 +695,22 @@
       "body": "To pierwsza wersja systemu. Lista modów zostanie opublikowana w manifeście paczki."
     }
   ],
-  "resourcePackOrder": []
+  "resourcePackOrder": [
+    "nclskins:mojang_collections",
+    "continuity:glass_pane_culling_fix",
+    "continuity:default",
+    "file/Aimz - Tiny Crosshair.zip",
+    "file/Fluid & Foolish 1.0.1.zip",
+    "file/FA-All_Extensions-v1.10.1.zip",
+    "file/FreshAnimations_v1.11.2_26.1.zip",
+    "file/LowOnFire v26.1§8.zip",
+    "file/BetterHotbar+ Default 1.2.zip",
+    "file/Enchantment Glows v1.12.1.zip",
+    "file/§aReimagined§0_§8[v1.63.7]§0.zip",
+    "punchy:punchy",
+    "file/Default-Dark-Mode-26.3-2026.9.0.zip",
+    "black_icons",
+    "vanilla",
+    "serilum_mod_translations"
+  ]
 }
