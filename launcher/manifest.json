@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "Kwadratowy Chaos",
   "summary": "Oficjalna paczka serwera Kwadratowy Chaos.",
-  "packVersion": "0.2.0",
+  "packVersion": "0.2.1",
   "minecraftVersion": "26.3",
   "javaMajor": 25,
   "loader": {
@@ -496,5 +496,6 @@
       "tag": "INFO",
       "body": "To pierwsza wersja systemu. Lista modów zostanie opublikowana w manifeście paczki."
     }
-  ]
+  ],
+  "resourcePackOrder": []
 }
