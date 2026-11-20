@@ -196,6 +196,20 @@ async function applyClientPreferences(manifest: LauncherManifest) {
       .map((path) => "file/" + path.slice("resourcepacks/".length));
     const selectedIds = [...new Set(["vanilla", ...preservedIds, ...managedInStorageOrder])];
     updates.set("resourcePacks", JSON.stringify(selectedIds));
+
+    // Pre-acknowledge managed packs so Minecraft does not stop for a compatibility prompt.
+    const currentIncompatibleIds = parseOptionsStringList(existing.get("incompatibleResourcePacks"));
+    const preservedIncompatibleIds = currentIncompatibleIds
+      .filter((id) => !managedIds.has(id))
+      .filter((id) => {
+        if (!id.startsWith("file/")) return true;
+        try {
+          return existsSync(resolvePackFile("resourcepacks/" + id.slice("file/".length)));
+        } catch {
+          return false;
+        }
+      });
+    updates.set("incompatibleResourcePacks", JSON.stringify([...new Set([...preservedIncompatibleIds, ...managedInStorageOrder])]));
   }
 
   let configureVulkan = false;
