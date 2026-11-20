@@ -49,6 +49,31 @@ async function walk(dir) {
 await stat(root);
 await walk(root);
 manifest.files = files.sort((a, b) => a.path.localeCompare(b.path));
+
+const resourcePackPaths = files
+  .map((file) => file.path)
+  .filter((path) => path.startsWith("resourcepacks/"));
+for (const path of resourcePackPaths) {
+  const fileName = path.slice("resourcepacks/".length);
+  if (fileName.includes("/") || !/\\.zip$/i.test(fileName)) {
+    throw new Error("Paczki tekstur muszą być archiwami ZIP bezpośrednio w pack/resourcepacks/: " + path);
+  }
+}
+const availableResourcePacks = new Set(resourcePackPaths);
+const configuredOrder = Array.isArray(manifest.resourcePackOrder) ? manifest.resourcePackOrder : [];
+const ordered = [];
+const orderedSet = new Set();
+for (const path of configuredOrder) {
+  if (availableResourcePacks.has(path) && !orderedSet.has(path)) {
+    ordered.push(path);
+    orderedSet.add(path);
+  }
+}
+// New texture packs are added at the bottom of the priority list (alphabetically).
+const newlyAdded = [...availableResourcePacks]
+  .filter((path) => !orderedSet.has(path))
+  .sort((a, b) => a.localeCompare(b));
+manifest.resourcePackOrder = [...ordered, ...newlyAdded];
 manifest.packVersion = process.env.PACK_VERSION || manifest.packVersion;
 await writeFile(output, JSON.stringify(manifest, null, 2) + "\n", "utf8");
 console.log(`Manifest zapisany: ${files.length} plikow. Release: ${releaseTag}`);
