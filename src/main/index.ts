@@ -91,6 +91,26 @@ function validateManifest(input: unknown): LauncherManifest {
     if (!file.url || !/^[a-f0-9]{128}$/i.test(file.sha512 || "")) throw new Error("Nieprawidłowy adres lub SHA-512 pliku: " + file.path);
     if (new URL(file.url).protocol !== "https:") throw new Error("Pobieranie plików jest dozwolone wyłącznie przez HTTPS.");
   }
+  if (m.resourcePackOrder !== undefined) {
+    if (!Array.isArray(m.resourcePackOrder)) throw new Error("resourcePackOrder musi być tablicą ścieżek.");
+    const resourcePackFiles = new Set((m.files as ManifestFile[])
+      .filter((file) => file.path.startsWith("resourcepacks/"))
+      .map((file) => file.path));
+    const orderedResourcePacks = new Set<string>();
+    for (const value of m.resourcePackOrder) {
+      if (typeof value !== "string") throw new Error("Nieprawidłowy wpis w resourcePackOrder.");
+      const packPath = safePackPath(value);
+      if (!packPath.startsWith("resourcepacks/") || packPath.slice("resourcepacks/".length).includes("/") || !/\.zip$/i.test(packPath)) {
+        throw new Error("Każda paczka w resourcePackOrder musi być archiwum ZIP bezpośrednio w resourcepacks/.");
+      }
+      if (!resourcePackFiles.has(packPath)) throw new Error("Kolejność wskazuje plik nieobecny w manifeście: " + packPath);
+      if (orderedResourcePacks.has(packPath)) throw new Error("Powtórzona paczka w resourcePackOrder: " + packPath);
+      orderedResourcePacks.add(packPath);
+    }
+    if (orderedResourcePacks.size !== resourcePackFiles.size) {
+      throw new Error("resourcePackOrder musi zawierać wszystkie paczki ZIP z folderu resourcepacks/ dokładnie raz.");
+    }
+  }
   return m as LauncherManifest;
 }
 async function fetchManifest(): Promise<LauncherManifest> {
@@ -118,6 +138,117 @@ async function downloadFile(file: ManifestFile) {
   finally { await rm(temporary, { force: true }).catch(() => undefined); }
   return true;
 }
+function parseOptionsStringList(value: string | undefined): string[] {
+  if (!value) return ["vanilla"];
+  try {
+    const parsed: unknown = JSON.parse(value);
+    if (!Array.isArray(parsed)) return ["vanilla"];
+    return parsed.filter((item): item is string => typeof item === "string");
+  } catch {
+    return ["vanilla"];
+  }
+}
+
+function supportsVulkanBackend(version: string): boolean {
+  const match = /^(\\d+)\\.(\\d+)/.exec(version);
+  if (!match) return false;
+  const major = Number(match[1]);
+  const minor = Number(match[2]);
+  return major > 26 || (major === 26 && minor >= 2);
+}
+
+async function applyClientPreferences(manifest: LauncherManifest) {
+  const optionsPath = join(gamePath(), "options.txt");
+  let original = "";
+  try {
+    original = await readFile(optionsPath, "utf8");
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+  }
+
+  const lineEnding = original.includes("\\r\\n") ? "\\r\\n" : "\\n";
+  const lines = original.split(/\\r?\\n/);
+  if (lines.length && lines[lines.length - 1] === "") lines.pop();
+  const existing = new Map<string, string>();
+  for (const line of lines) {
+    const separator = line.indexOf(":");
+    if (separator > 0) existing.set(line.slice(0, separator), line.slice(separator + 1));
+  }
+
+  const updates = new Map<string, string>();
+  if (manifest.resourcePackOrder !== undefined) {
+    const managedIds = new Set((manifest.files)
+      .filter((file) => file.path.startsWith("resourcepacks/"))
+      .map((file) => "file/" + file.path.slice("resourcepacks/".length)));
+    const currentIds = parseOptionsStringList(existing.get("resourcePacks"));
+    const preservedIds = currentIds.filter((id) => id !== "vanilla" && !managedIds.has(id)).filter((id) => {
+      if (!id.startsWith("file/")) return true;
+      try {
+        return existsSync(resolvePackFile("resourcepacks/" + id.slice("file/".length)));
+      } catch {
+        return false;
+      }
+    });
+
+    // Minecraft stores resourcePacks from lowest to highest priority.
+    // The manifest is authored in UI order (top to bottom), so reverse managed packs here.
+    const managedInStorageOrder = manifest.resourcePackOrder.slice().reverse()
+      .map((path) => "file/" + path.slice("resourcepacks/".length));
+    const selectedIds = [...new Set(["vanilla", ...preservedIds, ...managedInStorageOrder])];
+    updates.set("resourcePacks", JSON.stringify(selectedIds));
+  }
+
+  let configureVulkan = false;
+  if (supportsVulkanBackend(manifest.minecraftVersion)) {
+    const markerPath = join(gamePath(), ".kwadratowy-chaos", "client-preferences.json");
+    let marker: { vulkanConfiguredFor?: string } = {};
+    try {
+      marker = JSON.parse(await readFile(markerPath, "utf8")) as { vulkanConfiguredFor?: string };
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+        throw new Error("Nie można odczytać znacznika ustawień grafiki launchera.");
+      }
+    }
+    // Apply Vulkan once per Minecraft version. This lets Minecraft's own crash fallback
+    // switch to OpenGL on unsupported or unstable systems without the launcher undoing it.
+    if (marker.vulkanConfiguredFor !== manifest.minecraftVersion) {
+      updates.set("preferredGraphicsBackend", "vulkan");
+      configureVulkan = true;
+    }
+  }
+
+  if (updates.size === 0) return;
+  const written = new Set<string>();
+  const updatedLines: string[] = [];
+  for (const line of lines) {
+    const separator = line.indexOf(":");
+    if (separator <= 0) {
+      updatedLines.push(line);
+      continue;
+    }
+    const key = line.slice(0, separator);
+    if (!updates.has(key)) {
+      updatedLines.push(line);
+      continue;
+    }
+    if (written.has(key)) continue;
+    updatedLines.push(key + ":" + updates.get(key));
+    written.add(key);
+  }
+  for (const [key, value] of updates) {
+    if (!written.has(key)) updatedLines.push(key + ":" + value);
+  }
+
+  await mkdir(gamePath(), { recursive: true });
+  await writeFile(optionsPath, updatedLines.join(lineEnding) + lineEnding, "utf8");
+
+  if (configureVulkan) {
+    const markerPath = join(gamePath(), ".kwadratowy-chaos", "client-preferences.json");
+    await mkdir(dirname(markerPath), { recursive: true });
+    await writeFile(markerPath, JSON.stringify({ vulkanConfiguredFor: manifest.minecraftVersion }, null, 2), "utf8");
+  }
+}
+
 async function previousManagedFiles(): Promise<string[]> {
   try {
     const data = JSON.parse(await readFile(managedFile(), "utf8")) as { files?: string[] };
@@ -154,6 +285,7 @@ async function syncPack(sender?: WebContents) {
   }
   await mkdir(dirname(managedFile()), { recursive: true });
   await writeFile(managedFile(), JSON.stringify({ packVersion: manifest.packVersion, files: [...nextPaths] }, null, 2), "utf8");
+  await applyClientPreferences(manifest);
   emit({ phase: "done", current: manifest.files.length, total: manifest.files.length, message: "Paczka " + manifest.packVersion + " jest aktualna." });
   return { updated, removed, unchanged, total: manifest.files.length };
 }
