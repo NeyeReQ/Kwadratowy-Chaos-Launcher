@@ -59,19 +59,54 @@ for (const path of resourcePackPaths) {
     throw new Error("Paczki tekstur muszą być archiwami ZIP bezpośrednio w pack/resourcepacks/: " + path);
   }
 }
-const availableResourcePacks = new Set(resourcePackPaths);
-const configuredOrder = Array.isArray(manifest.resourcePackOrder) ? manifest.resourcePackOrder : [];
+const availableResourcePackIds = new Set(resourcePackPaths
+  .map((path) => "file/" + path.slice("resourcepacks/".length)));
+const defaultResourcePackOrder = [
+  "nclskins:mojang_collections",
+  "continuity:glass_pane_culling_fix",
+  "continuity:default",
+  "file/Aimz - Tiny Crosshair.zip",
+  "file/Fluid & Foolish 1.0.1.zip",
+  "file/FA-All_Extensions-v1.10.1.zip",
+  "file/FreshAnimations_v1.11.2_26.1.zip",
+  "file/LowOnFire v26.1§8.zip",
+  "file/BetterHotbar+ Default 1.2.zip",
+  "file/Enchantment Glows v1.12.1.zip",
+  "file/§aReimagined§0_§8[v1.63.7]§0.zip",
+  "punchy:punchy",
+  "file/Default-Dark-Mode-26.3-2026.9.0.zip",
+  "black_icons",
+  "vanilla",
+  "serilum_mod_translations"
+];
+const configuredOrder = Array.isArray(manifest.resourcePackOrder) && manifest.resourcePackOrder.length
+  ? manifest.resourcePackOrder
+  : defaultResourcePackOrder;
 const ordered = [];
 const orderedSet = new Set();
-for (const path of configuredOrder) {
-  if (availableResourcePacks.has(path) && !orderedSet.has(path)) {
-    ordered.push(path);
-    orderedSet.add(path);
+for (const id of configuredOrder) {
+  if (typeof id !== "string" || !id.trim() || id !== id.trim()) {
+    throw new Error("Nieprawidłowy identyfikator paczki w resourcePackOrder.");
   }
+  if (id.startsWith("file/")) {
+    const fileName = id.slice("file/".length);
+    if (!fileName || fileName.includes("/") || fileName.includes("\\\\") || !/\.zip$/i.test(fileName)) {
+      throw new Error("Nieprawidłowy identyfikator plikowej paczki ZIP: " + id);
+    }
+    if (!availableResourcePackIds.has(id)) {
+      throw new Error("Paczka wskazana w resourcePackOrder nie istnieje w pack/resourcepacks/: " + id);
+    }
+  } else if (!/^[a-z0-9_.-]+(?::[a-z0-9_./-]+)?$/.test(id)) {
+    throw new Error("Nieprawidłowy identyfikator wbudowanej paczki: " + id);
+  }
+  if (orderedSet.has(id)) throw new Error("Powtórzony identyfikator paczki w resourcePackOrder: " + id);
+  ordered.push(id);
+  orderedSet.add(id);
 }
-// New texture packs are added at the bottom of the priority list (alphabetically).
-const newlyAdded = [...availableResourcePacks]
-  .filter((path) => !orderedSet.has(path))
+// Newly added ZIP packs are appended at the bottom of the UI priority list.
+const newlyAdded = resourcePackPaths
+  .map((path) => "file/" + path.slice("resourcepacks/".length))
+  .filter((id) => !orderedSet.has(id))
   .sort((a, b) => a.localeCompare(b));
 manifest.resourcePackOrder = [...ordered, ...newlyAdded];
 manifest.packVersion = process.env.PACK_VERSION || manifest.packVersion;
