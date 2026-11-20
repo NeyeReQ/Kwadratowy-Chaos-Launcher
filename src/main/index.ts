@@ -103,7 +103,7 @@ function validateManifest(input: unknown): LauncherManifest {
       }
       if (value.startsWith("file/")) {
         const fileName = value.slice("file/".length);
-        if (!fileName || fileName.includes("/") || fileName.includes("\\\\") || !/\.zip$/i.test(fileName)) {
+        if (!fileName || fileName.includes("/") || fileName.includes(String.fromCharCode(92)) || !/\.zip$/i.test(fileName)) {
           throw new Error("Paczki plikowe muszą wskazywać archiwa ZIP bezpośrednio w resourcepacks/.");
         }
         if (!resourcePackFiles.has(value)) throw new Error("Kolejność wskazuje plik nieobecny w manifeście: " + value);
@@ -148,10 +148,10 @@ function parseOptionsStringList(value: string | undefined): string[] {
   if (!value) return [];
   try {
     const parsed: unknown = JSON.parse(value);
-    if (!Array.isArray(parsed)) return ["vanilla"];
+    if (!Array.isArray(parsed)) return [];
     return parsed.filter((item): item is string => typeof item === "string");
   } catch {
-    return ["vanilla"];
+    return [];
   }
 }
 
