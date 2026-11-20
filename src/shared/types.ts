@@ -6,7 +6,7 @@ export interface LauncherManifest {
   loader: { type: LoaderType; version?: string };
   server: { host?: string; port?: number };
   files: ManifestFile[];
-  /** Resource packs in Minecraft UI order: highest priority first. */
+  /** Minecraft resource-pack IDs in UI order (highest priority first), including file/... ZIPs and mod-provided IDs. */
   resourcePackOrder?: string[];
   news?: Array<{ title: string; date?: string; body: string; tag?: string }>;
 }
