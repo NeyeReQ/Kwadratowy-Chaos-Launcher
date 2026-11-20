@@ -92,23 +92,29 @@ function validateManifest(input: unknown): LauncherManifest {
     if (new URL(file.url).protocol !== "https:") throw new Error("Pobieranie plików jest dozwolone wyłącznie przez HTTPS.");
   }
   if (m.resourcePackOrder !== undefined) {
-    if (!Array.isArray(m.resourcePackOrder)) throw new Error("resourcePackOrder musi być tablicą ścieżek.");
+    if (!Array.isArray(m.resourcePackOrder)) throw new Error("resourcePackOrder musi być tablicą identyfikatorów paczek.");
     const resourcePackFiles = new Set((m.files as ManifestFile[])
       .filter((file) => file.path.startsWith("resourcepacks/"))
-      .map((file) => file.path));
-    const orderedResourcePacks = new Set<string>();
+      .map((file) => "file/" + file.path.slice("resourcepacks/".length)));
+    const orderedIds = new Set<string>();
     for (const value of m.resourcePackOrder) {
-      if (typeof value !== "string") throw new Error("Nieprawidłowy wpis w resourcePackOrder.");
-      const packPath = safePackPath(value);
-      if (!packPath.startsWith("resourcepacks/") || packPath.slice("resourcepacks/".length).includes("/") || !/\.zip$/i.test(packPath)) {
-        throw new Error("Każda paczka w resourcePackOrder musi być archiwum ZIP bezpośrednio w resourcepacks/.");
+      if (typeof value !== "string" || !value.trim() || value !== value.trim()) {
+        throw new Error("Nieprawidłowy wpis w resourcePackOrder.");
       }
-      if (!resourcePackFiles.has(packPath)) throw new Error("Kolejność wskazuje plik nieobecny w manifeście: " + packPath);
-      if (orderedResourcePacks.has(packPath)) throw new Error("Powtórzona paczka w resourcePackOrder: " + packPath);
-      orderedResourcePacks.add(packPath);
+      if (value.startsWith("file/")) {
+        const fileName = value.slice("file/".length);
+        if (!fileName || fileName.includes("/") || fileName.includes("\\\\") || !/\.zip$/i.test(fileName)) {
+          throw new Error("Paczki plikowe muszą wskazywać archiwa ZIP bezpośrednio w resourcepacks/.");
+        }
+        if (!resourcePackFiles.has(value)) throw new Error("Kolejność wskazuje plik nieobecny w manifeście: " + value);
+      } else if (!/^[a-z0-9_.-]+(?::[a-z0-9_./-]+)?$/.test(value)) {
+        throw new Error("Nieprawidłowy identyfikator wbudowanej paczki: " + value);
+      }
+      if (orderedIds.has(value)) throw new Error("Powtórzony identyfikator w resourcePackOrder: " + value);
+      orderedIds.add(value);
     }
-    if (orderedResourcePacks.size !== resourcePackFiles.size) {
-      throw new Error("resourcePackOrder musi zawierać wszystkie paczki ZIP z folderu resourcepacks/ dokładnie raz.");
+    for (const fileId of resourcePackFiles) {
+      if (!orderedIds.has(fileId)) throw new Error("resourcePackOrder nie zawiera paczki: " + fileId);
     }
   }
   return m as LauncherManifest;
@@ -139,7 +145,7 @@ async function downloadFile(file: ManifestFile) {
   return true;
 }
 function parseOptionsStringList(value: string | undefined): string[] {
-  if (!value) return ["vanilla"];
+  if (!value) return [];
   try {
     const parsed: unknown = JSON.parse(value);
     if (!Array.isArray(parsed)) return ["vanilla"];
@@ -177,11 +183,15 @@ async function applyClientPreferences(manifest: LauncherManifest) {
 
   const updates = new Map<string, string>();
   if (manifest.resourcePackOrder !== undefined) {
-    const managedIds = new Set((manifest.files)
+    const managedFileIds = new Set((manifest.files)
       .filter((file) => file.path.startsWith("resourcepacks/"))
       .map((file) => "file/" + file.path.slice("resourcepacks/".length)));
     const currentIds = parseOptionsStringList(existing.get("resourcePacks"));
-    const preservedIds = currentIds.filter((id) => id !== "vanilla" && !managedIds.has(id)).filter((id) => {
+    const orderedIds = manifest.resourcePackOrder.slice();
+    // Vanilla must remain selected as the lowest-priority fallback, even for older manifests.
+    if (!orderedIds.includes("vanilla")) orderedIds.push("vanilla");
+    const configuredIds = new Set(orderedIds);
+    const preservedIds = currentIds.filter((id) => !configuredIds.has(id) && !managedFileIds.has(id)).filter((id) => {
       if (!id.startsWith("file/")) return true;
       try {
         return existsSync(resolvePackFile("resourcepacks/" + id.slice("file/".length)));
@@ -190,17 +200,16 @@ async function applyClientPreferences(manifest: LauncherManifest) {
       }
     });
 
-    // Minecraft stores resourcePacks from lowest to highest priority.
-    // The manifest is authored in UI order (top to bottom), so reverse managed packs here.
-    const managedInStorageOrder = manifest.resourcePackOrder.slice().reverse()
-      .map((path) => "file/" + path.slice("resourcepacks/".length));
-    const selectedIds = [...new Set(["vanilla", ...preservedIds, ...managedInStorageOrder])];
+    // The manifest uses Minecraft UI order (top to bottom / highest priority first).
+    // options.txt stores the selected packs in the reverse order.
+    const storageOrder = orderedIds.slice().reverse();
+    const selectedIds = [...new Set([...preservedIds, ...storageOrder])];
     updates.set("resourcePacks", JSON.stringify(selectedIds));
 
-    // Pre-acknowledge managed packs so Minecraft does not stop for a compatibility prompt.
+    // Pre-acknowledge only managed ZIP packs so Minecraft does not stop for a compatibility prompt.
     const currentIncompatibleIds = parseOptionsStringList(existing.get("incompatibleResourcePacks"));
     const preservedIncompatibleIds = currentIncompatibleIds
-      .filter((id) => !managedIds.has(id))
+      .filter((id) => !managedFileIds.has(id))
       .filter((id) => {
         if (!id.startsWith("file/")) return true;
         try {
@@ -209,7 +218,8 @@ async function applyClientPreferences(manifest: LauncherManifest) {
           return false;
         }
       });
-    updates.set("incompatibleResourcePacks", JSON.stringify([...new Set([...preservedIncompatibleIds, ...managedInStorageOrder])]));
+    const orderedManagedFileIds = orderedIds.filter((id) => managedFileIds.has(id));
+    updates.set("incompatibleResourcePacks", JSON.stringify([...new Set([...preservedIncompatibleIds, ...orderedManagedFileIds])]));
   }
 
   let configureVulkan = false;
