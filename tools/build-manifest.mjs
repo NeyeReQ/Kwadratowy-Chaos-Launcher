@@ -55,7 +55,7 @@ const resourcePackPaths = files
   .filter((path) => path.startsWith("resourcepacks/"));
 for (const path of resourcePackPaths) {
   const fileName = path.slice("resourcepacks/".length);
-  if (fileName.includes("/") || !/\\.zip$/i.test(fileName)) {
+  if (fileName.includes("/") || !/\.zip$/i.test(fileName)) {
     throw new Error("Paczki tekstur muszą być archiwami ZIP bezpośrednio w pack/resourcepacks/: " + path);
   }
 }
