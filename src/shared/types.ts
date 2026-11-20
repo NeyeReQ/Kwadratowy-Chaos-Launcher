@@ -6,6 +6,8 @@ export interface LauncherManifest {
   loader: { type: LoaderType; version?: string };
   server: { host?: string; port?: number };
   files: ManifestFile[];
+  /** Resource packs in Minecraft UI order: highest priority first. */
+  resourcePackOrder?: string[];
   news?: Array<{ title: string; date?: string; body: string; tag?: string }>;
 }
 export interface LauncherSettings { memoryMb: number; gamePath: string; onboardingCompleted: boolean; onboardingVersion: number; }
