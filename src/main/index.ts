@@ -129,20 +129,33 @@ async function fetchManifest(): Promise<LauncherManifest> {
 async function hashFile(path: string): Promise<string | null> {
   try { return createHash("sha512").update(await readFile(path)).digest("hex"); } catch { return null; }
 }
-async function downloadFile(file: ManifestFile) {
+type DownloadResult = "updated" | "unchanged" | "preserved";
+
+async function downloadFile(file: ManifestFile, previousHashes: Record<string, string>): Promise<DownloadResult> {
   const destination = resolvePackFile(file.path);
   await rejectSymlinkParents(destination);
-  if (await hashFile(destination) === file.sha512.toLowerCase()) return false;
+  const currentHash = await hashFile(destination);
+  const expectedHash = file.sha512.toLowerCase();
+
+  // Config files can contain player preferences written by mods. Replace them only
+  // when they still match the last version shipped by this launcher. Unknown legacy
+  // config files are preserved conservatively because their original contents are unknown.
+  if (file.path.startsWith("config/") && currentHash && currentHash !== expectedHash) {
+    const previousHash = previousHashes[file.path]?.toLowerCase();
+    if (!previousHash || currentHash !== previousHash) return "preserved";
+  }
+  if (currentHash === expectedHash) return "unchanged";
+
   const response = await fetch(file.url, { signal: AbortSignal.timeout(60000), redirect: "follow" });
   if (!response.ok || !response.url.startsWith("https://")) throw new Error("Nie udało się pobrać " + file.path + ".");
   const bytes = Buffer.from(await response.arrayBuffer());
   if (file.size && bytes.byteLength !== file.size) throw new Error("Nieprawidłowy rozmiar pliku " + file.path + ".");
-  if (createHash("sha512").update(bytes).digest("hex") !== file.sha512.toLowerCase()) throw new Error("Weryfikacja SHA-512 nie powiodła się: " + file.path);
+  if (createHash("sha512").update(bytes).digest("hex") !== expectedHash) throw new Error("Weryfikacja SHA-512 nie powiodła się: " + file.path);
   await mkdir(dirname(destination), { recursive: true });
   const temporary = destination + "." + randomUUID() + ".download";
   try { await writeFile(temporary, bytes, { flag: "wx" }); await rename(temporary, destination); }
   finally { await rm(temporary, { force: true }).catch(() => undefined); }
-  return true;
+  return "updated";
 }
 function parseOptionsStringList(value: string | undefined): string[] {
   if (!value) return [];
@@ -165,11 +178,21 @@ function supportsVulkanBackend(version: string): boolean {
 
 async function applyClientPreferences(manifest: LauncherManifest) {
   const optionsPath = join(gamePath(), "options.txt");
+  const markerPath = join(gamePath(), ".kwadratowy-chaos", "client-preferences.json");
   let original = "";
   try {
     original = await readFile(optionsPath, "utf8");
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+  }
+
+  let marker: { vulkanConfiguredFor?: string; managedResourcePackIds?: string[] } = {};
+  try {
+    marker = JSON.parse(await readFile(markerPath, "utf8")) as typeof marker;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+      throw new Error("Nie można odczytać znacznika ustawień gry launchera.");
+    }
   }
 
   const lineEnding = original.includes("\r\n") ? "\r\n" : "\n";
@@ -182,34 +205,42 @@ async function applyClientPreferences(manifest: LauncherManifest) {
   }
 
   const updates = new Map<string, string>();
+  let configuredPackIds = marker.managedResourcePackIds ?? [];
   if (manifest.resourcePackOrder !== undefined) {
-    const managedFileIds = new Set((manifest.files)
+    const managedFileIds = new Set(manifest.files
       .filter((file) => file.path.startsWith("resourcepacks/"))
       .map((file) => "file/" + file.path.slice("resourcepacks/".length)));
-    const currentIds = parseOptionsStringList(existing.get("resourcePacks"));
+    const previousManagedIds = new Set(marker.managedResourcePackIds ?? []);
     const orderedIds = manifest.resourcePackOrder.slice();
-    // Vanilla must remain selected as the lowest-priority fallback, even for older manifests.
+    // Vanilla remains the lowest-priority fallback on a fresh instance.
     if (!orderedIds.includes("vanilla")) orderedIds.push("vanilla");
-    const configuredIds = new Set(orderedIds);
-    const preservedIds = currentIds.filter((id) => !configuredIds.has(id) && !managedFileIds.has(id)).filter((id) => {
-      if (!id.startsWith("file/")) return true;
-      try {
-        return existsSync(resolvePackFile("resourcepacks/" + id.slice("file/".length)));
-      } catch {
-        return false;
-      }
-    });
+    configuredPackIds = orderedIds;
 
-    // The manifest uses Minecraft UI order (top to bottom / highest priority first).
-    // options.txt stores the selected packs in the reverse order.
-    const storageOrder = orderedIds.slice().reverse();
-    const selectedIds = [...new Set([...preservedIds, ...storageOrder])];
-    updates.set("resourcePacks", JSON.stringify(selectedIds));
+    const currentIds = parseOptionsStringList(existing.get("resourcePacks"));
+    const hasSavedSelection = existing.has("resourcePacks");
+    const selectedIds = hasSavedSelection
+      ? currentIds.filter((id) => {
+          // Remove entries managed by the previous manifest only when they have
+          // disappeared from the new manifest. Keep the player's own pack choices.
+          if (previousManagedIds.has(id) && !orderedIds.includes(id)) return false;
+          if (!id.startsWith("file/")) return true;
+          try {
+            return existsSync(resolvePackFile("resourcepacks/" + id.slice("file/".length)));
+          } catch {
+            return false;
+          }
+        })
+      // Apply the pack's defaults only before Minecraft has saved a selection.
+      : orderedIds.slice().reverse();
 
-    // Pre-acknowledge only managed ZIP packs so Minecraft does not stop for a compatibility prompt.
+    if (!selectedIds.includes("vanilla")) selectedIds.push("vanilla");
+    updates.set("resourcePacks", JSON.stringify([...new Set(selectedIds)]));
+
+    // Acknowledge compatibility for pack-provided ZIPs without changing which
+    // resource packs the player has selected.
     const currentIncompatibleIds = parseOptionsStringList(existing.get("incompatibleResourcePacks"));
     const preservedIncompatibleIds = currentIncompatibleIds
-      .filter((id) => !managedFileIds.has(id))
+      .filter((id) => !previousManagedIds.has(id))
       .filter((id) => {
         if (!id.startsWith("file/")) return true;
         try {
@@ -223,66 +254,69 @@ async function applyClientPreferences(manifest: LauncherManifest) {
   }
 
   let configureVulkan = false;
-  if (supportsVulkanBackend(manifest.minecraftVersion)) {
-    const markerPath = join(gamePath(), ".kwadratowy-chaos", "client-preferences.json");
-    let marker: { vulkanConfiguredFor?: string } = {};
-    try {
-      marker = JSON.parse(await readFile(markerPath, "utf8")) as { vulkanConfiguredFor?: string };
-    } catch (error) {
-      if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
-        throw new Error("Nie można odczytać znacznika ustawień grafiki launchera.");
+  if (supportsVulkanBackend(manifest.minecraftVersion) && marker.vulkanConfiguredFor !== manifest.minecraftVersion) {
+    // Apply Vulkan once per Minecraft version. After this, keep the backend the
+    // player chooses (including an automatic OpenGL fallback) across later syncs.
+    updates.set("preferredGraphicsBackend", "vulkan");
+    configureVulkan = true;
+  }
+
+  if (updates.size > 0) {
+    const written = new Set<string>();
+    const updatedLines: string[] = [];
+    for (const line of lines) {
+      const separator = line.indexOf(":");
+      if (separator <= 0) {
+        updatedLines.push(line);
+        continue;
       }
+      const key = line.slice(0, separator);
+      if (!updates.has(key)) {
+        updatedLines.push(line);
+        continue;
+      }
+      if (written.has(key)) continue;
+      updatedLines.push(key + ":" + updates.get(key));
+      written.add(key);
     }
-    // Apply Vulkan once per Minecraft version. This lets Minecraft's own crash fallback
-    // switch to OpenGL on unsupported or unstable systems without the launcher undoing it.
-    if (marker.vulkanConfiguredFor !== manifest.minecraftVersion) {
-      updates.set("preferredGraphicsBackend", "vulkan");
-      configureVulkan = true;
+    for (const [key, value] of updates) {
+      if (!written.has(key)) updatedLines.push(key + ":" + value);
     }
+
+    await mkdir(gamePath(), { recursive: true });
+    await writeFile(optionsPath, updatedLines.join(lineEnding) + lineEnding, "utf8");
   }
 
-  if (updates.size === 0) return;
-  const written = new Set<string>();
-  const updatedLines: string[] = [];
-  for (const line of lines) {
-    const separator = line.indexOf(":");
-    if (separator <= 0) {
-      updatedLines.push(line);
-      continue;
-    }
-    const key = line.slice(0, separator);
-    if (!updates.has(key)) {
-      updatedLines.push(line);
-      continue;
-    }
-    if (written.has(key)) continue;
-    updatedLines.push(key + ":" + updates.get(key));
-    written.add(key);
-  }
-  for (const [key, value] of updates) {
-    if (!written.has(key)) updatedLines.push(key + ":" + value);
-  }
-
-  await mkdir(gamePath(), { recursive: true });
-  await writeFile(optionsPath, updatedLines.join(lineEnding) + lineEnding, "utf8");
-
-  if (configureVulkan) {
-    const markerPath = join(gamePath(), ".kwadratowy-chaos", "client-preferences.json");
+  if (manifest.resourcePackOrder !== undefined || configureVulkan) {
     await mkdir(dirname(markerPath), { recursive: true });
-    await writeFile(markerPath, JSON.stringify({ vulkanConfiguredFor: manifest.minecraftVersion }, null, 2), "utf8");
+    await writeFile(markerPath, JSON.stringify({
+      ...marker,
+      ...(manifest.resourcePackOrder !== undefined ? { managedResourcePackIds: configuredPackIds } : {}),
+      ...(configureVulkan ? { vulkanConfiguredFor: manifest.minecraftVersion } : {})
+    }, null, 2), "utf8");
   }
 }
-
-async function previousManagedFiles(): Promise<string[]> {
-  try {
-    const data = JSON.parse(await readFile(managedFile(), "utf8")) as { files?: string[] };
-    return Array.isArray(data.files) ? data.files : [];
-  } catch { return []; }
+interface ManagedFilesIndex {
+  files: string[];
+  hashes: Record<string, string>;
 }
+
+async function previousManagedFiles(): Promise<ManagedFilesIndex> {
+  try {
+    const data = JSON.parse(await readFile(managedFile(), "utf8")) as { files?: unknown; hashes?: unknown };
+    const files = Array.isArray(data.files) ? data.files.filter((path): path is string => typeof path === "string") : [];
+    const hashes = data.hashes && typeof data.hashes === "object" && !Array.isArray(data.hashes)
+      ? Object.fromEntries(Object.entries(data.hashes).filter((entry): entry is [string, string] => typeof entry[1] === "string"))
+      : {};
+    return { files, hashes };
+  } catch { return { files: [], hashes: {} }; }
+}
+
 async function syncPack(sender?: WebContents) {
   const manifest = await fetchManifest();
   const previous = await previousManagedFiles();
   const nextPaths = new Set(manifest.files.map((file) => file.path));
+  const nextHashes: Record<string, string> = {};
   let updated = 0, unchanged = 0, finished = 0;
   emit({ phase: "checking", current: 0, total: manifest.files.length, message: "Sprawdzanie wersji paczki…" });
   let cursor = 0;
@@ -291,24 +325,49 @@ async function syncPack(sender?: WebContents) {
       const index = cursor++;
       if (index >= manifest.files.length) return;
       const file = manifest.files[index];
-      const changed = await downloadFile(file);
-      if (changed) updated++; else unchanged++;
+      const result = await downloadFile(file, previous.hashes);
+      if (result === "updated") updated++; else unchanged++;
+      if (result === "preserved") {
+        // Keep the old shipped baseline so later pack updates continue recognizing
+        // this as a player-edited config rather than treating it as launcher content.
+        if (previous.hashes[file.path]) nextHashes[file.path] = previous.hashes[file.path];
+      } else {
+        nextHashes[file.path] = file.sha512.toLowerCase();
+      }
       finished++;
       const progress: LauncherProgress = {
         phase: "downloading", current: finished, total: manifest.files.length,
-        message: (changed ? "Zaktualizowano " : "Sprawdzono ") + file.path
+        message: result === "updated"
+          ? "Zaktualizowano " + file.path
+          : result === "preserved"
+            ? "Zachowano ustawienia gracza: " + file.path
+            : "Sprawdzono " + file.path
       };
       emit(progress); sender?.send("launcher:progress", progress);
     }
   };
   await Promise.all(Array.from({ length: Math.min(4, manifest.files.length) }, worker));
-  // Remove only files present in the previous managed-file index, never arbitrary user files.
+
+  // Remove obsolete managed files. Modified config files are player data, so keep
+  // them even when a later manifest no longer ships that config.
   let removed = 0;
-  for (const oldPath of previous) {
-    if (!nextPaths.has(oldPath)) { await rm(resolvePackFile(oldPath), { force: true }); removed++; }
+  for (const oldPath of previous.files) {
+    if (nextPaths.has(oldPath)) continue;
+    if (oldPath.startsWith("config/")) {
+      const previousHash = previous.hashes[oldPath]?.toLowerCase();
+      const currentHash = await hashFile(resolvePackFile(oldPath));
+      if (!previousHash || (currentHash && currentHash !== previousHash)) continue;
+    }
+    await rm(resolvePackFile(oldPath), { force: true });
+    removed++;
   }
+
   await mkdir(dirname(managedFile()), { recursive: true });
-  await writeFile(managedFile(), JSON.stringify({ packVersion: manifest.packVersion, files: [...nextPaths] }, null, 2), "utf8");
+  await writeFile(managedFile(), JSON.stringify({
+    packVersion: manifest.packVersion,
+    files: [...nextPaths],
+    hashes: nextHashes
+  }, null, 2), "utf8");
   await applyClientPreferences(manifest);
   emit({ phase: "done", current: manifest.files.length, total: manifest.files.length, message: "Paczka " + manifest.packVersion + " jest aktualna." });
   return { updated, removed, unchanged, total: manifest.files.length };
