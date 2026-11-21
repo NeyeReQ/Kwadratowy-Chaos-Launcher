@@ -11,6 +11,9 @@ on:
       - "pack/**"
       - "docs/**"
       - "README.md"
+  create:
+    branches:
+      - "release/v*"
   workflow_dispatch:
 
 permissions:
@@ -46,14 +49,25 @@ jobs:
           WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
         run: |
           $ErrorActionPreference = "Stop"
-          $tag = "${{ github.ref_name }}"
+          $ref = "${{ github.ref }}"
+          $refName = "${{ github.ref_name }}"
           $repository = "${{ github.repository }}"
-          $isVersionTag = "${{ github.ref }}".StartsWith("refs/tags/v")
+          $isVersionTag = $ref.StartsWith("refs/tags/v")
+          $isReleaseBranch = $ref.StartsWith("refs/heads/release/v")
+          $isRelease = $isVersionTag -or $isReleaseBranch
 
-          if ($isVersionTag) {
+          if ($isRelease) {
+            $tag = $refName
+          } elseif ($isReleaseBranch) {
+            $tag = $refName.Substring("release/".Length)
+          } else {
+            $tag = $refName
+          }
+
+          if ($isRelease) {
             & gh release view $tag --repo $repository *> $null
             if ($LASTEXITCODE -ne 0) {
-              & gh release create $tag --repo $repository --title "Kwadratowy Chaos $($tag.TrimStart('v'))" --notes "Instalator Windows x64 Kwadratowy Chaos." --draft
+              & gh release create $tag --repo $repository --target "${{ github.sha }}" --title "Kwadratowy Chaos $($tag.TrimStart('v'))" --notes "Instalator Windows x64 Kwadratowy Chaos." --draft
               if ($LASTEXITCODE -ne 0) {
                 throw "Nie udało się utworzyć roboczego GitHub Release."
               }
@@ -88,7 +102,7 @@ jobs:
             throw "Znaleziono pliki .blockmap mimo wyłączenia aktualizacji różnicowych: $($blockmaps.Name -join ', ')"
           }
 
-          if ($isVersionTag) {
+          if ($isRelease) {
             if (-not (Test-Path -LiteralPath $latestYml -PathType Leaf)) {
               throw "Brakuje latest.yml — electron-builder nie wygenerował metadanych aktualizacji."
             }
