@@ -9,7 +9,9 @@
 
 ## Logowanie i uruchamianie gry
 
-Launcher nie przechowuje danych logowania i nie wykonuje własnego OAuth. Gracz loguje się w oficjalnym Minecraft Launcherze. Kwadratowy Chaos przygotowuje profil Fabric w `%APPDATA%\\.minecraft\\launcher_profiles.json`, a mody i konfiguracje zapisuje w osobnym katalogu danych paczki. W oficjalnym launcherze wybierz profil **Kwadratowy Chaos** i kliknij **Graj**.
+Launcher nie przechowuje danych logowania i nie wykonuje własnego OAuth. Gracz loguje się w oficjalnym Minecraft Launcherze. Kwadratowy Chaos przygotowuje profil Fabric w `%APPDATA%\\.minecraft\\launcher_profiles.json`, a mody i dane instancji zapisuje w `%APPDATA%\\.kwadratowy-chaos\\instance`. W oficjalnym launcherze wybierz profil **Kwadratowy Chaos** i kliknij **Graj**.
+
+Po jednorazowym przygotowaniu profilu gracz może uruchamiać grę bezpośrednio z oficjalnego Minecraft Launchera, także po restarcie komputera. Nie trzeba otwierać Kwadratowego Chaos Launchera przy każdym uruchomieniu Minecrafta. Otwiera się go dopiero w celu sprawdzenia i pobrania aktualizacji paczki; po synchronizacji można ponownie uruchomić grę z oficjalnego launchera.
 
 Przed przygotowaniem profilu zamknij oficjalny Minecraft Launcher, aby nie nadpisał pliku `launcher_profiles.json`. Po przygotowaniu Kwadratowy Chaos może otworzyć oficjalną aplikację, jeśli jest zainstalowana.
 
@@ -71,6 +73,16 @@ To jest niezależne od aktualizacji samej aplikacji. Gracze **nie pobierają pon
 4. Gracz zamyka Minecrafta i przy następnym użyciu launchera klika **„Sprawdź mody i otwórz launcher”** albo **„Przygotuj grę”**.
 
 Launcher pobiera najnowszy manifest z GitHuba i porównuje SHA-512 każdego lokalnego pliku. Pobiera tylko nowe lub zmienione pliki, a niezmienione pomija. Pliki usunięte z manifestu usuwa z komputera gracza tylko wtedy, gdy wcześniej były zarządzane przez launcher. Światy, screenshoty, logi i inne pliki użytkownika pozostają nietknięte. Zmiana samych modów **nie wymaga nowej wersji instalatora ani aktualizacji launchera**.
+
+#### Dane gracza i ustawienia
+
+- `options.txt` pozostaje plikiem gracza. Launcher nie resetuje grafiki, klawiszy, FOV, języka ani pozostałych ustawień Minecrafta.
+- Domyślna lista resourcepacków jest ustawiana przy pierwszym przygotowaniu instancji, gdy Minecraft nie zapisał jeszcze własnego wyboru. Przy kolejnych synchronizacjach zachowywany jest wybór i kolejność paczek gracza, w tym jego własne pliki ZIP w `resourcepacks/`.
+- Zmodyfikowane pliki `config/` są zachowywane. Launcher aktualizuje dostarczoną konfigurację tylko wtedy, gdy lokalny plik nadal jest zgodny z poprzednią wersją dostarczoną przez paczkę. Konfiguracje z wcześniejszych wersji, dla których nie ma zapisanego hasha bazowego, są traktowane zachowawczo i nie są nadpisywane.
+- Zmodyfikowane pliki `config/` nie są również usuwane, gdy znikną z nowszego manifestu. Nie dotyczy to plików modów — katalog `mods/` pozostaje zarządzany przez manifest.
+- Shadery i własne paczki użytkownika, których nie ma w manifeście, nie są usuwane.
+
+Ustawienia, światy i mody pozostają w tym samym katalogu instancji. Nie twórz nowego profilu ani nowego katalogu gry przy aktualizacji paczki.
 
 ### Jednorazowa naprawa starszego release paczki
 
