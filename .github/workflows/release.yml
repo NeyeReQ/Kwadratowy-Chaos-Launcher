@@ -56,7 +56,7 @@ jobs:
           $isReleaseBranch = $ref.StartsWith("refs/heads/release/v")
           $isRelease = $isVersionTag -or $isReleaseBranch
 
-          if ($isRelease) {
+          if ($isVersionTag) {
             $tag = $refName
           } elseif ($isReleaseBranch) {
             $tag = $refName.Substring("release/".Length)
