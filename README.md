@@ -11,8 +11,9 @@ Desktopowy launcher Minecraft dla społeczności **Kwadratowy Chaos**. Aplikacja
 - Osobny katalog danych gry na mody, konfiguracje, światy i screenshoty.
 - Ustawienie pamięci RAM zapisywane w profilu oficjalnego launchera.
 - Automatyczna synchronizacja paczki przed przygotowaniem gry.
-- Sprawdzanie plików przez SHA-512 i pobieranie tylko brakujących lub zmienionych modów.
-- Usuwanie wyłącznie plików, które launcher wcześniej zarejestrował jako zarządzane.
+- Sprawdzanie plików przez SHA-512 i pobieranie tylko brakujących lub zmienionych plików paczki.
+- Zachowywanie ustawień gracza, wyboru resourcepacków i zmodyfikowanych konfiguracji modów podczas aktualizacji.
+- Usuwanie wyłącznie plików zarządzanych przez launcher; zmodyfikowane konfiguracje gracza są chronione.
 - Darmowe publikowanie plików paczki jako assetów GitHub Releases.
 - Aktualizacje samego launchera przez stabilne GitHub Releases (`v*`); wydania paczki modów (`pack-v*`) są oznaczane jako pre-release i pomijane przez updater.
 - Workflow GitHub Actions do budowania instalatora Windows.
@@ -24,13 +25,15 @@ Desktopowy launcher Minecraft dla społeczności **Kwadratowy Chaos**. Aplikacja
 3. Przygotowuje wersję Minecrafta i Fabric oraz rejestruje profil `Kwadratowy Chaos` w oficjalnym Minecraft Launcherze.
 4. Otwiera oficjalny launcher. Gracz loguje się tam na swoje konto Microsoft, wybiera profil **Kwadratowy Chaos** i klika **Graj**.
 
-Launcher Kwadratowego Chaosu nie prosi o hasło Microsoft i nie przechowuje sesji gracza.
+Launcher Kwadratowego Chaosu nie prosi o hasło Microsoft i nie przechowuje sesji gracza. Po pierwszym przygotowaniu profilu gracz może uruchamiać paczkę bezpośrednio z oficjalnego Minecraft Launchera — Kwadratowy Chaos Launcher nie musi działać podczas zwykłej gry.
 
 ## Automatyczne aktualizacje paczki
 
 Źródłem prawdy jest [launcher/manifest.json](launcher/manifest.json). Każdy plik paczki ma ścieżkę, bezpośredni adres HTTPS, rozmiar i sumę SHA-512. Przy każdym kliknięciu **„Sprawdź mody i otwórz launcher”** lub **„Przygotuj grę”** aplikacja pobiera bieżący manifest i aktualizuje wyłącznie nowe lub zmienione pliki. Niezmienione JAR-y nie są pobierane ponownie.
 
-Administrator publikuje nowy zestaw plików jako kolejny GitHub Release i zapisuje zaktualizowany manifest w repozytorium. Gracze nie pobierają ponownie instalatora ani całej paczki — aktualizacje modów pobierają się automatycznie przy następnym użyciu launchera. Pliki usunięte z paczki są usuwane z katalogu zarządzanego przez launcher, a światy i pozostałe prywatne pliki gracza zostają zachowane.
+Administrator publikuje nowy zestaw plików jako kolejny GitHub Release i zapisuje zaktualizowany manifest w repozytorium. Gracze nie pobierają ponownie instalatora ani całej paczki — aktualizacje plików paczki pobierają się przy następnym użyciu launchera. Do zwykłej gry wystarczy oficjalny Minecraft Launcher; Kwadratowy Chaos Launcher należy otworzyć dopiero wtedy, gdy gracz chce sprawdzić i pobrać aktualizację.
+
+Instancja używa stale tego samego katalogu `%APPDATA%\\.kwadratowy-chaos\\instance`. Zachowywane są `options.txt`, światy, screenshoty, wybór i kolejność resourcepacków oraz własne paczki tekstur. Zmodyfikowane przez gracza pliki w `config/` nie są nadpisywane ani usuwane podczas aktualizacji. Niezmienione konfiguracje dostarczone przez paczkę mogą być aktualizowane. Shadery i pliki użytkownika poza manifestem pozostają na miejscu.
 
 Szczegółowa procedura: [docs/SETUP.md](docs/SETUP.md).
 
@@ -38,8 +41,8 @@ Szczegółowa procedura: [docs/SETUP.md](docs/SETUP.md).
 
 - Minecraft Java Edition: `26.3`
 - Fabric Loader: `0.20.1`
-- Wersja paczki: `0.2.0`
-- Pliki w manifeście: `79`
+- Wersja paczki: `0.2.1`
+- Pliki w manifeście: `112` (103 mody i 9 resourcepacków)
 
 Przepływ oficjalnego launchera został właśnie wdrożony w kodzie, ale trzeba jeszcze wykonać test end-to-end na komputerze z oficjalnym Minecraft Launcherem. Obsługiwane są Vanilla i Fabric; Forge/NeoForge nie są jeszcze wdrożone.
 
